@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <TextView
+        style="@style/textstyle"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="#fff"
+        android:textSize="24sp"/>
+
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:hint="手机号/邮箱"
+        android:inputType="number"
+        android:background="@drawable/bg_username"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:drawablePadding="5dp"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/icon_register"
+        android:layout_marginTop="60dp"/>
+
+    <EditText
+        android:id="@+id/editPwd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:inputType="textPassword"
+        android:hint="请输入密码"
+        android:layout_below="@id/editPhone"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_username"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:maxLines="1"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/icon_password"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/editPwd"
+        android:layout_marginTop="20dp"
+        android:onClick="OnMyLoginClick"
+        android:text="登录"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:background="@drawable/selector_orange"
+        android:layout_marginLeft="5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/btn_login"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp">
+
+        <!-- forget password button -->
+        <TextView
+            android:id="@+id/txtForgetPwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="忘记密码"
+            android:textColor="#fff"
+            android:clickable="true"
+            android:onClick="OnMyResPwdClick"
+            android:textSize="15sp"/>
+        <!-- start register button -->
+        <TextView
+            android:id="@+id/txtStartRegist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="开始注册"
+            android:textColor="#fff"
+            android:clickable="true"
+            android:onClick="OnMyRegistClick"
+            android:textSize="15sp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

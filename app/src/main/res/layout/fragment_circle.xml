@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/text_circle"
+                    android:adjustViewBounds="true"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/level_title_icon_size"
+                    android:layout_marginLeft="@dimen/level_title_margin_left"
+                    android:text=""
+                    android:textSize="@dimen/level_info_size" />
+                <ImageView
+                    android:id="@+id/iv_record"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_calender" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                    <ImageView
+                        android:id="@+id/iv_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:src="@drawable/circle_image1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="14dp">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:src="@drawable/text2_circle"/>
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="扁平"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:background="@drawable/bg_username"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="欧美"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:background="@drawable/bg_username"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="儿插"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:background="@drawable/bg_username"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="写实"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:background="@drawable/bg_username"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="马赛克"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:padding="5dp"-->
+                            <!--android:layout_marginLeft="20dp"-->
+                            <!--android:background="@drawable/bg_username"/>-->
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/circle_image2" />
+
+                    <ImageView
+                        android:id="@+id/iv_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/circle_image3" />
+                    <ImageView
+                        android:id="@+id/iv_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/circle_image4" />
+                    <ImageView
+                        android:id="@+id/iv_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/circle_image5" />
+                    <ImageView
+                        android:id="@+id/iv_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/circle_image6" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

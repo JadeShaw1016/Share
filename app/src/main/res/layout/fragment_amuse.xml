@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--baseTraining-->
+            <LinearLayout
+                android:id="@id/train_hand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/level_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/level_title_icon_size"
+                        android:layout_height="@dimen/level_title_icon_size"
+                        android:src="@drawable/ic_free_train" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/level_title_icon_size"
+                        android:layout_marginLeft="@dimen/level_title_margin_left"
+                        android:gravity="center"
+                        android:text="@string/level_base_title"
+                        android:textSize="@dimen/level_info_size" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_badminton" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_head_margin_left"
+                        android:layout_marginTop="@dimen/level_head_margin_top"
+                        android:text="@string/level_base_hand"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_title_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="@dimen/level_info_margin_top"
+                        android:text="@string/level_base__hand_info"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="150dp"
+                        android:text="时长：2H  最高分：20"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+                </FrameLayout>
+            </LinearLayout>
+            <!--baseTraining-->
+
+            <!--enhanceTraining-->
+            <LinearLayout
+                android:id="@id/train_foot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/level_padding">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_football"  />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_head_margin_left"
+                        android:layout_marginTop="@dimen/level_head_margin_top"
+                        android:text="@string/level_enhance_foot"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_title_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="@dimen/level_info_margin_top"
+                        android:text="@string/level_enhance_foot_info"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="150dp"
+                        android:text="时长：2H  最高分：20"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!--enhanceTraining-->
+
+            <!--acmeTraining-->
+            <LinearLayout
+                android:id="@id/train_waist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/level_padding">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_pingban"  />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_head_margin_left"
+                        android:layout_marginTop="@dimen/level_head_margin_top"
+                        android:text="@string/level_acme_waist"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_title_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="@dimen/level_info_margin_top"
+                        android:text="@string/level_acme_waist_info"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/level_info_margin_left"
+                        android:layout_marginTop="150dp"
+                        android:text="时长：2H  最高分：20"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/level_info_size" />
+                </FrameLayout>
+            </LinearLayout>
+            <!--acmeTraining-->
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

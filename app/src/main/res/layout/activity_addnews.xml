@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <ImageView
+            android:id="@+id/title_back"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/title_back_selector2"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/text_sendwork"/>
+        <Button
+            android:id="@id/add_news_btn_release"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/add_news_btn_release_txt"
+            android:textSize="16sp"
+            android:background="@drawable/selector_orange"/>
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/iv_picture"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sendwork_image" />
+            <EditText
+                android:id="@id/add_news_et_share_title"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="14dp"
+                android:padding="10dp"
+                android:maxLines="1"
+                android:gravity="left"
+                android:hint="追海的人                                                            4/12"
+                android:background="@drawable/rounded_4dp"/>
+
+
+            <EditText
+                android:id="@id/add_news_et_share_content"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginTop="14dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_4dp"
+                android:gravity="start"
+                android:hint="@string/add_news_et_hint_text" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@id/add_news_iv_photo"
+                    android:layout_width="50dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_edit_avatar_camera"
+                    android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/choose_from_album"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/icon_add_sendwork"
+                    android:layout_toRightOf="@+id/add_news_iv_photo"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
