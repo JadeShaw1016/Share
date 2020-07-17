@@ -2,8 +2,10 @@ package com.example.administrator.share.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -42,14 +44,36 @@ public class SplashActivity extends AppCompatActivity  {
     //向导界面的图片
     private int[] mPics = new int[]{R.drawable.start0,R.drawable.start1,R.drawable.start2,R.drawable.start3};
 
+    boolean isFirstIn = false;
+    private SharedPreferences.Editor edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        findViewById();
-        initView();
-        initData();
-        initEvent();
+
+        final SharedPreferences sharedPreferences = getSharedPreferences("is_first_in_data", Context.MODE_PRIVATE);
+        edit =  sharedPreferences.edit();
+        isFirstIn = sharedPreferences.getBoolean("isFirstIn",true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isFirstIn) {
+                    setContentView(R.layout.activity_splash);
+                    findViewById();
+                    initView();
+                    initData();
+                    initEvent();
+                    //之前错误没有这两句，没有设置Boolean类型，并提交
+                    edit.putBoolean("isFirstIn",false);
+                    edit.commit();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, 0);
+
     }
 
     protected void findViewById() {
