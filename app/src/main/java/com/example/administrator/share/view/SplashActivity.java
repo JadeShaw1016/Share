@@ -29,6 +29,7 @@ import java.util.List;
 public class SplashActivity extends AppCompatActivity  {
 
     private Button mBtn_skip;
+    private Button mBtn_start;
     private ViewPager mVp_Guide;
     private View mGuideRedPoint;
     private LinearLayout mLlGuidePoints;
@@ -53,6 +54,7 @@ public class SplashActivity extends AppCompatActivity  {
 
     protected void findViewById() {
         mBtn_skip = (Button)findViewById(R.id.btn_skip);
+        mBtn_start = (Button)findViewById(R.id.btn_start);
     }
 
 
@@ -61,7 +63,6 @@ public class SplashActivity extends AppCompatActivity  {
         mGuideRedPoint = findViewById(R.id.v_guide_redpoint);
         mLlGuidePoints = (LinearLayout) findViewById(R.id.ll_guide_points);
 
-//        jumpToLogin();
     }
 
     private void initData() {
@@ -113,14 +114,19 @@ public class SplashActivity extends AppCompatActivity  {
         mVp_Guide.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-               /* //当前viewpager显示的页码
+                //当前viewpager显示的页码
                 //如果viewpager滑动到第三页码（最后一页），显示进入的button
                 if (position == guids.size() - 1) {
-                    bt_startExp.setVisibility(View.VISIBLE);//设置按钮的显示
+                    mBtn_skip.setVisibility(View.INVISIBLE);
+                    mLlGuidePoints.setVisibility(View.INVISIBLE);
+                    mGuideRedPoint.setVisibility(View.INVISIBLE);
+                    mBtn_start.setVisibility(View.VISIBLE);
                 } else {
-                    //隐藏该按钮
-                    bt_startExp.setVisibility(View.GONE);
-                }*/
+                    mBtn_skip.setVisibility(View.VISIBLE);
+                    mLlGuidePoints.setVisibility(View.VISIBLE);
+                    mGuideRedPoint.setVisibility(View.VISIBLE);
+                    mBtn_start.setVisibility(View.INVISIBLE);
+                }
                 currentItem = position;
             }
 
@@ -144,6 +150,24 @@ public class SplashActivity extends AppCompatActivity  {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        mBtn_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mBtn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -185,21 +209,5 @@ public class SplashActivity extends AppCompatActivity  {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return true;
     }
-
-
-    private void jumpToLogin() {
-        new Thread() {
-            @Override
-            public void run() {
-                SystemClock.sleep(3000);
-                Intent intent=new Intent(SplashActivity.this,MainMenuActivity.class);
-                SplashActivity.this.startActivity(intent);
-//                openActivity(MainActivity.class);
-                finish();
-            }
-        }.start();
-    }
-
-
 
 }
