@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="border_clo">#ccc</color>
     <!--main-->
     <color name="bottom_tab_pressed">#DC4B38</color>
     <color name="bottom_tab_normal">#B4B4B4</color>

@@ -1,19 +1,37 @@
-1 <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F3F6"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <ImageView
+            android:id="@+id/title_back"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/title_back_selector2"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:src="@drawable/setting_text"/>
+
+    </LinearLayout>
 
     <LinearLayout style="@style/wrap_layout">
         <!-- 上圆角-->
-        <LinearLayout style="@style/mid_layout">
-
+        <LinearLayout style="@style/top_layout">
             <TextView
                 style="@style/usertext"
-                android:text="个性签名" />
-
+                android:text="我的资料" />
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
 
@@ -21,40 +39,67 @@
         <View style="@style/bg_line" />
         <!-- 无圆角-->
         <LinearLayout style="@style/mid_layout">
-
             <TextView
                 style="@style/usertext"
-                android:text="我的资料" />
+                android:text="申请认证" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
+        <View style="@style/bg_line2" />
+        <!-- 无圆角-->
+        <LinearLayout style="@style/mid_layout">
+            <TextView
+                style="@style/usertext"
+                android:text="隐私设置" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
+
+        <View style="@style/bg_line" />
+        <!-- 无圆角-->
+        <LinearLayout style="@style/mid_layout">
+            <TextView
+                style="@style/usertext"
+                android:text="通用设置" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
+
+        <View style="@style/bg_line2" />
+        <!-- 无圆角-->
+        <LinearLayout style="@style/mid_layout">
+            <TextView
+                style="@style/usertext"
+                android:text="清理缓存" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
+
+        <View style="@style/bg_line" />
+        <!-- 无圆角-->
+        <LinearLayout style="@style/mid_layout">
+            <TextView
+                style="@style/usertext"
+                android:text="关于Share" />
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
 
         <View style="@style/bg_line" />
         <!-- 下圆角-->
         <LinearLayout style="@style/bottom_layout">
-
             <TextView
                 style="@style/usertext"
-                android:text="消息通知" />
-
+                android:text="意见与反馈" />
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
 
     </LinearLayout>
 
-
-    <!-- 全圆角-->
-    <LinearLayout style="@style/top_layout">
-
-        <LinearLayout style="@style/single_layout">
-
-            <TextView
-                style="@style/usertext"
-                android:text="辅助功能" />
-
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
+    <LinearLayout style="@style/wrap_layout">
+    <ImageView
+        android:id="@id/me_item_exit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/setting_image4"/>
     </LinearLayout>
 
 </LinearLayout>
