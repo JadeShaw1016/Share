@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Share.iml" filepath="$PROJECT_DIR$/Share.iml" group="Share" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Share/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/mainnavigatetabbar.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/mainnavigatetabbar.iml" group="Share/mainnavigatetabbar" />
     </modules>
   </component>
 </project>
