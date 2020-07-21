@@ -2,7 +2,6 @@ package com.example.administrator.share.view;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 
 import com.example.administrator.share.R;
