@@ -172,9 +172,4 @@
         <item name="android:background">@drawable/bottom_layout_selector</item>
     </style>
 
-    <!-- 全圆角样式 -->
-    <style name="single_layout" parent="base_layout">
-        <item name="android:background">@drawable/bg_username</item>
-    </style>
-
 </resources>

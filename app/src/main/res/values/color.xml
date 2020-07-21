@@ -2,6 +2,8 @@
 <resources>
 
     <color name="border_clo">#ccc</color>
+    <color name="comui_tab_text_color">#ff333333</color>
+
     <!--main-->
     <color name="bottom_tab_pressed">#DC4B38</color>
     <color name="bottom_tab_normal">#B4B4B4</color>
