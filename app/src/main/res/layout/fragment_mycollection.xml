@@ -5,7 +5,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="@color/lightgray">
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,14 +16,20 @@
                 <SearchView
                     android:id="@+id/search"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:imeOptions="actionSearch"
-                    android:queryHint="健身器材">
+                    android:queryHint="夏天的风">
                 </SearchView>
             </LinearLayout>
 
-            <!--用品区-->
+            <!--split-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lightgray" />
+            <!--split-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +39,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="用品区"
+                    android:text="收藏夹1"
                     android:textSize="18sp"
                     android:layout_marginBottom="20dp"/>
                 <ImageView
@@ -44,9 +49,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/me_image1"/>
             </LinearLayout>
-            <!--用品区-->
 
-            <!--课程区-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +60,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="课程区"
+                    android:text="收藏夹2"
                     android:textSize="18sp"
                     android:layout_marginBottom="20dp"/>
                 <ImageView
@@ -67,9 +70,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/me_image1"/>
             </LinearLayout>
-            <!--课程区-->
 
-            <!--折扣区-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="折扣区"
+                    android:text="收藏夹3"
                     android:textSize="18sp"
                     android:layout_marginBottom="20dp"/>
                 <ImageView
@@ -90,7 +91,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/me_image1"/>
             </LinearLayout>
-            <!--折扣区-->
+
 
         </LinearLayout>
     </ScrollView>

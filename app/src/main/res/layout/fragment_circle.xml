@@ -4,6 +4,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/text_circle"
+            android:adjustViewBounds="true"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/level_title_icon_size"
+            android:layout_marginLeft="@dimen/level_title_margin_left"
+            android:text=""
+            android:textSize="@dimen/level_info_size" />
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_calender" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/comui_bar_top_shadow"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -11,32 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="14dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-                <ImageView
-                    android:id="@+id/iv1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/text_circle"
-                    android:adjustViewBounds="true"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/level_title_icon_size"
-                    android:layout_marginLeft="@dimen/level_title_margin_left"
-                    android:text=""
-                    android:textSize="@dimen/level_info_size" />
-                <ImageView
-                    android:id="@+id/iv_record"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/icon_calender" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
