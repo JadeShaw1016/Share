@@ -1,4 +1,4 @@
-package com.example.administrator.share.view;//这里换成你自己的
+package com.example.administrator.share.activity;//这里换成你自己的
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
-import com.example.administrator.share.view.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//import androidx.fragment.app.Fragment;
 
 
 public class MeFragment extends Fragment {

@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.view.DetailActivity;
+import com.example.administrator.share.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

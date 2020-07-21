@@ -1,4 +1,4 @@
-package com.example.administrator.share.view;
+package com.example.administrator.share.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

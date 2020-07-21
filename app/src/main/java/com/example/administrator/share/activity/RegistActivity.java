@@ -1,4 +1,4 @@
-package com.example.administrator.share.view;
+package com.example.administrator.share.activity;
 
 import android.content.ContentValues;
 import android.database.Cursor;

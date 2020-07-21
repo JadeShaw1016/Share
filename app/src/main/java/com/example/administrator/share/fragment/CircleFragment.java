@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.view.RecordActivity;
+import com.example.administrator.share.activity.RecordActivity;
 
 
 public class CircleFragment extends Fragment {
