@@ -1,7 +1,5 @@
 package com.example.administrator.share.view;
 
-import util.pubFun;
-import dao.DBOpenHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,8 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+
+import dao.DBOpenHelper;
+import util.pubFun;
 
 
 public class MainActivity extends AppCompatActivity {

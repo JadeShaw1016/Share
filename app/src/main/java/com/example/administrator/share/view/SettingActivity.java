@@ -1,11 +1,8 @@
 package com.example.administrator.share.view;
 
-import android.net.Uri;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.administrator.share.R;

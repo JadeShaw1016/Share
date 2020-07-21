@@ -3,22 +3,22 @@ package com.example.administrator.share.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.view.SettingActivity;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+//import androidx.fragment.app.Fragment;
 
 
 public class MeFragment extends Fragment {

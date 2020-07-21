@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
-
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.MyAdapter;
 import com.example.administrator.share.util.UIUtils;
@@ -28,7 +25,7 @@ import com.example.administrator.share.util.UIUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplashActivity extends AppCompatActivity  {
+public class SplashActivity extends AppCompatActivity {
 
     private Button mBtn_skip;
     private Button mBtn_start;
