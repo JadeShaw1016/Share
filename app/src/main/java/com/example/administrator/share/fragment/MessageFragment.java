@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.administrator.share.R;
 
-public class InformationFragment extends Fragment {
+public class MessageFragment extends Fragment {
 
 
-    public static InformationFragment newInstance(String param1) {
-        InformationFragment fragment = new InformationFragment();
+    public static MessageFragment newInstance(String param1) {
+        MessageFragment fragment = new MessageFragment();
         Bundle args = new Bundle();
         args.putString("agrs1", param1);
         fragment.setArguments(args);
