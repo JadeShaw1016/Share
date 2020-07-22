@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.adapter.MyAdapter;
+import com.example.administrator.share.adapter.SplashAdapter;
 import com.example.administrator.share.util.UIUtils;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private int disPoints;
     private int currentItem;
-    private MyAdapter adapter;
+    private SplashAdapter adapter;
     private List<ImageView> guids;
 
     //向导界面的图片
@@ -64,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                     edit.putBoolean("isFirstIn",false);
                     edit.commit();
                 } else {
-                    Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -114,7 +114,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         // 创建viewpager的适配器
-        adapter = new MyAdapter(getApplicationContext(), guids);
+        adapter = new SplashAdapter(getApplicationContext(), guids);
         // 设置适配器
         mVp_Guide.setAdapter(adapter);
     }

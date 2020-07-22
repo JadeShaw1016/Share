@@ -13,10 +13,10 @@ import java.util.List;
  * @创建时间 2018/9/4 15:00
  * @类描述 ${TODO}viewpager的适配器
  */
-public class MyAdapter extends PagerAdapter {
+public class SplashAdapter extends PagerAdapter {
     private List<ImageView> mGuids;
 
-    public MyAdapter(Context ctx, List<ImageView> guids) {
+    public SplashAdapter(Context ctx, List<ImageView> guids) {
         this.mGuids = guids;
     }
 
