@@ -1,26 +1,34 @@
 package com.example.administrator.share.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.DetailActivity;
+import com.example.administrator.share.adapter.ListAdapter;
+import com.example.administrator.share.util.DataResource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class FirstPageFragment extends Fragment {
     private Spinner spinner;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
+
+    private ListView mListView;
+    private List<Map<String,Object>> mList;
+    private DataResource data;
+    private ListAdapter mAdapter;
+
 
     public static FirstPageFragment newInstance(String param1) {
         FirstPageFragment fragment = new FirstPageFragment();
@@ -42,14 +50,16 @@ public class FirstPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
-        view.findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                startActivity(intent);
-            }
-        });
-        spinner = view.findViewById(R.id.spinner);
+        initView(view);
+        initData();
+//        view.findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
         //数据
         data_list = new ArrayList<String>();
         data_list.add("   我的关注   ");
@@ -66,4 +76,21 @@ public class FirstPageFragment extends Fragment {
 
         return view;
     }
+
+    private void initView(View view){
+        mListView=view.findViewById(R.id.list);
+        spinner = view.findViewById(R.id.spinner);
+        mList=new ArrayList<>();
+        data=new DataResource();
+        mAdapter=new ListAdapter(getActivity().getBaseContext(),mList,data);
+        mListView.setAdapter(mAdapter);
+
+    }
+
+    private void initData(){
+        data.getData();
+        mList.addAll(data.getList());
+        mAdapter.notifyDataSetChanged();
+    }
+
 }
