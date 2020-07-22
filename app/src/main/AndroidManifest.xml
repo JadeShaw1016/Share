@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
@@ -15,7 +16,9 @@
         android:label="Share"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory">
+        tools:replace="android:appComponentFactory"
+        android:usesCleartextTraffic="true">
+
         <activity android:name=".activity.DetailActivity"></activity>
         <activity
             android:name=".activity.RecordActivity"
@@ -40,6 +43,7 @@
         <activity android:name=".activity.ResPwdActivity" />
         <activity android:name=".activity.AddnewsActivity" />
         <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.WelcomeActivity"/>
     </application>
 
 </manifest>
