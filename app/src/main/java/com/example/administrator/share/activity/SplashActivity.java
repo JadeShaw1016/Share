@@ -177,7 +177,7 @@ public class SplashActivity extends AppCompatActivity {
         mBtn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -186,7 +186,7 @@ public class SplashActivity extends AppCompatActivity {
         mBtn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -213,7 +213,7 @@ public class SplashActivity extends AppCompatActivity {
                         //首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
                         if (currentItem == (guids.size() - 1) && startX - endX >= (width / 4)) {
                             //进入主页
-                            Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                             startActivity(intent);
                             //这部分代码是切换Activity时的动画，看起来就不会很生硬
                             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

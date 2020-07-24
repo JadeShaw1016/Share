@@ -34,7 +34,7 @@
         android:password="true"
         android:singleLine="true"
         android:maxLength="16"/>
-    <!-- the regist button -->
+    <!-- the activity_register button -->
     <Button
         android:id="@+id/btnRegist"
         style="@style/textstyle"

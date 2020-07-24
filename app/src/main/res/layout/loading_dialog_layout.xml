@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/normal_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="10dip"
             android:background="@drawable/loading_animation"
             android:visibility="visible" />
@@ -36,7 +36,6 @@
             android:id="@+id/loading_content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:text=""
             android:textColor="#ffffff"
             android:textSize="15dp" />

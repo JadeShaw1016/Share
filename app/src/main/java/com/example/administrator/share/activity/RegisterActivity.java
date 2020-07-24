@@ -33,9 +33,9 @@ import util.pubFun;
  * xx.   yyyy/mm/dd   ver    author    comments
  * 01.   2018/09/19   1.00   AnneHan   New Create
  */
-public class RegistActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    String TAG = MainActivity.class.getCanonicalName();
+    String TAG = LoginActivity.class.getCanonicalName();
     private EditText editPhone;
     private EditText editPwd;
     private Button btnRegist;
@@ -44,7 +44,7 @@ public class RegistActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.regist);
+        setContentView(R.layout.activity_register);
         editPhone = (EditText) findViewById(R.id.editPhone);
         editPwd = (EditText) findViewById(R.id.editPwd);
         btnRegist = (Button) findViewById(R.id.btnRegist);

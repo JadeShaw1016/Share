@@ -46,7 +46,7 @@ class DataAsyncTask extends  AsyncTask<Integer,Void,List<Map<String,Object>>>{
                 Type type= new TypeToken<BingPic>(){}.getType();
                 Gson gson = new Gson();
                 BingPic bingPic = gson.fromJson(data,type);
-                for(i=0;i<10;i++){
+                for(i=0;i<5;i++){
                     map=new HashMap<>();
                     map.put("pic",getBitmap("http://cn.bing.com"+bingPic.getImages().get(i).getUrl()));
                     map.put("text",bingPic.getImages().get(i).getCopyright());

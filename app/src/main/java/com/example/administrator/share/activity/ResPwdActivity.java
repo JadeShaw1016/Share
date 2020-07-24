@@ -84,7 +84,7 @@ public class ResPwdActivity extends AppCompatActivity {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             setResult(RESULT_OK);
-                            Intent intent=new Intent(ResPwdActivity.this,RegistActivity.class);
+                            Intent intent=new Intent(ResPwdActivity.this, RegisterActivity.class);
                             ResPwdActivity.this.startActivity(intent);
                         }
                     })
