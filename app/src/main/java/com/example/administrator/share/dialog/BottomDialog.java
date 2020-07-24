@@ -1,4 +1,4 @@
-package com.example.administrator.share;
+package com.example.administrator.share.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.administrator.share.R;
 
 public class BottomDialog extends Dialog implements View.OnClickListener{
     private Context context;      // 上下文
