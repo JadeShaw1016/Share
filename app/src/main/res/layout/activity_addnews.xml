@@ -52,28 +52,39 @@
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/sendwork_image" />
-            <EditText
-                android:id="@id/add_news_et_share_title"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="14dp"
-                android:padding="10dp"
-                android:maxLines="1"
-                android:gravity="left"
-                android:hint="追海的人                                                            4/12"
-                android:background="@drawable/rounded_4dp"/>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp">
+                <EditText
+                    android:id="@id/add_news_et_share_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:hint="追海的人"
+                    android:maxLength="12"
+                    android:background="@drawable/rounded_4dp"/>
+
+                <TextView
+                    android:id="@+id/add_news_tv_title_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/12"
+                    android:padding="7dp"
+                    android:layout_alignEnd="@+id/add_news_et_share_title"/>
+            </RelativeLayout>
 
             <EditText
                 android:id="@id/add_news_et_share_content"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:background="@drawable/rounded_4dp"
-                android:gravity="start"
                 android:hint="@string/add_news_et_hint_text" />
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
