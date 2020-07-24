@@ -7,8 +7,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.administrator.share.BottomDialog;
 import com.example.administrator.share.R;
+import com.example.administrator.share.dialog.BottomDialog;
 import com.example.administrator.share.fragment.CircleFragment;
 import com.example.administrator.share.fragment.FirstPageFragment;
 import com.example.administrator.share.fragment.MeFragment;
