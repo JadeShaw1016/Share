@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,11 +60,6 @@ public class ListAdapter extends BaseAdapter
         viewHolder.pic.setImageBitmap((Bitmap) data.getList().get(position).get("pic"));
         viewHolder.text.setText((CharSequence) data.getList().get(position).get("text"));
         viewHolder.time.setText((CharSequence) data.getList().get(position).get("time"));
-        viewHolder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
         return convertView;
     }
 
@@ -73,7 +67,6 @@ public class ListAdapter extends BaseAdapter
         ImageView pic;
         TextView text;
         TextView time;
-        Button btn;
     }
 }
 
