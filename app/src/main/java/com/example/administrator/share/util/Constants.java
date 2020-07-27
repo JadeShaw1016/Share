@@ -21,7 +21,7 @@ public class Constants {
 	public static String APP_NAME = "";
 
 	// 服务器地址
-	public static String BASE_URL = "http://10.29.34.82:8081/ShareServer/";
+	public static String BASE_URL = "http://10.29.34.44:8081/ShareServer/";
 
 	// 保存参数文件夹名称
 	public static final String SHARED_PREFERENCE_NAME = "share_prefs";
