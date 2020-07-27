@@ -102,4 +102,11 @@
         android:src="@drawable/setting_image4"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:text="@string/me_app_version" />
+
 </LinearLayout>
