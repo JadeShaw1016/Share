@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +25,11 @@ public class WelcomeActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                if(getSharedPreferences("is_first_in_data", Context.MODE_PRIVATE).getBoolean("isFirstIn",true)){
+                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                }else{
+                    startActivity(new Intent(WelcomeActivity.this, MainMenuActivity.class));
+                }
                 finish();
             }
         }, time);
