@@ -30,7 +30,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText et_password;
 
     private Button bt_login;
-    private TextView bt_register;
+    private TextView repwdTv;
+    private TextView registerTv;
     private Button bt_config;
     private Context mContext;
 
@@ -51,14 +52,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         et_password = $(R.id.login_et_password);
 
         bt_login = $(R.id.login_btn_login);
-        bt_register = $(R.id.login_tv_register);
+        registerTv = $(R.id.login_tv_register);
+        repwdTv = $(R.id.txtForgetPwd);
         bt_config = $(R.id.login_bt_config);
     }
 
     @Override
     protected void initView() {
         bt_login.setOnClickListener(this);
-        bt_register.setOnClickListener(this);
+        registerTv.setOnClickListener(this);
+        repwdTv.setOnClickListener(this);
         bt_config.setOnClickListener(this);
         echo();
         uiFlusHandler = new MyDialogHandler(mContext, "登录中...");
@@ -86,8 +89,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.login_tv_register:
                 openActivity(RegisterActivity.class);
                 break;
+            case R.id.txtForgetPwd:
+                openActivity(ResPwdActivity.class);
+                break;
             case R.id.login_bt_config:
                 openActivity(ConfigActivity.class);
+                break;
             default:
                 break;
         }
