@@ -9,10 +9,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
+import com.example.administrator.share.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +23,7 @@ import java.util.List;
 
 
 
-public class MeFragment extends Fragment {
+public class MeFragment extends Fragment implements View.OnClickListener{
 
     private TabLayout tabLayout;
     private ViewPager pager;
@@ -29,42 +32,19 @@ public class MeFragment extends Fragment {
     private List<String> mTitles;
     private String [] title={"我的作品","我的点赞","我的收藏","我的草稿"};
 
-    public static MeFragment newInstance(String param1) {
-        MeFragment fragment = new MeFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public MeFragment() {
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private ImageView settingIv;
+    private TextView usernameTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, null);
-        pager= view.findViewById(R.id.page);
-        tabLayout= view.findViewById(R.id.tab_layout);
+        findViewById(view);
+        initView();
 
-        view.findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent=new Intent(getActivity(), SettingActivity.class);
-                startActivity(intent);
-            }
-        });
 
         fragmentList=new ArrayList<>();
         mTitles=new ArrayList<>();
-//        for(String t:title){
-//            mTitles.add(t);
-//        }
+
         Collections.addAll(mTitles, title);
         fragmentList.add(MyWorkFragment.newInstance(title[0]));
         fragmentList.add(MyFavoFragment.newInstance(title[1]));
@@ -77,8 +57,30 @@ public class MeFragment extends Fragment {
         return view;
     }
 
+    private void findViewById(View view){
+        pager= view.findViewById(R.id.page);
+        tabLayout= view.findViewById(R.id.tab_layout);
+        settingIv = view.findViewById(R.id.iv1);
+        usernameTv = view.findViewById(R.id.me_homepage_username);
+    }
 
+    private void initView(){
+        settingIv.setOnClickListener(this);
 
+        echo();
+    }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.iv1:
+                Intent intent=new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 
+    private void echo(){
+        usernameTv.setText(Constants.USER.getUsername());
+    }
 }
