@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -16,8 +15,6 @@ import com.example.administrator.share.fragment.MeFragment;
 import com.example.administrator.share.fragment.MessageFragment;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.startsmake.mainnavigatetabbar.widget.MainNavigateTabBar;
-
-import java.util.List;
 
 
 public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
@@ -34,8 +31,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     private static final String TAG_PAGE_MESSAGE = "消息";
     private static final String TAG_PAGE_PERSON = "我的";
 
-    private List<String> data_list;
-    private ArrayAdapter<String> arr_adapter;
 
     private MainNavigateTabBar mNavigateTabBar;
 

@@ -32,15 +32,6 @@ public class FirstPageFragment extends Fragment {
     private DataResource data;
     private ListAdapter mAdapter;
 
-
-    public static FirstPageFragment newInstance(String param1) {
-        FirstPageFragment fragment = new FirstPageFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public FirstPageFragment() {
 
     }
@@ -56,28 +47,7 @@ public class FirstPageFragment extends Fragment {
         initView(view);
         initData();
         Click();
-//        view.findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), DetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-
-        //数据
-        data_list = new ArrayList<String>();
-        data_list.add("   我的关注   ");
-        data_list.add("   干货分享   ");
-
-        //适配器
-        arr_adapter= new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_spinner_item, data_list);
-        //设置样式
-        arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //加载适配器
-//        spinner.getChildAt(-1).setVisibility(view.INVISIBLE);
-        System.out.println(spinner.getSelectedItemPosition());
-        spinner.setAdapter(arr_adapter);
+        setAdapter();
 
         return view;
     }
@@ -111,4 +81,19 @@ public class FirstPageFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void setAdapter(){
+        //数据
+        data_list = new ArrayList<String>();
+        data_list.add("   我的关注   ");
+        data_list.add("   干货分享   ");
+
+        //适配器
+        arr_adapter= new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_spinner_item, data_list);
+        //设置样式
+        arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+//        spinner.getChildAt(-1).setVisibility(view.INVISIBLE);
+        System.out.println(spinner.getSelectedItemPosition());
+        spinner.setAdapter(arr_adapter);
+    }
 }
