@@ -1,7 +1,10 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +66,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         mContext = this;
-
         confrimBtn.setOnClickListener(this);
         uiFlusHandler = new MyDialogHandler(mContext, "更新中...");
 
@@ -78,9 +80,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-
     private void checkInfo() {
-        System.out.println("检查信息");
         username = usernameEt.getText().toString().trim();
         password = pwdEt.getText().toString().trim();
         repassword = respwdEt.getText().toString().trim();
@@ -98,7 +98,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void update() {
-        System.out.println("检查信息2");
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         String url = Constants.BASE_URL + "User?method=update";
         OkHttpUtils
@@ -121,21 +120,33 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     User user = null;
                     try {
-                        System.out.println("检查信息3"+response);
                         user = gson.fromJson(response, User.class);
                     } catch (JsonSyntaxException e) {
                         user = null;
                     }
                     if (user == null) {
-                        DisplayToast(response);
+//                        DisplayToast(response);
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("提示")
+                                .setMessage("该用户不存在，请到注册界面进行注册！")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        setResult(RESULT_OK);
+                                        Intent intent=new Intent(ResPwdActivity.this, RegisterActivity.class);
+                                        ResPwdActivity.this.startActivity(intent);
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        return;
+                                    }
+                                })
+                                .show();
                         return;
                     } else {
                         // 存储用户
                         Constants.USER.setPassword(user.getPassword());
-                        user.setHeight(170);
-                        user.setWeight(70);
-                        user.setSex("男");
-                        user.setUserId(3);
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
                             Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
