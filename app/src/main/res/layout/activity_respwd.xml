@@ -14,7 +14,7 @@
         android:textSize="24sp"/>
     <!-- input phone -->
     <EditText
-        android:id="@+id/editPhone"
+        android:id="@+id/edit_name"
         style="@style/textstyle"
         android:layout_width="fill_parent"
         android:background="@drawable/rounded_edittext_states"
@@ -25,32 +25,31 @@
         android:maxLength="11"/>
     <!-- input password -->
     <EditText
-        android:id="@+id/editPwd"
+        android:id="@+id/edit_pwd"
         style="@style/textstyle"
         android:layout_width="fill_parent"
         android:background="@drawable/rounded_edittext_states"
         android:hint="请输入新密码"
         android:lines="1"
-        android:password="true"
+        android:inputType="textPassword"
         android:singleLine="true"
         android:maxLength="16"/>
     <!-- input password again -->
     <EditText
-        android:id="@+id/editResPwd"
+        android:id="@+id/edit_respwd"
         style="@style/textstyle"
         android:layout_width="fill_parent"
         android:background="@drawable/rounded_edittext_states"
         android:hint="请再次输入新密码"
         android:lines="1"
-        android:password="true"
+        android:inputType="textPassword"
         android:singleLine="true"
         android:maxLength="16"/>
     <!-- the confirm button -->
     <Button
-        android:id="@+id/btnConfirm"
+        android:id="@+id/btn_confirm"
         style="@style/textstyle"
         android:layout_width="fill_parent"
         android:background="@drawable/selector_orange"
-        android:onClick="OnMyConfirmClick"
         android:text="确认"/>
 </LinearLayout>
