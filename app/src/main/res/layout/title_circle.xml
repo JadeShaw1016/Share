@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="@drawable/comui_bar_top_shadow"
+    android:layout_height="@dimen/title_height">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="35.0dip"
+            android:layout_height="35.0dip"
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_calender" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@id/titleText"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:textSize="32sp"
+        android:paddingTop="6.0dp"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:text="圈子" />
+
+</RelativeLayout>
