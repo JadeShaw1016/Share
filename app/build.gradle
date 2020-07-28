@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
 
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId 'com.example.administrator.share'
@@ -24,12 +24,13 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:23.1.1'
-    implementation project(':mainnavigatetabbar')
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation group: 'com.nostra13.universalimageloader', name: 'universal-image-loader', version: '1.8.6'
     implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.zhy:okhttputils:2.6.2'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation project(':mainnavigatetabbar')
+    implementation project(':DatePicker')
 
 }

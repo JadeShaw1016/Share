@@ -46,6 +46,8 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.WelcomeActivity"/>
         <activity android:name=".activity.ConfigActivity"/>
+        <activity android:name=".activity.BeforeDateCheckActivity"/>
+        <activity android:name=".activity.DateCheckActivity"/>
     </application>
 
 </manifest>
