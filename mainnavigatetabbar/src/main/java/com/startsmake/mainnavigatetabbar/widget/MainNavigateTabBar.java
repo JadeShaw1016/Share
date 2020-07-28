@@ -50,6 +50,7 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
 
     private int mCurrentSelectedTab;
 
+
     public MainNavigateTabBar(Context context) {
         this(context, null);
     }
@@ -107,6 +108,7 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
 
         holder.tabIcon = (ImageView) view.findViewById(R.id.tab_icon);
         holder.tabTitle = ((TextView) view.findViewById(R.id.tab_title));
+        holder.badgeView = tabParam.badgeView;
 
         if (TextUtils.isEmpty(tabParam.title)) {
             holder.tabTitle.setVisibility(View.INVISIBLE);
@@ -313,6 +315,8 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
         public ImageView tabIcon;
         public TextView tabTitle;
         public Class fragmentClass;
+        public BadgeView badgeView;
+        public View view;
         public int tabIndex;
     }
 
@@ -324,11 +328,19 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
         public int titleStringRes;
         //        public int tabViewResId;
         public String title;
+        public BadgeView badgeView;
 
         public TabParam(int iconResId, int iconSelectedResId, String title) {
             this.iconResId = iconResId;
             this.iconSelectedResId = iconSelectedResId;
             this.title = title;
+        }
+
+        public TabParam(int iconResId, int iconSelectedResId, String title,BadgeView badgeView) {
+            this.iconResId = iconResId;
+            this.iconSelectedResId = iconSelectedResId;
+            this.title = title;
+            this.badgeView = badgeView;
         }
 
         public TabParam(int iconResId, int iconSelectedResId, int titleStringRes) {
@@ -378,6 +390,30 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
         return mCurrentSelectedTab;
     }
 
+    /**
+     * 隐藏消息数量提示
+     * @param index 底部导航的位置
+     * @param count 消息数量 count >0 显示
+     */
+    public void disPlayBadgeCount(int index,int count){
+        if (index >= 0 && index < mViewHolderList.size()) {
+            ViewHolder holder = mViewHolderList.get(index);
 
+            holder.badgeView.setTargetView(holder.tabIcon);
+//            holder.badgeView.setBadgeMargin(0,0,10,0);
+            holder.badgeView.setBadgeCount(count);
+        }
+    }
 
+    /**
+     * 隐藏消息数量提示
+     * @param index 底部导航的位置
+     * @param count 消息数量 count = 0 消失
+     */
+    public void disMissBadgeCount(int index,int count){
+        if (index >= 0 && index < mViewHolderList.size()) {
+            ViewHolder holder = mViewHolderList.get(index);
+            holder.badgeView.setBadgeCount(count);
+        }
+    }
 }
