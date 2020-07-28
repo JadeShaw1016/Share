@@ -93,13 +93,13 @@
     </LinearLayout>
 
     <LinearLayout style="@style/wrap_layout">
-    <ImageView
-        android:id="@id/me_item_exit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:scaleType="centerCrop"
-        android:src="@drawable/setting_image4"/>
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_orange"
+            android:text="退出登录"
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <TextView
