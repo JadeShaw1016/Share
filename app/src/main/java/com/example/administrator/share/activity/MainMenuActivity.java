@@ -2,12 +2,12 @@ package com.example.administrator.share.activity;//这里换成你自己的
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.dialog.BottomDialog;
 import com.example.administrator.share.fragment.CircleFragment;
 import com.example.administrator.share.fragment.FirstPageFragment;
@@ -16,7 +16,7 @@ import com.example.administrator.share.fragment.MessageFragment;
 import com.startsmake.mainnavigatetabbar.widget.MainNavigateTabBar;
 
 
-public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
+public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
 
     /**
      * 退出时间
@@ -32,6 +32,16 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     private MainNavigateTabBar mNavigateTabBar;
 
+
+    @Override
+    protected void findViewById() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
