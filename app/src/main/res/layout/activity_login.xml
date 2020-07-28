@@ -110,7 +110,6 @@
             android:text="忘记密码"
             android:textColor="#fff"
             android:clickable="true"
-            android:onClick="OnMyResPwdClick"
             android:textSize="15sp"/>
         <!-- start register button -->
         <TextView
@@ -122,7 +121,6 @@
             android:text="开始注册"
             android:textColor="#fff"
             android:clickable="true"
-            android:onClick="OnMyRegistClick"
             android:textSize="15sp"/>
     </RelativeLayout>
 
