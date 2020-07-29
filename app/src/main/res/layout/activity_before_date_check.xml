@@ -16,6 +16,7 @@
         android:adjustViewBounds="true"/>
 
     <TextView
+        android:id="@+id/tv_record_days"
         android:layout_margin="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

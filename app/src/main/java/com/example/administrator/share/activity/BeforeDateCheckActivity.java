@@ -2,6 +2,7 @@ package com.example.administrator.share.activity;
 
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
@@ -17,7 +18,9 @@ import okhttp3.Call;
  * Created by djzhao on 17/05/04.
  */
 
-public class BeforeDateCheckActivity extends BaseActivity {
+public class BeforeDateCheckActivity extends BaseActivity{
+
+    private TextView recorddaysTv;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -29,7 +32,7 @@ public class BeforeDateCheckActivity extends BaseActivity {
 
     @Override
     protected void findViewById() {
-
+        recorddaysTv = findViewById(R.id.tv_record_days);
     }
 
     @Override
@@ -37,11 +40,13 @@ public class BeforeDateCheckActivity extends BaseActivity {
         new Thread() {
             @Override
             public void run() {
-                SystemClock.sleep(1000);
+                getRecords();
+                SystemClock.sleep(2000);
                 getCheckedList();
             }
         }.start();
     }
+
 
     private void getCheckedList() {
         String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
@@ -54,10 +59,20 @@ public class BeforeDateCheckActivity extends BaseActivity {
                 .execute(new MyStringCallback());
     }
 
+    private void getRecords() {
+        String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .id(2)
+                .build()
+                .execute(new MyStringCallback());
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            SystemClock.sleep(1000);
             switch (id) {
                 case 1:
                     if (response.contains("error")) {
@@ -83,6 +98,10 @@ public class BeforeDateCheckActivity extends BaseActivity {
                         openActivity(DateCheckActivity.class);
                         finish();
                     }
+                    break;
+                case 2:
+                    String[] items = response.split(":");
+                    recorddaysTv.setText("已打卡"+items[0]+"天");
                     break;
             }
         }
