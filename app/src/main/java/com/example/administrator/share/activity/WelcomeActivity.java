@@ -19,7 +19,7 @@ public class WelcomeActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Integer time = 1000;
+        Integer time = 2000;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
