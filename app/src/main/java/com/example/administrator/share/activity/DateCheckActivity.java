@@ -163,7 +163,6 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
         picker.setFestivalDisplay(true);
         picker.setTodayDisplay(true);
         picker.setMode(DPMode.NONE);
-        picker.setBackgroundColor(Color.BLUE);
         picker.setDPDecor(new DPDecor() {
 
             @Override
@@ -177,12 +176,6 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
                 canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
             }
 
-            @Override
-            public void drawDecorBG(Canvas canvas, Rect rect, Paint paint,String data) {
-                super.drawDecorBG(canvas,rect, paint,data);
-                paint.setColor(Color.YELLOW);
-                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2F, paint);
-            }
         });
     }
 
