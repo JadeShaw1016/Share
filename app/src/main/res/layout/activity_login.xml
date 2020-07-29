@@ -42,7 +42,7 @@
             android:layout_height="50dp"
             android:textSize="16sp"
             android:textColor="#000"
-            android:hint="手机号/邮箱"
+            android:hint="请输入用户名"
             android:inputType="number"
             android:background="@drawable/bg_username"
             android:paddingLeft="10dp"
