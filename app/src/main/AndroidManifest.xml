@@ -48,6 +48,7 @@
         <activity android:name=".activity.ConfigActivity"/>
         <activity android:name=".activity.BeforeDateCheckActivity"/>
         <activity android:name=".activity.DateCheckActivity"/>
+        <activity android:name=".activity.CircleDetailActivity"/>
     </application>
 
 </manifest>
