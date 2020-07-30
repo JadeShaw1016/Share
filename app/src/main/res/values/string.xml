@@ -90,7 +90,7 @@
     <!--新鲜事-->
     <string name="add_news_btn_release_txt">发布</string>
     <string name="add_news_et_title_hint_text">标题</string>
-    <string name="add_news_et_hint_text">海风吹过脸庞，夏天的海在阳光下闪闪发光。</string>
+    <string name="add_news_et_hint_text">想说的话</string>
     <!--新鲜事-->
 
     <!--服务器-->

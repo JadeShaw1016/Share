@@ -10,32 +10,35 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_focused"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/dialog_text1"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/dialog_release"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:text="发布作品"
             android:layout_gravity="center_horizontal"
             android:textColor="#F88833"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@color/transparent"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#cecece" />
 
-        <TextView
-            android:id="@+id/dialog_text2"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/dialog_signin"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:text="每日打卡"
             android:layout_gravity="center_horizontal"
             android:textColor="#F88833"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:background="@color/transparent"/>
+
 
     </LinearLayout>
 

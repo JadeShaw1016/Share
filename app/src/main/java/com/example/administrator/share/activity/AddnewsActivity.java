@@ -193,12 +193,11 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         String contentStr = contentEt.getText().toString();
         if (TextUtils.isEmpty(titleStr)) {
             DisplayToast("请输入一个标题");
-            Toast.makeText(this, "请输入一个标题", Toast.LENGTH_SHORT).show();
             titleEt.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(contentStr)) {
-            DisplayToast("请输入新鲜事");
+            DisplayToast("请输入想说的话");
             contentEt.requestFocus();
             return;
         }

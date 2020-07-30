@@ -68,7 +68,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
 
     public void onClickPublish(View v) {
         bottomDialog = new BottomDialog(this, R.layout.dialog_layout,
-                new int[]{R.id.dialog_cancel,R.id.dialog_text1,R.id.dialog_text2});
+                new int[]{R.id.dialog_cancel,R.id.dialog_release,R.id.dialog_signin});
         bottomDialog.setOnCenterItemClickListener(this);
         bottomDialog.show();
 
@@ -83,13 +83,13 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         Intent intent;
         switch (view.getId())
         {
-            case R.id.dialog_text1:
-                Toast.makeText(MainMenuActivity.this,"发布作品",Toast.LENGTH_SHORT).show();
+            case R.id.dialog_release:
                 intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.dialog_cancel:
-                Toast.makeText(MainMenuActivity.this,"取消按钮",Toast.LENGTH_SHORT).show();
+            case R.id.dialog_signin:
+                intent = new Intent(MainMenuActivity.this,BeforeDateCheckActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

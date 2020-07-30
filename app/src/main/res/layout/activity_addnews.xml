@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:maxLines="1"
-                    android:hint="追海的人"
+                    android:hint="@string/add_news_et_title_hint_text"
                     android:maxLength="12"
                     android:background="@drawable/rounded_4dp"/>
 
