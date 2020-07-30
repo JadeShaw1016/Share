@@ -29,8 +29,15 @@ import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
+import com.example.administrator.share.util.Constants;
+import com.example.administrator.share.util.MyDialogHandler;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.util.UUID;
+
+import okhttp3.Call;
 
 public class AddnewsActivity extends BaseActivity implements View.OnClickListener{
 
@@ -44,6 +51,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private EditText contentEt;
     private TextView titlelLenTv;
     private Button releaseBtn;
+    private File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         mTakePhoto.setOnClickListener(this);
         mChoosePhoto.setOnClickListener(this);
         releaseBtn.setOnClickListener(this);
+        uiFlusHandler = new MyDialogHandler(this, "登录中...");
     }
 
     @Override
@@ -110,6 +119,38 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
 
+    }
+
+    private void releaseNews() {
+        String titleStr = titleEt.getText().toString();
+        String contentStr = contentEt.getText().toString();
+        uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
+        String url;
+        if (imageFile != null && imageFile.exists()) {
+            url = Constants.BASE_URL + "News?method=releaseNewsWithImage";
+            OkHttpUtils
+                    .post()
+                    .addFile("image", imageFile.getName(), imageFile)
+                    .url(url)
+                    .id(1)
+                    .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
+                    .addParams("title", titleStr)
+                    .addParams("content", contentStr)
+                    .addParams("userId", Constants.USER.getUserId() + "")
+                    .build()
+                    .execute(new MyStringCallback());
+        } else {
+            url = Constants.BASE_URL + "News?method=releaseNewsWithoutImage";
+            OkHttpUtils
+                    .post()
+                    .url(url)
+                    .id(1)
+                    .addParams("title", titleStr)
+                    .addParams("content", contentStr)
+                    .addParams("userId", Constants.USER.getUserId() + "")
+                    .build()
+                    .execute(new MyStringCallback());
+        }
     }
 
     private void takePhoto(){
@@ -164,39 +205,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         releaseNews();
     }
 
-    private void releaseNews() {
-        String titleStr = titleEt.getText().toString();
-        String contentStr = contentEt.getText().toString();
-
-//        uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-        String url;
-        DisplayToast("发布成功！");
-//        if (imageFile != null && imageFile.exists()) {
-//            url = Constants.BASE_URL + "News?method=releaseNewsWithImage";
-//            OkHttpUtils
-//                    .post()
-//                    .addFile("image", imageFile.getName(), imageFile)
-//                    .url(url)
-//                    .id(1)
-//                    .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
-//                    .addParams("title", titleStr)
-//                    .addParams("content", contentStr)
-//                    .addParams("userId", Constants.USER.getUserId() + "")
-//                    .build()
-//                    .execute(new MyStringCallback());
-//        } else {
-//            url = Constants.BASE_URL + "News?method=releaseNewsWithoutImage";
-//            OkHttpUtils
-//                    .post()
-//                    .url(url)
-//                    .id(1)
-//                    .addParams("title", titleStr)
-//                    .addParams("content", contentStr)
-//                    .addParams("userId", Constants.USER.getUserId() + "")
-//                    .build()
-//                    .execute(new MyStringCallback());
-//        }
-    }
 
     //打开相册
     private void openAlbum() {
@@ -215,7 +223,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                     Toast.makeText(this, "you denied the permission", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
         }
     }
 
@@ -230,7 +237,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
                 break;
             case CHOOSE_PHOTO:
@@ -241,6 +247,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                         handleImageBeforeKitKat(data);  //4.4及以下的系统使用这个方法处理图片
                     }
                 }
+                break;
             default:
                 break;
         }
@@ -290,13 +297,10 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 String id = docID.split(":")[1];     //解析出数字格式的id
                 String selection = MediaStore.Images.Media._ID + "=" + id;
-
                 imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
             } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
                 Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/piblic_downloads"), Long.valueOf(docID));
-
                 imagePath = getImagePath(contentUri, null);
-
             }
 
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
@@ -305,10 +309,34 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             //如果是file类型的uri，直接获取路径即可
             imagePath = uri.getPath();
-
         }
 
         displayImage(imagePath);
+        imageFile = new File(imagePath);
     }
 
+    public class MyStringCallback extends StringCallback {
+        @Override
+        public void onResponse(String response, int id) {
+            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
+            switch (id) {
+                case 1:
+                    if (response.contains("success")) {
+                        DisplayToast("圈子发布成功");
+                        finish();
+                    } else {
+                        DisplayToast("请稍后再试");
+                    }
+                    break;
+                default:
+                    DisplayToast("what?");
+                    break;
+            }
+        }
+
+        @Override
+        public void onError(Call arg0, Exception arg1, int arg2) {
+            DisplayToast("网络链接出错！");
+        }
+    }
 }
