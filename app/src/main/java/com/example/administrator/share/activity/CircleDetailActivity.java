@@ -49,6 +49,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView releaseTimeTV;
     private ImageView imageIV;
     private TextView contentTV;
+    private ImageView collectionTv;
 
     private LinearLayout commentPane;
     private EditText addCommentET;
@@ -95,6 +96,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         addCommentIV = $(R.id.news_detail_add_commment_btn);
 
         commentsLV = $(R.id.news_detail_comment);
+        collectionTv = $(R.id.iv_collection);
     }
 
     @Override
@@ -109,6 +111,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
+        isFavored();
     }
 
     private void refreshData() {
@@ -188,6 +191,18 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .execute(new MyStringCallback());
     }
 
+    private void isFavored(){
+        String url = Constants.BASE_URL + "Favor?method=isFavored";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(4)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -232,6 +247,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 case 2:
+                    isFavored();
                     DisplayToast(response);
                     break;
                 case 3:
@@ -256,6 +272,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         replyUsername = "";
                         addCommentET.setText("");
                         commentPane.setVisibility(View.GONE);
+                    }
+                    break;
+                case 4:
+                    if(response.equals("已收藏")){
+                        collectionTv.setImageResource(R.drawable.ic_feed_is_fav);
+                    }
+                    else{
+                        collectionTv.setImageResource(R.drawable.ic_feed_is_not_fav);
                     }
                     break;
                 default:

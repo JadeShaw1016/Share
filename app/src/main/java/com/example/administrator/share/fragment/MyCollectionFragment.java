@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -42,8 +43,9 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
     private NormalListAdapter adapter;
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
-
+    private TextView favRemindTv;
     private ListView mListView;
+
     public static Fragment newInstance(String title){
         MyCollectionFragment fragmentOne = new MyCollectionFragment();
         Bundle bundle = new Bundle();
@@ -65,6 +67,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
     private void findViewById(View view){
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
+        favRemindTv = view.findViewById(R.id.tv_fav_remind);
     }
 
     private void initView(){
@@ -104,10 +107,12 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), CircleDetailActivity.class);
-        intent.putExtra("newsId", mList.get(position).getNewsId());
-        startActivity(intent);
+        if(mList!=null && mList.size()>0){
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), CircleDetailActivity.class);
+            intent.putExtra("newsId", mList.get(position).getNewsId());
+            startActivity(intent);
+        }
     }
 
 
@@ -136,27 +141,30 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
                     }.getType();
                     mList = gson.fromJson(response, type);
                     if (mList == null || mList.size() == 0) {
-                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT);
+                        adapter = new NormalListAdapter(getActivity(), mList);
+                        mListView.setAdapter(adapter);
+                        favRemindTv.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         // 设置数据倒叙
                         Collections.reverse(mList);
+                        favRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
                         adapter = new NormalListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
-                        // mListView.notify();
                     }
                     break;
 
                 default:
-                    Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            Toast.makeText(getActivity(),"网络链接出错!",Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(),"网络链接出错!",Toast.LENGTH_SHORT).show();
         }
     }
 
