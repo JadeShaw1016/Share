@@ -21,7 +21,6 @@ import java.util.List;
 
 public class CircleDetailCommnetsAdapter extends BaseAdapter {
 
-    private Context mContext;
 
     private List<Comment> mList;
 
@@ -30,7 +29,6 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
     OnCommentButtonClickListner onCommentButtonClickListner;
 
     public CircleDetailCommnetsAdapter(Context mContext, List<Comment> mList) {
-        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
