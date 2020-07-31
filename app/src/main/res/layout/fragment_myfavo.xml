@@ -1,202 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightgray">
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_share" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="vertical">
-            <!--用户1-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/white"
-                android:padding="15dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/icon_ifit" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="热搜1"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="14sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/me_image1" />
-                    <!--点赞评论收藏-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_like"
-                            android:layout_marginLeft="5dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_comment"
-                            android:layout_marginLeft="15dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_favo"
-                            android:layout_marginLeft="15dp" />
-                    </LinearLayout>
-                    <!--点赞评论收藏-->
-                </LinearLayout>
-            </LinearLayout>
-            <!--用户1-->
 
-            <!--用户2-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:padding="15dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/icon_ifit" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="热搜2"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="14sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/me_image1" />
-                    <!--点赞评论收藏-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_like"
-                            android:layout_marginLeft="5dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_comment"
-                            android:layout_marginLeft="15dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_favo"
-                            android:layout_marginLeft="15dp" />
-                    </LinearLayout>
-                    <!--点赞评论收藏-->
-                </LinearLayout>
-            </LinearLayout>
-            <!--用户2-->
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <!--用户3-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:padding="15dp">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/icon_ifit" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
                     <TextView
+                        android:id="@id/item_normal_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="热搜3"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="14sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/me_image1" />
-                    <!--点赞评论收藏-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                        android:ellipsize="start"
+                        android:maxWidth="100dp"
+                        android:text="@string/app_name"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:id="@id/item_normal_username"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_like"
-                            android:layout_marginLeft="5dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_comment"
-                            android:layout_marginLeft="15dp"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_favo"
-                            android:layout_marginLeft="15dp" />
-                    </LinearLayout>
-                    <!--点赞评论收藏-->
+                        android:layout_margin="3dp"
+                        android:text="@string/app_name"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="12sp" />
                 </LinearLayout>
+
             </LinearLayout>
-            <!--用户3-->
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/antiquewhite"/>
 </LinearLayout>

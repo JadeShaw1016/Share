@@ -16,16 +16,13 @@ import java.util.List;
  * Created by djzhao on 17/05/04.
  */
 
-public class NormalListAdapter extends BaseAdapter {
-
-    private Context mContext;
+public class MessageListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
     private List<NewsListItem> mList;
 
-    public NormalListAdapter(Context mContext, List<NewsListItem> mList) {
-        this.mContext = mContext;
+    public MessageListAdapter(Context mContext, List<NewsListItem> mList) {
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -49,23 +46,27 @@ public class NormalListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_normal, null);
+            convertView = inflater.inflate(R.layout.fragment_message, null);
             viewHolder = new ViewHolder();
-            viewHolder.title = (TextView) convertView.findViewById(R.id.item_normal_title);
-            viewHolder.username = (TextView) convertView.findViewById(R.id.item_normal_username);
+            viewHolder.usernameTv = (TextView) convertView.findViewById(R.id.tv_msg_username);
+            viewHolder.contentTv = (TextView) convertView.findViewById(R.id.tv_msg_content);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // fill data
         NewsListItem detail = mList.get(position);
-        viewHolder.title.setText(detail.getTitle());
-        viewHolder.username.setText(detail.getUsername());
+        viewHolder.usernameTv.setText(detail.getTitle());
+        viewHolder.contentTv.setText(detail.getUsername());
+
+//        Comment comment = mList.get(position);
+//        viewHolder.usernameTv.setText(comment.getUsername());
+//        viewHolder.contentTv.setText(comment.getComment());
         return convertView;
     }
 
     private class ViewHolder {
-        public TextView title;
-        public TextView username;
+        private TextView usernameTv;
+        private TextView contentTv;
     }
 }

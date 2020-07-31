@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.adapter.NormalListAdapter;
+import com.example.administrator.share.adapter.CollectionListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
@@ -40,7 +40,7 @@ import okhttp3.Call;
 
 public class MyCollectionFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
 
-    private NormalListAdapter adapter;
+    private CollectionListAdapter adapter;
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
     private TextView favRemindTv;
@@ -141,7 +141,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
                     }.getType();
                     mList = gson.fromJson(response, type);
                     if (mList == null || mList.size() == 0) {
-                        adapter = new NormalListAdapter(getActivity(), mList);
+                        adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
                         favRemindTv.setVisibility(View.VISIBLE);
                         Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
@@ -151,7 +151,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
                         Collections.reverse(mList);
                         favRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
-                        adapter = new NormalListAdapter(getActivity(), mList);
+                        adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
                     }
                     break;

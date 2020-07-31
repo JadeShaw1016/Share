@@ -50,6 +50,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView imageIV;
     private TextView contentTV;
     private ImageView collectionTv;
+    private TextView authornameTv;
 
     private LinearLayout commentPane;
     private EditText addCommentET;
@@ -97,6 +98,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
         commentsLV = $(R.id.news_detail_comment);
         collectionTv = $(R.id.iv_collection);
+        authornameTv = $(R.id.news_detail_username);
     }
 
     @Override
@@ -173,6 +175,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(3)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("authorName",authornameTv.getText().toString())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
                 .build()
@@ -260,6 +263,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         comment.setComment(addCommentET.getText().toString());
                         comment.setReplyUser(replyUsername);
                         comment.setUsername(Constants.USER.getUsername());
+                        comment.setAuthorname(authornameTv.getText().toString());
                         if (mList == null) {
                             mList = new ArrayList<Comment>();
                         }
