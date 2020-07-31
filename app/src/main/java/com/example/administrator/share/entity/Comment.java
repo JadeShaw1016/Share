@@ -10,6 +10,8 @@ public class Comment {
 
     private String username;
 
+    private String authorname;
+
     private String replyUser;
 
     private String comment;
@@ -30,6 +32,14 @@ public class Comment {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getAuthorname() {
+        return authorname;
+    }
+
+    public void setAuthorname(String authorname) {
+        this.authorname = authorname;
     }
 
     public String getReplyUser() {
