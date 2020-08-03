@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.share">
 
-    <permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
+    <permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:allowBackup="true"
@@ -17,10 +17,9 @@
         android:label="Share"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory"
-        android:usesCleartextTraffic="true">
-
-        <activity android:name=".activity.DetailActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:replace="android:appComponentFactory">
+        <activity android:name=".activity.DetailActivity" />
         <activity
             android:name=".activity.RecordActivity"
             android:theme="@android:style/Theme.Dialog" />
@@ -31,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
@@ -39,16 +37,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ResPwdActivity" />
         <activity android:name=".activity.AddnewsActivity" />
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.WelcomeActivity"/>
-        <activity android:name=".activity.ConfigActivity"/>
-        <activity android:name=".activity.BeforeDateCheckActivity"/>
-        <activity android:name=".activity.DateCheckActivity"/>
-        <activity android:name=".activity.CircleDetailActivity"/>
+        <activity android:name=".activity.WelcomeActivity" />
+        <activity android:name=".activity.ConfigActivity" />
+        <activity android:name=".activity.BeforeDateCheckActivity" />
+        <activity android:name=".activity.DateCheckActivity" />
+        <activity android:name=".activity.CircleDetailActivity" />
+        <activity android:name=".activity.BadgeViewTwo"/>
     </application>
 
 </manifest>

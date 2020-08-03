@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp"
+                android:transcriptMode="alwaysScroll"
                 android:listSelector="@color/transparent"/>
             <TextView
                 android:id="@+id/tv_fav_remind"
@@ -38,7 +39,7 @@
                 android:id="@+id/tv_msg_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="还没有消息哦，再等等吧！"
+                android:text="还没有消息哦，快去发布一个圈子吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone"/>
