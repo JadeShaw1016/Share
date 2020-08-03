@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:background="@null"
+        android:id="@+id/button9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示标记，增加标记，减少标记"/>
+    <Button
+        android:background="@null"
+        android:id="@+id/button10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="隐藏/显示"/>
+    <Button
+        android:background="@null"
+        android:id="@+id/button11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="展示listview列表"/>
+    <ListView android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+    </ListView>
+    <Button
+        android:background="@null"
+        android:id="@+id/button12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="展示文字标记"/>
+    <Button
+        android:background="@null"
+        android:id="@+id/button13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="修复背景颜色"/>
+    <Button
+        android:background="@null"
+        android:id="@+id/button14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="修改背景图片"/>
+    <Button
+        android:background="@null"
+        android:id="@+id/button15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="显示没有文字的徽章"/>
+    <ImageButton
+        android:id="@+id/imagebutton16"
+        android:background="@mipmap/ic_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
