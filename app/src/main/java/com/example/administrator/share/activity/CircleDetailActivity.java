@@ -178,6 +178,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .addParams("authorName",authornameTv.getText().toString())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
+                .addParams("commentTime",DateUtils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
