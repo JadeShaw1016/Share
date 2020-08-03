@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.BadgeViewTwo;
 import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.adapter.MessageListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
@@ -47,6 +49,7 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
     private ListView mListView;
     private LinearLayout messageLl;
     private TextView msgRemindTv;
+    private ImageView moreIv;
 
 
     @Override
@@ -63,13 +66,16 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
         refreshLayout = view.findViewById(R.id.refreshLayout);
         messageLl = view.findViewById(R.id.layout_message);
         msgRemindTv = view.findViewById(R.id.tv_msg_remind);
+        moreIv = view.findViewById(R.id.iv_more);
     }
 
     private void initView(){
         mListView.setOnItemClickListener(this);
+        moreIv.setOnClickListener(this);
         messageLl.setVisibility(View.VISIBLE);
         getComments();
     }
+
 
     private void refreshListener(){
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -98,16 +104,26 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.iv_more:
+                Intent intent = new Intent(getActivity(), BadgeViewTwo.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(mList!=null && mList.size()>0){
+            NewsListItem newsListItem = mList.get(position);
             Intent intent = new Intent();
             intent.setClass(getActivity(), CircleDetailActivity.class);
-            intent.putExtra("newsId", mList.get(position).getNewsId());
+            intent.putExtra("newsId", newsListItem.getNewsId());
             startActivity(intent);
+            if(newsListItem.getStatus() == 0){
+                updateCommentStatus(newsListItem);
+                refreshLayout.autoRefresh();
+            }
         }
     }
 
@@ -123,6 +139,21 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
                 .url(url)
                 .id(1)
                 .addParams("authorName", Constants.USER.getUsername())
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    /**
+     * 修改评论状态
+     */
+    private void updateCommentStatus(NewsListItem newsListItem) {
+
+        String url = Constants.BASE_URL + "Comment?method=updateCommentStatus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(2)
+                .addParams("commentId", String.valueOf(newsListItem.getCommentId()))
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -151,7 +182,8 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
                         mListView.setAdapter(adapter);
                     }
                     break;
-
+                case 2:
+                    break;
                 default:
                     Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT).show();
                     break;
@@ -163,5 +195,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             Toast.makeText(getActivity(),"网络链接出错!",Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }
