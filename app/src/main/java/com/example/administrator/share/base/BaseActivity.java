@@ -54,17 +54,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 		return Locale.getDefault().getCountry();
 	}
 
-	protected String getDeviceId() throws Exception {
-		return this.tManager.getDeviceId();
-	}
+//	protected String getDeviceId() throws Exception {
+//		return this.tManager.getDeviceId();
+//	}
 
 	protected String getLanguage() {
 		return Locale.getDefault().getLanguage();
 	}
 
-	protected String getToken() {
-		return this.tManager.getSimSerialNumber();
-	}
+//	protected String getToken() {
+//		return this.tManager.getSimSerialNumber();
+//	}
 
 	protected String getVersionName() throws Exception {
 		return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
