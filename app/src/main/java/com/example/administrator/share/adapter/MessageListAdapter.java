@@ -62,7 +62,7 @@ public class MessageListAdapter extends BaseAdapter {
             viewHolder.usernameTv = (TextView) convertView.findViewById(R.id.tv_msg_username);
             viewHolder.commentTv = (TextView) convertView.findViewById(R.id.tv_msg_comment);
             viewHolder.badgeTv = (TextView)convertView.findViewById(R.id.tv_badge);
-            viewHolder.imageTv = (ImageView)convertView.findViewById(R.id.iv_image);
+            viewHolder.imageIv = (ImageView)convertView.findViewById(R.id.iv_image);
             viewHolder.commentTimeTv = (TextView)convertView.findViewById(R.id.tv_comment_time);
             convertView.setTag(viewHolder);
         } else {
@@ -85,7 +85,7 @@ public class MessageListAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         if(detail.getImage()!=null){
-            getNewsImage(detail.getImage(),viewHolder.imageTv);
+            getNewsImage(detail.getImage(),viewHolder.imageIv);
         }
 //        System.out.println("第"+position+"条评论："+detail.getComment()+"的状态为"+detail.getStatus());
         if(detail.getStatus()==0){
@@ -101,7 +101,7 @@ public class MessageListAdapter extends BaseAdapter {
         private TextView usernameTv;
         private TextView commentTv;
         private TextView badgeTv;
-        private ImageView imageTv;
+        private ImageView imageIv;
         private TextView commentTimeTv;
         private BadgeView badge;
     }

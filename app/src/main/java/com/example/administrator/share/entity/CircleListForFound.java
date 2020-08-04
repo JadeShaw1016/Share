@@ -8,7 +8,7 @@ public class CircleListForFound {
     private int newsId;
     private String title;
     private String username;
-    private int sex;
+    private String image;
 
     public int getNewsId() {
         return newsId;
@@ -34,11 +34,11 @@ public class CircleListForFound {
         this.username = username;
     }
 
-    public int getSex() {
-        return sex;
+    public String getImage() {
+        return image;
     }
 
-    public void setSex(int sex) {
-        this.sex = sex;
+    public void setImage(String image) {
+        this.image = image;
     }
 }
