@@ -122,7 +122,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             startActivity(intent);
             if(newsListItem.getStatus() == 0){
                 updateCommentStatus(newsListItem);
-                refreshLayout.autoRefresh();
             }
         }
     }
@@ -196,5 +195,9 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
+    }
 }
