@@ -75,22 +75,20 @@ public class MessageListAdapter extends BaseAdapter {
         String time = detail.getCommentTime();
         try {
             if(isOldTime(time)){
+                //设置为年月日
                 viewHolder.commentTimeTv.setText(time.substring(0,11));
             }else{
+                //设置为时分
                 viewHolder.commentTimeTv.setText(time.substring(11,16));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
         if(detail.getImage()!=null){
-            getNewsImage(detail.getImage(),viewHolder);
+            getNewsImage(detail.getImage(),viewHolder.imageTv);
         }
-        System.out.println("第"+position+"条评论："+detail.getComment()+"的状态为"+detail.getStatus());
-        if(detail.getStatus()!=0){
-            System.out.println("状态变更了");
-//            viewHolder.badge.setVisibility(View.GONE);
-        }else{
-            System.out.println("状态未变更");
+//        System.out.println("第"+position+"条评论："+detail.getComment()+"的状态为"+detail.getStatus());
+        if(detail.getStatus()==0){
             viewHolder.badge = new BadgeView(convertView.getContext());
             viewHolder.badge.setTargetView(viewHolder.badgeTv);
             viewHolder.badge.setBadgeCount(1);
@@ -105,10 +103,10 @@ public class MessageListAdapter extends BaseAdapter {
         private TextView badgeTv;
         private ImageView imageTv;
         private TextView commentTimeTv;
-        BadgeView badge;
+        private BadgeView badge;
     }
 
-    private void getNewsImage(String imageName, final ViewHolder viewHolder) {
+    private void getNewsImage(String imageName, final ImageView imageView) {
         String url = Constants.BASE_URL + "Download?method=getNewsImage";
         OkHttpUtils
                 .get()//
@@ -119,10 +117,9 @@ public class MessageListAdapter extends BaseAdapter {
                     @Override
                     public void onError(Call call, Exception e, int i) {
                     }
-
                     @Override
                     public void onResponse(Bitmap bitmap, int i) {
-                        viewHolder.imageTv.setImageBitmap(bitmap);
+                        imageView.setImageBitmap(bitmap);
                     }
                 });
     }
