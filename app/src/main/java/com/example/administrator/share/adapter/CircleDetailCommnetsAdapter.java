@@ -52,7 +52,7 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewholder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_news_detail_comment, null);
+            convertView = inflater.inflate(R.layout.item_circle_detail_comment, null);
 
             viewholder = new ViewHolder();
             viewholder.username = (TextView) convertView.findViewById(R.id.news_detail_comment_username);
