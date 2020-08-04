@@ -78,10 +78,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.title_back: {
+            case R.id.title_back:
                 this.finish();
-            }
-            break;
+                break;
             case R.id.reg_btn_register:
                 register();
                 break;
