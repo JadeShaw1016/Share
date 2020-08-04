@@ -184,12 +184,6 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
             if (mTabSelectListener != null) {
                 mTabSelectListener.onTabSelected(holder);
             }
-            if(holder.tag == "消息"){
-                disMissBadgeCount(2,0);
-            }
-            else{
-                disPlayBadgeCount(2, 2);
-            }
         }
     }
 

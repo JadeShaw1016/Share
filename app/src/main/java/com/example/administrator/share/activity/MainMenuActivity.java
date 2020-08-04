@@ -13,8 +13,13 @@ import com.example.administrator.share.fragment.CircleFragment;
 import com.example.administrator.share.fragment.FirstPageFragment;
 import com.example.administrator.share.fragment.MeFragment;
 import com.example.administrator.share.fragment.MessageFragment;
+import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.startsmake.mainnavigatetabbar.widget.MainNavigateTabBar;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 
 public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
@@ -60,8 +65,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         mNavigateTabBar.addTab(null, new MainNavigateTabBar.TabParam(0, 0, TAG_PAGE_PUBLISH));
         mNavigateTabBar.addTab(MessageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_message, R.drawable.icon_selected_message, TAG_PAGE_MESSAGE,badgeView));
         mNavigateTabBar.addTab(MeFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_my, R.drawable.icon_selected_my, TAG_PAGE_PERSON));
-
-        mNavigateTabBar.disPlayBadgeCount(2, 2);
 
     }
 
@@ -112,6 +115,33 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        findCommentStatus();
+    }
+
+    /**
+     * 修改评论状态
+     */
+    private void findCommentStatus() {
+
+        String url = Constants.BASE_URL + "Comment?method=findCommentStatus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .build()
+                .execute(new StringCallback(){
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mNavigateTabBar.disPlayBadgeCount(2, Integer.parseInt(response));
+                    }
+                });
     }
 
 }
