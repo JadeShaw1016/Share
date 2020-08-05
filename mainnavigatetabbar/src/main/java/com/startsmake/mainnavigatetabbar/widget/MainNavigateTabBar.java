@@ -251,11 +251,7 @@ public class MainNavigateTabBar extends LinearLayout implements View.OnClickList
             if (TextUtils.equals(tag, holder.tag)) {
                 try {
                     fragment = (Fragment) Class.forName(holder.fragmentClass.getName()).newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 break;

@@ -153,9 +153,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
-                            Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
+                            DisplayToast("登录成功");
                         } else {
-                            Toast.makeText(mContext, "用户存储失败", Toast.LENGTH_SHORT).show();
+                            DisplayToast("用户存储失败");
                         }
                     }
                     openActivity(MainMenuActivity.class);

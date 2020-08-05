@@ -28,7 +28,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
      * 退出时间
      */
     private long exitTime;
-    private BottomDialog bottomDialog;
 
     private static final String TAG_PAGE_HOME = "首页";
     private static final String TAG_PAGE_CIRCLE = "圈子";
@@ -48,7 +47,12 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initView() {
-
+        BadgeView badgeView = new BadgeView(this);
+        mNavigateTabBar.addTab(FirstPageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_firstpage, R.drawable.icon_selected_firstpage, TAG_PAGE_HOME));
+        mNavigateTabBar.addTab(CircleFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_circle, R.drawable.icon_selected_circle, TAG_PAGE_CIRCLE));
+        mNavigateTabBar.addTab(null, new MainNavigateTabBar.TabParam(0, 0, TAG_PAGE_PUBLISH));
+        mNavigateTabBar.addTab(MessageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_message, R.drawable.icon_selected_message, TAG_PAGE_MESSAGE, badgeView));
+        mNavigateTabBar.addTab(MeFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_my, R.drawable.icon_selected_my, TAG_PAGE_PERSON));
     }
 
     @Override
@@ -56,22 +60,15 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         findViewById();
-        initView();
-        BadgeView badgeView = new BadgeView(this);
-
         mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
-        mNavigateTabBar.addTab(FirstPageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_firstpage, R.drawable.icon_selected_firstpage, TAG_PAGE_HOME));
-        mNavigateTabBar.addTab(CircleFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_circle, R.drawable.icon_selected_circle, TAG_PAGE_CIRCLE));
-        mNavigateTabBar.addTab(null, new MainNavigateTabBar.TabParam(0, 0, TAG_PAGE_PUBLISH));
-        mNavigateTabBar.addTab(MessageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_message, R.drawable.icon_selected_message, TAG_PAGE_MESSAGE,badgeView));
-        mNavigateTabBar.addTab(MeFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_my, R.drawable.icon_selected_my, TAG_PAGE_PERSON));
+        initView();
 
     }
 
 
     public void onClickPublish(View v) {
-        bottomDialog = new BottomDialog(this, R.layout.dialog_layout,
-                new int[]{R.id.dialog_cancel,R.id.dialog_release,R.id.dialog_signin});
+        BottomDialog bottomDialog = new BottomDialog(this, R.layout.dialog_layout,
+                new int[]{R.id.dialog_cancel, R.id.dialog_release, R.id.dialog_signin});
         bottomDialog.setOnCenterItemClickListener(this);
         bottomDialog.show();
 
