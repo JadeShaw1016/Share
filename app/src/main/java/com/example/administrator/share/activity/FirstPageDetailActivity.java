@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.util.DataResource;
 
 public class FirstPageDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -18,13 +17,16 @@ public class FirstPageDetailActivity extends BaseActivity implements View.OnClic
     private TextView descriptionTv;
     private TextView timeTv;
 
-    private int position;
-    private DataResource data;
+    private Bitmap bitmap;
+    private CharSequence charSequence;
+    private String formattime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        position = getIntent().getIntExtra("position", 0);
+        bitmap = getIntent().getParcelableExtra("bitmap");
+        charSequence = getIntent().getCharSequenceExtra("charSequence");
+        formattime = getIntent().getStringExtra("formattime");
         setContentView(R.layout.activity_firstpage_detail);
         findViewById();
         initView();
@@ -36,17 +38,13 @@ public class FirstPageDetailActivity extends BaseActivity implements View.OnClic
         imageIv = (ImageView) findViewById(R.id.iv_1);
         descriptionTv = (TextView) findViewById(R.id.tv_description);
         timeTv = (TextView) findViewById(R.id.tv_time);
-        data=new DataResource();
     }
 
     @Override
     protected void initView() {
         backIv.setOnClickListener(this);
-        data.getData();
-        imageIv.setImageBitmap((Bitmap) data.getList().get(position).get("pic"));
-        descriptionTv.setText((CharSequence) data.getList().get(position).get("text"));
-        String time = (String) data.getList().get(position).get("time");
-        String formattime = time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8);
+        imageIv.setImageBitmap(bitmap);
+        descriptionTv.setText(charSequence);
         timeTv.setText(formattime);
     }
 
