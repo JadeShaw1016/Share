@@ -34,30 +34,32 @@ class DataAsyncTask extends  AsyncTask<Integer,Void,List<Map<String,Object>>>{
     @Override
     protected List<Map<String,Object>> doInBackground(Integer... param) {
         try{
-            String path = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=5&mkt=zh-CN";
-            URL url = new URL(path);
-            HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-            urlConn.setConnectTimeout(5000);
-            urlConn.connect();
-            if (urlConn.getResponseCode() == 200) {
-                int i;
-                Map<String,Object> map;
-                String data = readStream(urlConn.getInputStream());
-                Type type= new TypeToken<BingPic>(){}.getType();
-                Gson gson = new Gson();
-                BingPic bingPic = gson.fromJson(data,type);
-                for(i=0;i<5;i++){
-                    map=new HashMap<>();
-                    map.put("pic",getBitmap("http://cn.bing.com"+bingPic.getImages().get(i).getUrl()));
-                    map.put("text",bingPic.getImages().get(i).getCopyright());
-                    map.put("time",bingPic.getImages().get(i).getEnddate());
-                    list.add(map);
+            for(int count = 0;count<14;count+=7){
+                String path = "http://www.bing.com/HPImageArchive.aspx?format=js&idx="+count+"&n=7";
+                URL url = new URL(path);
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.setConnectTimeout(5000);
+                urlConn.connect();
+                if (urlConn.getResponseCode() == 200) {
+                    int i;
+                    String data = readStream(urlConn.getInputStream());
+                    Type type= new TypeToken<BingPic>(){}.getType();
+                    Gson gson = new Gson();
+                    BingPic bingPic = gson.fromJson(data,type);
+                    for(i=0;i<7;i++){
+                        Map<String,Object> map;
+                        map=new HashMap<>();
+                        map.put("pic",getBitmap("http://cn.bing.com"+bingPic.getImages().get(i).getUrl()));
+                        map.put("text",bingPic.getImages().get(i).getCopyright());
+                        map.put("time",bingPic.getImages().get(i).getEnddate());
+                        list.add(map);
+                    }
+                    Log.i(TAG, "请求成功");
+                } else {
+                    Log.i(TAG, "请求失败");
                 }
-                Log.i(TAG, "请求成功");
-            } else {
-                Log.i(TAG, "请求失败");
+                urlConn.disconnect();
             }
-            urlConn.disconnect();
         }catch (Exception e){
             e.printStackTrace();
         }

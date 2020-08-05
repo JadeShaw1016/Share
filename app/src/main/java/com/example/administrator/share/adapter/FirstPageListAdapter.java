@@ -15,14 +15,14 @@ import com.example.administrator.share.util.DataResource;
 import java.util.List;
 import java.util.Map;
 
-public class ListAdapter extends BaseAdapter
+public class FirstPageListAdapter extends BaseAdapter
 {
     Context mContext;
     private LayoutInflater mInflater;
     private List<Map<String,Object>> mapList;
     private DataResource data;
 
-    public ListAdapter(Context mContext, List<Map<String,Object>> mapList,DataResource data){
+    public FirstPageListAdapter(Context mContext, List<Map<String,Object>> mapList, DataResource data){
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mapList=mapList;
@@ -49,7 +49,7 @@ public class ListAdapter extends BaseAdapter
         ViewHolder viewHolder;
         if(convertView==null){
             viewHolder = new ViewHolder();
-            convertView=mInflater.inflate(R.layout.items_test,null);
+            convertView=mInflater.inflate(R.layout.items_firstpage,null);
             viewHolder.pic=convertView.findViewById(R.id.item_pic);
             viewHolder.text=convertView.findViewById(R.id.item_text);
             viewHolder.time=convertView.findViewById(R.id.item_time);
