@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -30,7 +31,9 @@ import okhttp3.Call;
 
 public class ResPwdActivity extends BaseActivity implements View.OnClickListener {
 
-
+    private String TITLE_NAME = "重置密码";
+    private TextView titleText;
+    private View title_back;
     private Context mContext;
 
     private EditText usernameEt;
@@ -60,6 +63,8 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
         pwdEt = $(R.id.edit_pwd);
         respwdEt = $(R.id.edit_respwd);
         usernameEt = $(R.id.edit_name);
+        titleText = $(R.id.titleText);
+        title_back = $(R.id.title_back);
 
     }
 
@@ -67,8 +72,9 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
     protected void initView() {
         mContext = this;
         confrimBtn.setOnClickListener(this);
+        title_back.setOnClickListener(this);
+        titleText.setText(TITLE_NAME);
         uiFlusHandler = new MyDialogHandler(mContext, "更新中...");
-
     }
 
     @Override
@@ -76,6 +82,9 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.btn_confirm:
                 checkInfo();
+                break;
+            case R.id.title_back:
+                finish();
                 break;
         }
     }
