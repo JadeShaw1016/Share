@@ -2,6 +2,7 @@ package com.example.administrator.share.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
     private List<Map<String,Object>> mList;
     private DataResource data;
     private FirstPageListAdapter mAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,17 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
+        CharSequence charSequence = (CharSequence) data.getList().get(position).get("text");
+        String time = (String) data.getList().get(position).get("time");
+        String formattime = time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8);
+
         Intent intent = new Intent();
         intent.setClass(getActivity(), FirstPageDetailActivity.class);
-        intent.putExtra("position", position);
-        System.out.println("位置："+position+" id："+id);
+        intent.putExtra("bitmap", bitmap);
+        intent.putExtra("charSequence", charSequence);
+        intent.putExtra("formattime", formattime);
         startActivity(intent);
     }
 
