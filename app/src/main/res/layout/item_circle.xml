@@ -9,7 +9,7 @@
         android:layout_height="300dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/firstpage_image1"
+        android:src="@drawable/default_image"
         android:layout_marginBottom="14dp"
         android:background="@drawable/rounded_4dp"/>
 

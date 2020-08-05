@@ -6,30 +6,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/title_height"
         android:orientation="horizontal"
-        android:layout_marginTop="14dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:background="@drawable/comui_bar_top_shadow">
         <ImageView
             android:id="@+id/title_back"
             android:layout_width="15dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/title_back_selector2"
             android:adjustViewBounds="true"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
             android:text="动态正文"
             android:textSize="24sp"
+            android:layout_gravity="center_vertical"
             android:gravity="center_horizontal"/>
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/comui_bar_top_shadow"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -52,10 +48,13 @@
                     android:src="@drawable/me_figure"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"/>
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/text_tuboshu"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="土拨鼠"
+                    android:textSize="18sp"
+                    android:textColor="#000000"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="14dp" />
                 <TextView
                     android:layout_width="0dp"
@@ -85,25 +84,30 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginLeft="20dp"
                     android:orientation="vertical">
-                    <ImageView
+                    <TextView
                         android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/detail_text1"/>
-                    <ImageView
+                        android:text="清晨的树林"
+                        android:textSize="28sp"/>
+                    <TextView
+                        android:id="@+id/tv_time"
                         android:layout_width="150dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/detail_text2"/>
+                        android:text="2020-08-04"
+                        android:textSize="18sp"
+                        android:textColor="#4D000000"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
-                    <ImageView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="14dp">
+                    <TextView
+                        android:id="@+id/tv_description"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:src="@drawable/detail_text3"/>
+                        android:layout_height="wrap_content" />
 
                     <ImageView
                         android:id="@+id/iv_1"
@@ -112,7 +116,8 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
                         android:layout_gravity="center"
-                        android:src="@drawable/detail_image1" />
+                        android:src="@drawable/default_image"
+                        android:layout_marginTop="5dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -178,7 +183,7 @@
                                 android:maxWidth="200dp"
                                 android:src="@drawable/text_paomianjun"/>
                             <ImageView
-                                android:layout_width="225dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="25dp"
                                 android:src="@drawable/detail_text7"
                                 android:layout_marginLeft="20dp" />
