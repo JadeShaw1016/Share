@@ -25,13 +25,11 @@ import okhttp3.Call;
 
 public class FoundCircleAdapter extends BaseAdapter {
 
-    private Context mContext;
     private LayoutInflater inflater;
     private List<CircleListForFound> mList;
 
     public FoundCircleAdapter(Context mContext, List<CircleListForFound> mList) {
         this.inflater = LayoutInflater.from(mContext);
-        this.mContext = mContext;
         this.mList = mList;
     }
 
@@ -50,31 +48,32 @@ public class FoundCircleAdapter extends BaseAdapter {
         return position;
     }
 
-@Override
-public View getView(int position, View convertView, ViewGroup parent) {
-    ViewHolder holder;
-    if (convertView == null) {
-        convertView = inflater.inflate(R.layout.item_circle, null);
-        holder = new ViewHolder();
-        holder.bgIv = (ImageView) convertView.findViewById(R.id.found_list_icon);
-        holder.titleTv = (TextView) convertView.findViewById(R.id.found_list_item_title);
-        holder.usernameTv = (TextView) convertView.findViewById(R.id.found_list_item_username);
-        convertView.setTag(holder);
-    } else {
-        holder = (ViewHolder) convertView.getTag();
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_circle, null);
+            holder = new ViewHolder();
+            holder.bgIv = (ImageView) convertView.findViewById(R.id.found_list_icon);
+            holder.titleTv = (TextView) convertView.findViewById(R.id.found_list_item_title);
+            holder.usernameTv = (TextView) convertView.findViewById(R.id.found_list_item_username);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        // fill data
+        CircleListForFound news = mList.get(position);
+        holder.titleTv.setText(news.getTitle());
+        holder.usernameTv.setText(news.getUsername());
+
+        String image = news.getImage();
+        if(image!=null){
+            getNewsImage(image,holder.bgIv);
+        }
+
+        return convertView;
     }
-
-    // fill data
-    CircleListForFound news = mList.get(position);
-    holder.titleTv.setText(news.getTitle());
-    holder.usernameTv.setText(news.getUsername());
-
-    if(news.getImage()!=null){
-        getNewsImage(news.getImage(),holder.bgIv);
-    }
-
-    return convertView;
-}
 
     private class  ViewHolder {
         public ImageView bgIv;
