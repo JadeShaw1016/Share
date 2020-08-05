@@ -22,7 +22,7 @@
     <string name="repassword">确认密码</string>
     <string name="hint_username">请输入用户名</string>
     <string name="hint_password">请输入密码</string>
-    <string name="hint_repassword">再次请输入密码</string>
+    <string name="hint_repassword">请再次输入密码</string>
     <string name="hint_height">你的身高</string>
     <string name="hint_weight">你的体重</string>
     <!--登录/注册-->
