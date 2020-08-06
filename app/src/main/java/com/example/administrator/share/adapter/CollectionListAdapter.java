@@ -49,7 +49,7 @@ public class CollectionListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fragment_myfavo, null);
+            convertView = inflater.inflate(R.layout.fragment_mycollection, null);
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.item_normal_title);
             viewHolder.username = (TextView) convertView.findViewById(R.id.item_normal_username);
