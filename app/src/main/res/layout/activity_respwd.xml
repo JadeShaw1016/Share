@@ -5,6 +5,7 @@
     android:background="#ffffff"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
+
     <include layout="@layout/title_custom" />
 
     <ScrollView
