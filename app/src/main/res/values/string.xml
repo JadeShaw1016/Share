@@ -5,9 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">欢迎来到 Share</string>
 
-    <!-- 欢迎页面 -->
-    <string name="go_fitness">躁起来~ ！</string>
-    <!-- 欢迎页面 -->
 
     <!--登录/注册-->
     <string name="username">用户名</string>
@@ -29,42 +26,21 @@
 
     <!--锻炼-->
     <string name="learning_title"> 每日精选</string>
-    <string name="level_base_head">肌撕裂者 - 初级</string>
-    <string name="level_base_info">8分钟   40千卡   L1初级</string>
-    <string name="save_title"> 收藏</string>
-    <string name="level_enhance_head">肌撕裂者 - 中级</string>
-    <string name="level_enhance_info">9分钟   60千卡   L3中级</string>
-    <string name="all_lessons_title"> 全部课程</string>
-    <string name="level_acme_head">肌撕裂者 - 极致</string>
-    <string name="level_acme_info">11分钟   100千卡   L5高级</string>
 
-    <string name="level_base_title"> 基础训练</string>
-    <string name="level_base_hand">上肢训练</string>
-    <string name="level_base__hand_info">“结合羽毛球的手部力量训练”</string>
-    <string name="level_enhance_title"> 进击训练</string>
-    <string name="level_enhance_foot">腿部训练</string>
-    <string name="level_enhance_foot_info">“结合足球的腿部力量训练”</string>
-    <string name="level_acme_title"> 魔鬼训练</string>
-    <string name="level_acme_waist">腰部训练</string>
-    <string name="level_acme_waist_info">“结合平板支撑的腰部训练”</string>
+    <string name="save_title"> 收藏</string>
+
+
     <!--锻炼-->
 
-    <!--发现-->
-    <string name="slash">/</string>
-    <string name="found_top_info">分享肌肉撕裂心得</string>
-    <string name="found_list_top_title"> 经验分享 </string>
-    <!--发现-->
 
     <!--我的-->
-    <string name="me_homepage_text">我的主页</string>
-    <string name="me_badge_unit">徽章1个</string>
-    <string name="me_record_uint">打卡12天</string>
+
     <string name="me_hot_text">人气</string>
     <string name="me_focus_text">关注</string>
     <string name="me_fans_text">粉丝</string>
     <string name="me_exit_text">退出登录</string>
     <string name="me_comment_text">消息</string>
-    <string name="me_help_text">帮助与反馈</string>
+    <string name="me_help_text">意见与反馈</string>
     <string name="me_setting_text">设置</string>
     <string name="me_favor_text">我的收藏</string>
     <string name="me_report_text">成长报告</string>
@@ -72,15 +48,6 @@
     <string name="me_app_version">V1.0</string>
     <!--我的-->
 
-
-    <!-- 首页 -->
-    <string name="bottom_train">锻炼</string>
-    <string name="bottom_found">发现</string>
-    <string name="bottom_me">我的</string>
-    <string name="title_train">锻炼</string>
-    <string name="title_found">发现</string>
-    <string name="title_me">我的</string>
-    <!-- 首页 -->
 
     <!--打卡-->
     <string name="date_check_text">今日打卡</string>

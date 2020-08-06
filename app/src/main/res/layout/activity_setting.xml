@@ -86,7 +86,7 @@
         <LinearLayout style="@style/bottom_layout">
             <TextView
                 style="@style/usertext"
-                android:text="意见与反馈" />
+                android:text="@string/me_help_text" />
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
 
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/selector_orange"
-            android:text="退出登录"
+            android:text="@string/me_exit_text"
             android:textSize="16sp"/>
     </LinearLayout>
 
