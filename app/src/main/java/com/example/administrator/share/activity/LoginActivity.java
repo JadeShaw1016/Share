@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView registerTv;
     private Button bt_config;
     private Context mContext;
+    private int flag = 0;
 
     private MyDialogHandler uiFlusHandler;
 
@@ -65,6 +66,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         bt_config.setOnClickListener(this);
         echo();
         uiFlusHandler = new MyDialogHandler(mContext, "登录中...");
+        if(!TextUtils.isEmpty(et_username.getText().toString())){
+            flag = 1;
+            login();
+        }
     }
 
     private void login() {
@@ -123,6 +128,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+
+
     private void checkUser() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
 
@@ -143,7 +150,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     User user = gson.fromJson(response, User.class);
                     if (user.getUserId() == 0) {
                         DisplayToast("用户名或者密码错误");
@@ -153,11 +159,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
-                            DisplayToast("登录成功");
+                            if(flag == 0){
+                                DisplayToast("登录成功");
+                            }
                         } else {
                             DisplayToast("用户存储失败");
                         }
                     }
+                    uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     openActivity(MainMenuActivity.class);
                     finish();
                     break;

@@ -33,7 +33,7 @@ public class SharedPreferencesUtils {
             editor.putString("height", user.getHeight() + "");
             editor.putString("weight", user.getWeight() + "");
             //4.提交Editor对象
-            editor.commit();
+            editor.apply();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,5 +110,13 @@ public class SharedPreferencesUtils {
         map.put("ip", preferences.getString("ip", ""));
         map.put("port", preferences.getString("port", ""));
         return map;
+    }
+
+    public static void clear(Context context){
+
+        SharedPreferences sharedPreferences=context.getSharedPreferences("userinfo",context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

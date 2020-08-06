@@ -85,9 +85,7 @@
         android:text="登录"
         android:textColor="#000"
         android:textSize="20sp"
-        android:background="@drawable/selector_orange"
-        android:layout_marginLeft="5dp"
-        />
+        android:background="@drawable/selector_orange" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
