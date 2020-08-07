@@ -18,14 +18,11 @@ import java.util.List;
 
 public class CollectionListAdapter extends BaseAdapter {
 
-    private Context mContext;
-
     private LayoutInflater inflater;
 
     private List<NewsListItem> mList;
 
     public CollectionListAdapter(Context mContext, List<NewsListItem> mList) {
-        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -49,7 +46,7 @@ public class CollectionListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fragment_mycollection, null);
+            convertView = inflater.inflate(R.layout.item_mycollection, null);
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.item_normal_title);
             viewHolder.username = (TextView) convertView.findViewById(R.id.item_normal_username);

@@ -57,7 +57,7 @@ public class MessageListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fragment_message, null);
+            convertView = inflater.inflate(R.layout.item_message, null);
             viewHolder = new ViewHolder();
             viewHolder.usernameTv = (TextView) convertView.findViewById(R.id.tv_msg_username);
             viewHolder.commentTv = (TextView) convertView.findViewById(R.id.tv_msg_comment);
