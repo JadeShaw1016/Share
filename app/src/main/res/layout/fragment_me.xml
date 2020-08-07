@@ -43,7 +43,7 @@
                             android:id="@id/me_homepage_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:maxWidth="200dp"
                             android:text="土拨鼠"
                             android:textColor="@color/darkgray"
@@ -52,7 +52,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="一只可爱的土拨鼠"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="5dp"
                            />
                     </LinearLayout>
@@ -97,6 +97,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_fans"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -104,11 +105,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@id/me_record_days"
+                            android:id="@id/me_fans"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="1.3k"
+                            android:text="@string/me_record_number"
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
@@ -131,7 +132,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="134k"
+                            android:text="@string/me_record_number"
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
