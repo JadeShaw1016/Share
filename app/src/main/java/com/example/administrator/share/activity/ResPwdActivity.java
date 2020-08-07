@@ -31,7 +31,6 @@ import okhttp3.Call;
 
 public class ResPwdActivity extends BaseActivity implements View.OnClickListener {
 
-    private String TITLE_NAME = "重置密码";
     private TextView titleText;
     private View title_back;
     private Context mContext;
@@ -44,7 +43,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
     private String username;
     private String password;
-    private String repassword;
 
     private MyDialogHandler uiFlusHandler;
 
@@ -73,7 +71,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
         mContext = this;
         confrimBtn.setOnClickListener(this);
         title_back.setOnClickListener(this);
-        titleText.setText(TITLE_NAME);
+        titleText.setText("重置密码");
         uiFlusHandler = new MyDialogHandler(mContext, "更新中...");
     }
 
@@ -92,7 +90,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
     private void checkInfo() {
         username = usernameEt.getText().toString().trim();
         password = pwdEt.getText().toString().trim();
-        repassword = respwdEt.getText().toString().trim();
+        String repassword = respwdEt.getText().toString().trim();
 
         if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)){
             DisplayToast("用户名或密码不能为空！");

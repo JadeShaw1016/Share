@@ -40,7 +40,6 @@ import okhttp3.Call;
 
 public class MyCollectionFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
 
-    private CollectionListAdapter adapter;
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
     private TextView favRemindTv;
@@ -135,6 +134,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
+            CollectionListAdapter adapter;
             switch (id) {
                 case 1:
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {
