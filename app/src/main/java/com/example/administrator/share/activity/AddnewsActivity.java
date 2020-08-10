@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,8 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private TextView titlelLenTv;
     private Button releaseBtn;
     private File imageFile;
+    private LinearLayout remindBgLl;
+    private TextView remindTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +62,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_addnews);
         findViewById();
         initView();
-
-        titleEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int length =charSequence.length();
-                titlelLenTv.setText(length+"/"+12);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
+        textListener();
     }
 
     @Override
@@ -89,6 +75,8 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         mChoosePhoto = (ImageView) findViewById(R.id.choose_from_album);
         picture = (ImageView) findViewById(R.id.iv_picture);
         releaseBtn = (Button) findViewById(R.id.add_news_btn_release);
+        remindBgLl = (LinearLayout) findViewById(R.id.ll_remind_bg);
+        remindTv = (TextView) findViewById(R.id.tv_remind);
     }
 
     @Override
@@ -119,6 +107,25 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
 
+    }
+
+    private void textListener(){
+        titleEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int length =charSequence.length();
+                titlelLenTv.setText(length+"/"+12);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void releaseNews() {
@@ -186,6 +193,8 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         } else {
             openAlbum();
         }
+        remindBgLl.setVisibility(View.INVISIBLE);
+        remindTv.setVisibility(View.INVISIBLE);
     }
 
     private void checkInfo() {
