@@ -36,7 +36,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -174,7 +173,7 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
                         return;
                     } else {
                         // 设置数据倒叙
-                        Collections.reverse(mList);
+//                        Collections.reverse(mList);
                         msgRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
                         adapter = new MessageListAdapter(getActivity(), mList);
