@@ -33,6 +33,14 @@ android:orientation="vertical">
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_focus_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="还没有关注哦，快去圈子关注你喜欢的人吧！"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

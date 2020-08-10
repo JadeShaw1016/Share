@@ -19,6 +19,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
+        <activity android:name=".activity.FocusActivity"></activity>
+        <activity android:name=".activity.FansActivity" />
         <activity android:name=".activity.FirstPageDetailActivity" />
         <activity
             android:name=".activity.RecordActivity"
@@ -47,7 +49,7 @@
         <activity android:name=".activity.BeforeDateCheckActivity" />
         <activity android:name=".activity.DateCheckActivity" />
         <activity android:name=".activity.CircleDetailActivity" />
-        <activity android:name=".activity.BadgeViewTwo"/>
+        <activity android:name=".activity.BadgeViewTwo" />
     </application>
 
 </manifest>
