@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FansActivity;
+import com.example.administrator.share.activity.FocusActivity;
 import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.entity.FansListItem;
@@ -42,9 +43,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private ImageView settingIv;
     private TextView usernameTv;
     private TextView fansTv;
+    private TextView focusTv;
+
     List<FansListItem> mList;
 
     private LinearLayout fansLl;
+    private LinearLayout focusLl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,13 +67,17 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         usernameTv = view.findViewById(R.id.me_homepage_username);
         fansTv = view.findViewById(R.id.me_fans);
         fansLl = view.findViewById(R.id.ll_fans);
+        focusLl = view.findViewById(R.id.ll_focus);
+        focusTv = view.findViewById(R.id.tv_focus);
     }
 
     private void initView(){
         settingIv.setOnClickListener(this);
         fansLl.setOnClickListener(this);
+        focusLl.setOnClickListener(this);
         echo();
         getFans();
+        getFocus();
     }
 
     @Override
@@ -82,6 +90,10 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.ll_fans:
                 intent=new Intent(getActivity(), FansActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_focus:
+                intent=new Intent(getActivity(), FocusActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -121,19 +133,36 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 .execute(new MeFragment.MyStringCallback());
     }
 
+    /**
+     * 获取关注数
+     */
+    private void getFocus() {
+
+        String url = Constants.BASE_URL + "Follows?method=getFocusList";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(2)
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MeFragment.MyStringCallback());
+    }
+
     public class MyStringCallback extends StringCallback {
 
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<FansListItem>>() {
+            }.getType();
+            mList = gson.fromJson(response, type);
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<FansListItem>>() {
-                    }.getType();
-                    mList = gson.fromJson(response, type);
                     fansTv.setText(String.valueOf(mList.size()));
                     break;
-
+                case 2:
+                    focusTv.setText(String.valueOf(mList.size()));
+                    break;
                 default:
                     Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();
                     break;
@@ -150,5 +179,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         getFans();
+        getFocus();
     }
 }

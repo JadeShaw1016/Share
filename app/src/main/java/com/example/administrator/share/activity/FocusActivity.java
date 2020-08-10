@@ -30,11 +30,11 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class FansActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class FocusActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private TextView titleText;
     private RefreshLayout refreshLayout;
-    private TextView fansRemindTv;
+    private TextView focusRemindTv;
     private ListView mListView;
     private View title_back;
 
@@ -56,15 +56,15 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
         title_back = $(R.id.title_back);
         mListView = findViewById(R.id.normal_list_lv);
         refreshLayout = findViewById(R.id.refreshLayout);
-        fansRemindTv = findViewById(R.id.tv_fans_remind);
+        focusRemindTv = findViewById(R.id.tv_focus_remind);
     }
 
     @Override
     protected void initView() {
-        titleText.setText("我的粉丝");
+        titleText.setText("我的关注");
         title_back.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
-        getFans();
+        getFocus();
     }
 
 
@@ -86,7 +86,7 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                getFans();
+                getFocus();
                 refreshlayout.finishRefresh(1000);
             }
 
@@ -101,11 +101,11 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
 
 
     /**
-     * 获取粉丝数
+     * 获取关注者
      */
-    private void getFans() {
+    private void getFocus() {
 
-        String url = Constants.BASE_URL + "Follows?method=getFansList";
+        String url = Constants.BASE_URL + "Follows?method=getFocusList";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -127,17 +127,17 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
                     List<FansListItem> mList = gson.fromJson(response, type);
                     FansListAdapter adapter;
                     if (mList == null || mList.size() == 0) {
-                        adapter = new FansListAdapter(mContext, mList,1);
+                        adapter = new FansListAdapter(mContext, mList,0);
                         mListView.setAdapter(adapter);
-                        fansRemindTv.setVisibility(View.VISIBLE);
+                        focusRemindTv.setVisibility(View.VISIBLE);
                         DisplayToast("暂无数据");
                         return;
                     } else {
                         // 设置数据倒叙
 //                        Collections.reverse(mList);
-                        fansRemindTv.setVisibility(View.INVISIBLE);
+                        focusRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
-                        adapter = new FansListAdapter(mContext, mList,1);
+                        adapter = new FansListAdapter(mContext, mList,0);
                         mListView.setAdapter(adapter);
                     }
                     break;
@@ -153,6 +153,4 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
             DisplayToast("网络链接出错!");
         }
     }
-
-
 }
