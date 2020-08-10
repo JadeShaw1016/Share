@@ -19,6 +19,7 @@ import com.example.administrator.share.entity.CircleDetail;
 import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.DateUtils;
+import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.widgets.ListViewWithScrollView;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -66,6 +67,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private int newsId;
     private String replyUsername;
 
+    private MyDialogHandler uiFlusHandler;
+
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -108,12 +111,15 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentLL.setOnClickListener(this);
         favorLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
-
+        uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
         isFavored();
     }
 
     private void refreshData() {
+
+        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+
         String url = Constants.BASE_URL + "News?method=getNewsDetail";
         OkHttpUtils
                 .post()
@@ -244,6 +250,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         });
                         commentsLV.setAdapter(adapter);
                     }
+                    uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     break;
                 case 2:
                     isFavored();
