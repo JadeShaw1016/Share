@@ -91,6 +91,7 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         Intent intent = new Intent();
         intent.setClass(getActivity(), CircleDetailActivity.class);
         intent.putExtra("newsId", mList.get(position).getNewsId());
+        intent.putExtra("fansId", mList.get(position).getUserId());
         startActivity(intent);
     }
 

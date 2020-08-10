@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,6 +52,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView contentTV;
     private ImageView collectionTv;
     private TextView authornameTv;
+    private Button focusBtn;
 
     private LinearLayout commentPane;
     private EditText addCommentET;
@@ -65,6 +67,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private Context mContext;
 
     private int newsId;
+    private int fansId;
     private String replyUsername;
 
     private MyDialogHandler uiFlusHandler;
@@ -74,6 +77,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         newsId = getIntent().getIntExtra("newsId", 0);
+        fansId = getIntent().getIntExtra("fansId", 0);
         setContentView(R.layout.activity_circle_detail);
         findViewById();
         initView();
@@ -100,6 +104,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentsLV = $(R.id.news_detail_comment);
         collectionTv = $(R.id.iv_collection);
         authornameTv = $(R.id.news_detail_username);
+        focusBtn = $(R.id.btn_focus);
     }
 
     @Override
@@ -111,23 +116,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentLL.setOnClickListener(this);
         favorLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
+        focusBtn.setOnClickListener(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
         isFavored();
-    }
-
-    private void refreshData() {
-
-        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-
-        String url = Constants.BASE_URL + "News?method=getNewsDetail";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("newsId", newsId + "")
-                .build()
-                .execute(new MyStringCallback());
+        isFocused();
     }
 
     @Override
@@ -144,9 +137,26 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.news_detail_add_commment_btn:
                 addNewComment();
+            case R.id.btn_focus:
+                addFocus();
                 break;
         }
     }
+
+    private void refreshData() {
+
+        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+
+        String url = Constants.BASE_URL + "News?method=getNewsDetail";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(1)
+                .addParams("newsId", newsId + "")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
 
     private void showCommemtPane() {
         isShowCommentPane = !isShowCommentPane;
@@ -161,6 +171,19 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             imm.hideSoftInputFromWindow(addCommentET.getWindowToken(), 0);
             // imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+
+    private void addNewFavor() {
+        String url = Constants.BASE_URL + "Favor?method=addNewFavor";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(2)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MyStringCallback());
     }
 
     // 添加新评论
@@ -185,18 +208,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .execute(new MyStringCallback());
     }
 
-    private void addNewFavor() {
-        String url = Constants.BASE_URL + "Favor?method=addNewFavor";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(2)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
-    }
-
     private void isFavored(){
         String url = Constants.BASE_URL + "Favor?method=isFavored";
         OkHttpUtils
@@ -205,6 +216,30 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(4)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void addFocus(){
+        String url = Constants.BASE_URL + "Follows?method=addFocus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(5)
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("fansId",fansId+"")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void isFocused(){
+        String url = Constants.BASE_URL + "Follows?method=isFocused";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(6)
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("fansId",fansId+"")
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -284,9 +319,19 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 case 4:
                     if(response.equals("已收藏")){
                         collectionTv.setImageResource(R.drawable.ic_feed_is_fav);
-                    }
-                    else{
+                    } else{
                         collectionTv.setImageResource(R.drawable.ic_feed_is_not_fav);
+                    }
+                    break;
+                case 5:
+                    isFocused();
+                    DisplayToast(response);
+                    break;
+                case 6:
+                    if(response.equals("已关注")){
+                        focusBtn.setText("已关注");
+                    }else{
+                        focusBtn.setText("关注");
                     }
                     break;
                 default:

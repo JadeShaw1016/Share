@@ -50,6 +50,18 @@
                         android:textColor="@color/darkgrey"
                         android:textSize="10sp" />
                 </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/level_title_icon_size" />
+                <Button
+                    android:id="@+id/btn_focus"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:text="关注"
+                    android:gravity="center"
+                    android:textColor="@color/fuxk_base_color_black"
+                    android:background="@drawable/selector_orange_2"/>
             </LinearLayout>
 
             <TextView
