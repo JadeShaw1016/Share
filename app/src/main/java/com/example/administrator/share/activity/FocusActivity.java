@@ -130,7 +130,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
                         adapter = new FansListAdapter(mContext, mList,0);
                         mListView.setAdapter(adapter);
                         focusRemindTv.setVisibility(View.VISIBLE);
-                        DisplayToast("暂无数据");
+//                        DisplayToast("暂无数据");
                         return;
                     } else {
                         // 设置数据倒叙

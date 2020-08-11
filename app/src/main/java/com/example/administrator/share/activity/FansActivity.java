@@ -130,7 +130,7 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
                         adapter = new FansListAdapter(mContext, mList,1);
                         mListView.setAdapter(adapter);
                         fansRemindTv.setVisibility(View.VISIBLE);
-                        DisplayToast("暂无数据");
+//                        DisplayToast("暂无数据");
                         return;
                     } else {
                         // 设置数据倒叙

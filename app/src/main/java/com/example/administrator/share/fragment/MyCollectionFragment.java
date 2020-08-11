@@ -144,7 +144,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
                         favRemindTv.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         // 设置数据倒叙

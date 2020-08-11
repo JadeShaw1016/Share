@@ -169,7 +169,7 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
                         adapter = new MessageListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
                         msgRemindTv.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         // 设置数据倒叙
