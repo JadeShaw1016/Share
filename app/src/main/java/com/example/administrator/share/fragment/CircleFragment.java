@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -21,6 +22,13 @@ import com.example.administrator.share.entity.CircleListForFound;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -37,7 +45,8 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
     private ListView circleList;
     private List<CircleListForFound> mList;
     private Context mContext;
-    private FoundCircleAdapter adapter;
+    private RefreshLayout refreshLayout;
+    private TextView circleRemindTv;
 
 
     @Override
@@ -45,6 +54,7 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         View view = inflater.inflate(R.layout.fragment_circle, container, false);
         findViewById(view);
         initView();
+        refreshListener();
         return view;
     }
 
@@ -55,25 +65,36 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         reLoadNews();
     }
 
-    private void reLoadNews() {
-        String url = Constants.BASE_URL + "News?method=getNewsList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .build()
-                .execute(new MyStringCallback());
-    }
 
     private void findViewById(View view){
         calendarIv = view.findViewById(R.id.iv_record);
         circleList = view.findViewById(R.id.list_circle);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+        circleRemindTv = view.findViewById(R.id.tv_circle_remind);
     }
 
     private void initView(){
         mContext = getActivity();
         calendarIv.setOnClickListener(this);
         circleList.setOnItemClickListener(this);
+    }
+
+    private void refreshListener(){
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                reLoadNews();
+                refreshlayout.finishRefresh(1000);
+            }
+
+        });
+
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
+            }
+        });
     }
 
     @Override
@@ -95,6 +116,16 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         startActivity(intent);
     }
 
+    private void reLoadNews() {
+        String url = Constants.BASE_URL + "News?method=getNewsList";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(1)
+                .build()
+                .execute(new MyStringCallback());
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -110,8 +141,11 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
             switch (id) {
                 case 1:
                     if (mList != null && mList.size() > 0) {
-                        adapter = new FoundCircleAdapter(mContext, mList);
+                        FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, mList);
                         circleList.setAdapter(adapter);
+                        circleRemindTv.setVisibility(View.INVISIBLE);
+                    }else{
+                        circleRemindTv.setVisibility(View.VISIBLE);
                     }
                     break;
                 default:
