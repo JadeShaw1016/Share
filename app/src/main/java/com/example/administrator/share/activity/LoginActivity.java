@@ -82,7 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         // 服务端验证
         checkUser();
-        // openActivity(MainActivity.class);
+        // openActivity(MainMenuActivity.class);
     }
 
     @Override

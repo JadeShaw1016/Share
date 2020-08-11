@@ -35,8 +35,17 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     private static final String TAG_PAGE_MESSAGE = "消息";
     private static final String TAG_PAGE_PERSON = "我的";
 
-
     private MainNavigateTabBar mNavigateTabBar;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_menu);
+        findViewById();
+        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
+        initView();
+    }
 
     @Override
     protected void findViewById() {
@@ -53,16 +62,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         mNavigateTabBar.addTab(null, new MainNavigateTabBar.TabParam(0, 0, TAG_PAGE_PUBLISH));
         mNavigateTabBar.addTab(MessageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_message, R.drawable.icon_selected_message, TAG_PAGE_MESSAGE, badgeView));
         mNavigateTabBar.addTab(MeFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_my, R.drawable.icon_selected_my, TAG_PAGE_PERSON));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
-        findViewById();
-        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
-        initView();
-
     }
 
 
