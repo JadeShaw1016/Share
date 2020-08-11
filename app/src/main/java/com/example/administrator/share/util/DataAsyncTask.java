@@ -49,6 +49,7 @@ class DataAsyncTask extends  AsyncTask<Integer,Void,List<Map<String,Object>>>{
                     for(i=0;i<7;i++){
                         Map<String,Object> map;
                         map=new HashMap<>();
+                        map.put("picUri","http://cn.bing.com"+bingPic.getImages().get(i).getUrl());
                         map.put("pic",getBitmap("http://cn.bing.com"+bingPic.getImages().get(i).getUrl()));
                         map.put("text",bingPic.getImages().get(i).getCopyright());
                         map.put("time",bingPic.getImages().get(i).getEnddate());
@@ -73,7 +74,8 @@ class DataAsyncTask extends  AsyncTask<Integer,Void,List<Map<String,Object>>>{
         conn.setRequestMethod("GET");
         if (conn.getResponseCode() == 200){
             InputStream inputStream = conn.getInputStream();
-            Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(inputStream),150,150,true);
+//            Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(inputStream),150,150,true);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             conn.disconnect();
             return bitmap;
         }

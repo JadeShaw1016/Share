@@ -21,7 +21,7 @@ public class Constants {
 	public static String APP_NAME = "";
 
 	// 服务器地址
-	public static String BASE_URL = "http://119.28.156.71:8080/ShareServer/";
+	public static String BASE_URL = "http://10.29.34.104:8081/ShareServer/";
 
 	// 保存参数文件夹名称
 	public static final String SHARED_PREFERENCE_NAME = "share_prefs";
@@ -37,6 +37,9 @@ public class Constants {
 
 	// 缓存图片路径
 	public static final String BASE_IMAGE_CACHE = BASE_PATH + "/cache";
+
+	// 下载保存图片路径
+	public static final String BASE_IMAGE_DOWNLOAD = BASE_PATH + "/download";
 
 	// 需要分享的图片
 	public static final String SHARE_FILE = BASE_PATH + "/QrShareImage.png";

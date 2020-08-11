@@ -1,8 +1,13 @@
 package com.example.administrator.share.activity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,10 +32,15 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+
+import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD;
 
 /**
  * Created by djzhao on 17/05/02.
@@ -71,6 +81,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private String replyUsername;
 
     private MyDialogHandler uiFlusHandler;
+    private Dialog dialog;
+    private ImageView dialogIv;
 
 
     @Override
@@ -105,6 +117,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         collectionTv = $(R.id.iv_collection);
         authornameTv = $(R.id.news_detail_username);
         focusBtn = $(R.id.btn_focus);
+        dialogIv = new ImageView(this);
     }
 
     @Override
@@ -117,10 +130,17 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         favorLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
         focusBtn.setOnClickListener(this);
+        imageIV.setOnClickListener(this);
+        dialogIv.setOnClickListener(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
         isFavored();
         isFocused();
+
+        //大图所依附的dialog
+        dialog = new Dialog(mContext, R.style.MyDialogStyle_fullScreen_black);
+        dialogListener();
+
     }
 
     @Override
@@ -137,10 +157,41 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.news_detail_add_commment_btn:
                 addNewComment();
+                break;
             case R.id.btn_focus:
                 addFocus();
                 break;
+            case R.id.news_detail_image:
+                dialog.show();
+                break;
         }
+    }
+
+    private void dialogListener(){
+        //大图的点击事件（点击让他消失）
+        dialogIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        //大图的长按监听
+        dialogIv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //弹出的“保存图片”的Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setItems(new String[]{getResources().getString(R.string.save_picture)}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveImageToGallery(((BitmapDrawable) dialogIv.getDrawable()).getBitmap());
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
     private void refreshData() {
@@ -363,7 +414,42 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     @Override
                     public void onResponse(Bitmap bitmap, int i) {
                         imageIV.setImageBitmap(bitmap);
+                        dialogIv.setImageBitmap(bitmap);
+                        dialog.setContentView(dialogIv);
                     }
                 });
+    }
+
+    //保存文件到指定路径
+    public void saveImageToGallery(Bitmap bmp) {
+        // 首先保存图片
+        String storePath = BASE_IMAGE_DOWNLOAD;
+        File appDir = new File(storePath);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            fos.flush();
+            fos.close();
+            //把文件插入到系统图库
+            MediaStore.Images.Media.insertImage(this.getContentResolver(), file.getAbsolutePath(), fileName, null);
+
+            //保存图片后发送广播通知更新数据库
+//            Uri uri = Uri.fromFile(file);
+//            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            if (isSuccess) {
+                DisplayToast("保存成功");
+            } else {
+                DisplayToast("保存失败");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return false;
     }
 }

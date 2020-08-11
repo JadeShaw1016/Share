@@ -1,7 +1,7 @@
 package com.example.administrator.share.fragment;
 
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.FirstPageDetailActivity;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.FirstPageListAdapter;
 import com.example.administrator.share.util.DataResource;
 
@@ -29,7 +30,7 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
     private List<Map<String,Object>> mList;
     private DataResource data;
     private FirstPageListAdapter mAdapter;
-
+    private Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,17 +64,33 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
-        CharSequence charSequence = (CharSequence) data.getList().get(position).get("text");
-        String time = (String) data.getList().get(position).get("time");
-        String formattime = time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8);
+        //大图所依附的dialog
+        dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setImageBitmap((Bitmap) data.getList().get(position).get("pic"));
+        dialog.setContentView(imageView);
+        dialog.show();
 
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), FirstPageDetailActivity.class);
-        intent.putExtra("bitmap", bitmap);
-        intent.putExtra("charSequence", charSequence);
-        intent.putExtra("formattime", formattime);
-        startActivity(intent);
+        //大图的点击事件（点击让他消失）
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+//        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
+//        String url = (String) data.getList().get(position).get("picUri");
+//        CharSequence charSequence = (CharSequence) data.getList().get(position).get("text");
+//        String time = (String) data.getList().get(position).get("time");
+//        String formattime = time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8);
+//
+//        Intent intent = new Intent();
+//        intent.setClass(getActivity(), FirstPageDetailActivity.class);
+//        intent.putExtra("url", url);
+//        intent.putExtra("charSequence", charSequence);
+//        intent.putExtra("formattime", formattime);
+//        startActivity(intent);
     }
 
     private void initData(){
