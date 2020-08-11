@@ -68,7 +68,6 @@ public class FirstPageListAdapter extends BaseAdapter
             viewHolder=(ViewHolder)convertView.getTag();
         }
         Uri uri = Uri.parse((String)data.getList().get(position).get("picUri"));
-//        viewHolder.pic.setImageURI(uri);
         Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
         viewHolder.pic.setImageBitmap(bitmap);
         viewHolder.text.setText((CharSequence) data.getList().get(position).get("text"));
@@ -78,7 +77,7 @@ public class FirstPageListAdapter extends BaseAdapter
         CompleteReceiver completeReceiver = new CompleteReceiver();
         mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         viewHolder.btn.setUri(uri);
-        viewHolder.btn.setTime((String)data.list.get(position).get("time"));
+        viewHolder.btn.setTime((String)data.getList().get(position).get("time"));
         viewHolder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
