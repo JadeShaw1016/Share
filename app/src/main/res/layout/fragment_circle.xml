@@ -74,14 +74,31 @@
                 android:text="马赛克"
                 android:textSize="15sp" />
         </LinearLayout>
-
-        <ListView
-            android:id="@+id/list_circle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:paddingBottom="1dp" />
     </LinearLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/list_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingBottom="1dp" />
+            <TextView
+                android:id="@+id/tv_circle_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="还没有圈子哦，可以自己先发布一个！"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
 </LinearLayout>
