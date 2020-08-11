@@ -21,12 +21,12 @@ public class LoadingDialog extends Dialog{
 	private AnimationDrawable mAnimation;
 	
 	public LoadingDialog(Context context) {
-		super(context, R.style.MyDialogStyle_center);
+		super(context, R.style.MyDialogStyle_float_center);
 		this.msg = context.getResources().getString(R.string.loading_summary);
 	}
 	
 	public LoadingDialog(Context context, String msg) {
-		super(context, R.style.MyDialogStyle_center);
+		super(context, R.style.MyDialogStyle_float_center);
 		this.msg = msg;
 	}
 	
