@@ -8,7 +8,9 @@
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@layout/title_firstpage"
+        android:layout_above="@+id/mainTabBar" />
 
     <com.startsmake.mainnavigatetabbar.widget.MainNavigateTabBar
         android:id="@+id/mainTabBar"

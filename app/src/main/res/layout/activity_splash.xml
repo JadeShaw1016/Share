@@ -26,17 +26,16 @@
 
     <Button
         android:id="@+id/btn_start"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dip"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:text="进入应用"
         android:textSize="24sp"
-        android:background="@drawable/bg_username"
+        android:background="@color/transparent"
         android:gravity="center"
         android:visibility="gone"/>
 
@@ -58,7 +57,6 @@
             android:id="@+id/v_guide_redpoint"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/point_deep"/>
 
     </RelativeLayout>
