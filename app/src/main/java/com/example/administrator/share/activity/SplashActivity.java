@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
                     initEvent();
                     //之前错误没有这两句，没有设置Boolean类型，并提交
                     edit.putBoolean("isFirstIn",false);
-                    edit.commit();
+                    edit.apply();
                 } else {
                     Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
                     startActivity(intent);
@@ -125,7 +125,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
                 //取消注册界面而产生的回调接口
-                mGuideRedPoint.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                mGuideRedPoint.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 //计算点于点之间的距离
                 disPoints = (mLlGuidePoints.getChildAt(1).getLeft() - mLlGuidePoints.getChildAt(0).getLeft());
             }
