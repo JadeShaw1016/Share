@@ -10,10 +10,6 @@ import com.example.administrator.share.R;
 
 public class WelcomeActivity extends Activity {
 
-    // 声明控件对象
-//    private DataResource data;
-    private int count = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,11 +20,6 @@ public class WelcomeActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if(getSharedPreferences("is_first_in_data", Context.MODE_PRIVATE).getBoolean("isFirstIn",true)){
-//                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-//                }else{
-//                    startActivity(new Intent(WelcomeActivity.this, MainMenuActivity.class));
-//                }
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                 finish();
             }
