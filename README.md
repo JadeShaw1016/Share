@@ -6,7 +6,7 @@
 
 ## 功能展示
 首页，每日精选
-![0.jpg](/uploads/486717C69F2943AF957B3EB5BD623D6F/0.jpg =150x300)
+![0.jpg](/uploads/486717C69F2943AF957B3EB5BD623D6F/0.jpg){:height="100" width="100"}
 
 点击图片可查看精选图片大图
 ![1.jpg](/uploads/A65842EA73BA462CBA9BFC46DBF1581B/1.jpg)
