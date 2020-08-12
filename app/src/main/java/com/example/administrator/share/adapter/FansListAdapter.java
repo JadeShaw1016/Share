@@ -71,7 +71,7 @@ public class FansListAdapter extends BaseAdapter {
             isFocusedEachOther(detail.getUserId(),viewHolder);
         }else{
             viewHolder.stateIv.setImageResource(R.drawable.icon_add_focus);
-            viewHolder.stateTv.setText("\u3000关注\u3000");
+            viewHolder.stateTv.setText("添加关注");
             isFocusedEachOther(detail.getFansId(),viewHolder);
         }
         return convertView;
