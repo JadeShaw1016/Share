@@ -21,10 +21,6 @@
         tools:replace="android:appComponentFactory">
         <activity android:name=".activity.FocusActivity"></activity>
         <activity android:name=".activity.FansActivity" />
-        <activity android:name=".activity.FirstPageDetailActivity" />
-        <activity
-            android:name=".activity.RecordActivity"
-            android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
