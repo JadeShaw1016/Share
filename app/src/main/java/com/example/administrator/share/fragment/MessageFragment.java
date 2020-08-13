@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.BadgeViewTwo;
 import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.adapter.MessageListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
@@ -80,7 +79,7 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getComments();
-                refreshlayout.finishRefresh(1000);
+                refreshlayout.finishRefresh(500);
             }
 
         });
@@ -105,8 +104,8 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_more:
-                Intent intent = new Intent(getActivity(), BadgeViewTwo.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), BadgeViewTwo.class);
+//                startActivity(intent);
                 break;
         }
     }
