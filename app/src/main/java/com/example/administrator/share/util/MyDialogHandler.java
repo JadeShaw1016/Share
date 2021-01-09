@@ -28,29 +28,24 @@ public class MyDialogHandler extends Handler {
 	@Override
 	public void handleMessage(Message msg) {
 
-			
-			switch (msg.what) {
-			
-		case SHOW_LOADING_DIALOG: {
-			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
+		switch (msg.what) {
+			case SHOW_LOADING_DIALOG: {
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				dialog=new LoadingDialog(context, tip);
+				dialog.show();
+				Log.i("dialog-state", "dialog-showing!!!!");
 			}
-			 
-			dialog=new LoadingDialog(context, tip);
-			dialog.show();
-			
-			Log.i("dialog-state", "dialog-showing!!!!");
-		}
-			break;
-			
-		case DISMISS_LOADING_DIALOG: { 
-			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
+				break;
+
+			case DISMISS_LOADING_DIALOG: {
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				Log.i("dialog-state", "dialog-dismissed!!!!");
 			}
-			
-			Log.i("dialog-state", "dialog-dismissed!!!!");
-		}
-			break;
+				break;
 
 		}
 	
