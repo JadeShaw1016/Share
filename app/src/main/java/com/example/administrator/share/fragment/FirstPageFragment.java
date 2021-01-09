@@ -42,7 +42,6 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
         findViewById(view);
         initView();
-        initData();
         setAdapter();
         return view;
     }
@@ -111,8 +110,20 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
 //        spinner.getChildAt(-1).setVisibility(view.INVISIBLE);
-        System.out.println(spinner.getSelectedItemPosition());
         spinner.setAdapter(arr_adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if(position == 1) {
+                    initData();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 }
