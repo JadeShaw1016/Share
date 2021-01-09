@@ -3,6 +3,7 @@ package com.example.administrator.share.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -161,7 +162,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (result) {
                             if(flag == 0){
                                 DisplayToast("登录成功");
-                            }
+                                Log.d("LoginActivity","登录成功");                        }
                         } else {
                             DisplayToast("用户存储失败");
                         }
