@@ -281,14 +281,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         return path;
     }
 
-    private void displayImage(String imagePath) {
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            picture.setImageBitmap(bitmap);
-        } else {
-            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     /**
      * 4.4及以上的系统使用这个方法处理图片
@@ -318,9 +310,17 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             //如果是file类型的uri，直接获取路径即可
             imagePath = uri.getPath();
         }
-
         displayImage(imagePath);
         imageFile = new File(imagePath);
+    }
+
+    private void displayImage(String imagePath) {
+        if (imagePath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            picture.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class MyStringCallback extends StringCallback {
