@@ -17,21 +17,22 @@
         android:label="Share"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activity.FocusActivity"></activity>
-        <activity android:name=".activity.FansActivity" />
+        <activity android:name=".activity.FocusActivity"/>
+        <activity android:name=".activity.FansActivity"/>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
