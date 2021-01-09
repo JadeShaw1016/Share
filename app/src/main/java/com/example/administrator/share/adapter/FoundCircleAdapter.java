@@ -2,11 +2,13 @@ package com.example.administrator.share.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -27,6 +29,7 @@ public class FoundCircleAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private List<CircleListForFound> mList;
+    private ListView mListView;
 
     public FoundCircleAdapter(Context mContext, List<CircleListForFound> mList) {
         this.inflater = LayoutInflater.from(mContext);
@@ -50,29 +53,32 @@ public class FoundCircleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        if(mListView == null){
+            mListView = (ListView)parent;
+        }
+        CircleListForFound news = mList.get(position);
+        String imageName = news.getImage();
+        View view;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_circle, null);
-            holder = new ViewHolder();
-            holder.bgIv = (ImageView) convertView.findViewById(R.id.found_list_icon);
-            holder.titleTv = (TextView) convertView.findViewById(R.id.found_list_item_title);
-            holder.usernameTv = (TextView) convertView.findViewById(R.id.found_list_item_username);
-            convertView.setTag(holder);
+            view = inflater.inflate(R.layout.item_circle, null);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            view = convertView;
         }
 
-        // fill data
-        CircleListForFound news = mList.get(position);
+        ViewHolder holder = new ViewHolder();
+        holder.bgIv = (ImageView) view.findViewById(R.id.found_list_icon);
+        holder.titleTv = (TextView) view.findViewById(R.id.found_list_item_title);
+        holder.usernameTv = (TextView) view.findViewById(R.id.found_list_item_username);
+        holder.bgIv.setTag(imageName);
         holder.titleTv.setText(news.getTitle());
         holder.usernameTv.setText(news.getUsername());
 
-        String image = news.getImage();
-        if(image!=null){
-            getNewsImage(image,holder.bgIv);
+        if(imageName!=null){
+            BitmapWorkerTask task = new BitmapWorkerTask();
+            task.execute(imageName);
         }
 
-        return convertView;
+        return view;
     }
 
     private class  ViewHolder {
@@ -81,21 +87,34 @@ public class FoundCircleAdapter extends BaseAdapter {
         public TextView usernameTv;
     }
 
-    private void getNewsImage(String imageName, final ImageView imageView) {
-        String url = Constants.BASE_URL + "Download?method=getNewsImage";
-        OkHttpUtils
-                .get()//
-                .url(url)//
-                .addParams("imageName", imageName)
-                .build()//
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int i) {
-                    }
-                    @Override
-                    public void onResponse(Bitmap bitmap, int i) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                });
+
+    class BitmapWorkerTask extends AsyncTask<String, Void, Integer> {
+
+        private String imageName;
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            String url = Constants.BASE_URL + "Download?method=getNewsImage";
+            imageName = params[0];
+            OkHttpUtils
+                    .get()//
+                    .url(url)//
+                    .addParams("imageName", imageName)
+                    .build()//
+                    .execute(new BitmapCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int i) {
+                        }
+                        @Override
+                        public void onResponse(Bitmap bitmap, int i) {
+                            ImageView imageView = (ImageView) mListView.findViewWithTag(imageName);
+                            if (imageView != null && bitmap != null) {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        }
+                    });
+            return 0;
+        }
     }
+
 }
