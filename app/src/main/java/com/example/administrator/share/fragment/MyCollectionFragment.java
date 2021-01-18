@@ -120,7 +120,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
      */
     private void getCollections() {
 
-        String url = Constants.BASE_URL + "Favor?method=getFavorsList";
+        String url = Constants.BASE_URL + "Collection?method=getFavorsList";
         OkHttpUtils
                 .post()
                 .url(url)

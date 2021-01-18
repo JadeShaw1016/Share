@@ -60,7 +60,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView releaseTimeTV;
     private ImageView imageIV;
     private TextView contentTV;
-    private ImageView collectionTv;
+    private ImageView collectionIv;
+    private TextView collectionTv;
     private TextView authornameTv;
     private Button focusBtn;
 
@@ -72,7 +73,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private ListViewWithScrollView commentsLV;
     private LinearLayout commentLL;
-    private LinearLayout favorLL;
+    private LinearLayout collectionLL;
 
     private Context mContext;
 
@@ -107,14 +108,15 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         titleTV = $(R.id.detail_title);
 
         commentLL = $(R.id.news_detail_add_comment);
-        favorLL = $(R.id.news_detail_add_favor);
+        collectionLL = $(R.id.news_detail_add_collection);
 
         commentPane = $(R.id.news_detail_add_commment_pane);
         addCommentET = $(R.id.news_detail_add_commment_text);
         addCommentIV = $(R.id.news_detail_add_commment_btn);
 
         commentsLV = $(R.id.news_detail_comment);
-        collectionTv = $(R.id.iv_collection);
+        collectionIv = $(R.id.iv_collection);
+        collectionTv = $(R.id.tv_collection);
         authornameTv = $(R.id.news_detail_username);
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
@@ -127,14 +129,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
         this.title_back.setOnClickListener(this);
         commentLL.setOnClickListener(this);
-        favorLL.setOnClickListener(this);
+        collectionLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
         focusBtn.setOnClickListener(this);
         imageIV.setOnClickListener(this);
         dialogIv.setOnClickListener(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
-        isFavored();
+        isCollected();
         isFocused();
 
         //大图所依附的dialog
@@ -152,8 +154,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             case R.id.news_detail_add_comment:
                 showCommemtPane();
                 break;
-            case R.id.news_detail_add_favor:
-                addNewFavor();
+            case R.id.news_detail_add_collection:
+                addNewCollection();
                 break;
             case R.id.news_detail_add_commment_btn:
                 addNewComment();
@@ -225,8 +227,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    private void addNewFavor() {
-        String url = Constants.BASE_URL + "Favor?method=addNewFavor";
+    private void addNewCollection() {
+        String url = Constants.BASE_URL + "Collection?method=addNewFavor";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -259,8 +261,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .execute(new MyStringCallback());
     }
 
-    private void isFavored(){
-        String url = Constants.BASE_URL + "Favor?method=isFavored";
+    private void isCollected(){
+        String url = Constants.BASE_URL + "Collection?method=isFavored";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -339,7 +341,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     break;
                 case 2:
-                    isFavored();
+                    isCollected();
                     DisplayToast(response);
                     break;
                 case 3:
@@ -369,9 +371,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 4:
                     if(response.equals("已收藏")){
-                        collectionTv.setImageResource(R.drawable.ic_feed_is_fav);
+                        collectionIv.setImageResource(R.drawable.ic_feed_is_fav);
+                        collectionTv.setText("已收藏");
                     } else{
-                        collectionTv.setImageResource(R.drawable.ic_feed_is_not_fav);
+                        collectionIv.setImageResource(R.drawable.ic_feed_is_not_fav);
+                        collectionTv.setText("收藏");
                     }
                     break;
                 case 5:
