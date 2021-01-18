@@ -82,7 +82,8 @@
 <!--新鲜事详细-->
 <string name="new_detail_comment">全部评论</string>
 <string name="new_detail_add_comment">评论</string>
-<string name="new_detail_add_favor">收藏</string>
+<string name="new_detail_add_collection">收藏</string>
+<string name="new_detail_add_favor">点赞</string>
 <string name="new_detail_add_comment_hint">发表回复...</string>
 <!--新鲜事详细-->
 

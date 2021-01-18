@@ -42,17 +42,17 @@
     <!--发现-->
 
     <!--我的-->
-    <item name="me_homepage_username" type="id"></item>
-    <item name="me_homepage" type="id"></item>
-    <item name="me_exercise_time" type="id"></item>
-    <item name="me_fans" type="id"></item>
-    <item name="me_item_comment" type="id"></item>
-    <item name="me_item_reord" type="id"></item>
-    <item name="me_item_favor" type="id"></item>
-    <item name="me_item_report" type="id"></item>
-    <item name="me_item_help" type="id"></item>
-    <item name="me_item_setting" type="id"></item>
-    <item name="me_item_exit" type="id"></item>
+    <item name="me_homepage_username" type="id" />
+    <item name="me_homepage" type="id"/>
+    <item name="me_exercise_time" type="id"/>
+    <item name="me_fans" type="id"/>
+    <item name="me_item_comment" type="id"/>
+    <item name="me_item_reord" type="id"/>
+    <item name="me_item_favor" type="id"/>
+    <item name="me_item_report" type="id"/>
+    <item name="me_item_help" type="id"/>
+    <item name="me_item_setting" type="id"/>
+    <item name="me_item_exit" type="id"/>
     <!--我的-->
 
     <!--配置-->
@@ -86,6 +86,7 @@
     <item name="news_detail_image" type="id" />
     <item name="news_detail_comment" type="id" />
     <item name="news_detail_add_comment" type="id" />
+    <item name="news_detail_add_collection" type="id" />
     <item name="news_detail_add_favor" type="id" />
     <item name="news_detail_reply_info" type="id" />
     <item name="news_detail_comment_reply_user" type="id" />
@@ -1387,7 +1388,6 @@
     <item name="jdtravel_title_left_img" type="id"/>
     <item name="jdtravel_title_left_split_line" type="id"/>
     <item name="tj_title_back" type="id"/>
-    <item name="titleRightButton" type="id"/>
     <item name="jdtravel_title_right_img" type="id"/>
     <item name="jdtravel_title_right_search" type="id"/>
     <item name="jdtravel_title_right_btn" type="id"/>
@@ -5149,11 +5149,6 @@
     <item name="search_img" type="id"/>
     <item name="init_progress" type="id"/>
     <item name="voice_layout" type="id"/>
-    <item name="share_layout" type="id"/>
-    <item name="web_share_btn" type="id"/>
-    <item name="web_share_close" type="id"/>
-    <item name="web_share_more" type="id"/>
-    <item name="web_share_edit" type="id"/>
     <item name="widget_logo" type="id"/>
     <item name="widget_search_layout" type="id"/>
     <item name="widget_search" type="id"/>
