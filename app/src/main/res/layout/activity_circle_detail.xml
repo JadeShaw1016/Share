@@ -185,7 +185,7 @@
             android:background="@color/aliceblue" />
 
         <LinearLayout
-            android:id="@id/news_detail_add_favor"
+            android:id="@id/news_detail_add_collection"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -197,6 +197,34 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_feed_is_not_fav" />
+
+            <TextView
+                android:id="@+id/tv_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/new_detail_add_collection" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@color/aliceblue" />
+
+        <LinearLayout
+            android:id="@id/news_detail_add_favor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_favo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_like" />
 
             <TextView
                 android:layout_width="wrap_content"
