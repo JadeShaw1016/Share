@@ -53,32 +53,31 @@ public class FoundCircleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
         if(mListView == null){
             mListView = (ListView)parent;
         }
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_circle, null);
+            viewHolder = new ViewHolder();
+            viewHolder.bgIv = (ImageView) convertView.findViewById(R.id.found_list_icon);
+            viewHolder.titleTv = (TextView) convertView.findViewById(R.id.found_list_item_title);
+            viewHolder.usernameTv = (TextView) convertView.findViewById(R.id.found_list_item_username);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
         CircleListForFound news = mList.get(position);
         String imageName = news.getImage();
-        View view;
-        if (convertView == null) {
-            view = inflater.inflate(R.layout.item_circle, null);
-        } else {
-            view = convertView;
-        }
-
-        ViewHolder holder = new ViewHolder();
-        holder.bgIv = (ImageView) view.findViewById(R.id.found_list_icon);
-        holder.titleTv = (TextView) view.findViewById(R.id.found_list_item_title);
-        holder.usernameTv = (TextView) view.findViewById(R.id.found_list_item_username);
-        holder.bgIv.setTag(imageName);
-        holder.titleTv.setText(news.getTitle());
-        holder.usernameTv.setText(news.getUsername());
-
+        viewHolder.bgIv.setTag(imageName);
+        viewHolder.titleTv.setText(news.getTitle());
+        viewHolder.usernameTv.setText(news.getUsername());
         if(imageName!=null){
             BitmapWorkerTask task = new BitmapWorkerTask();
             task.execute(imageName);
         }
 
-        return view;
+        return convertView;
     }
 
     private class  ViewHolder {
