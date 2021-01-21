@@ -171,8 +171,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
 //                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        // 设置数据倒叙
-//                        Collections.reverse(mList);
                         msgRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
                         adapter = new MessageListAdapter(getActivity(), mList);
