@@ -78,18 +78,6 @@ public class FirstPageFragment extends Fragment implements AdapterView.OnItemCli
             }
         });
 
-//        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
-//        String url = (String) data.getList().get(position).get("picUri");
-//        CharSequence charSequence = (CharSequence) data.getList().get(position).get("text");
-//        String time = (String) data.getList().get(position).get("time");
-//        String formattime = time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8);
-//
-//        Intent intent = new Intent();
-//        intent.setClass(getActivity(), FirstPageDetailActivity.class);
-//        intent.putExtra("url", url);
-//        intent.putExtra("charSequence", charSequence);
-//        intent.putExtra("formattime", formattime);
-//        startActivity(intent);
     }
 
     private void initData(){
