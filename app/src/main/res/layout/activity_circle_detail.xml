@@ -196,7 +196,7 @@
                 android:id="@+id/iv_collection"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_feed_is_not_fav" />
+                android:src="@drawable/ic_is_not_collected" />
 
             <TextView
                 android:id="@+id/tv_collection"
@@ -224,9 +224,10 @@
                 android:id="@+id/iv_favo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/icon_like" />
+                android:src="@drawable/ic_is_not_favor" />
 
             <TextView
+                android:id="@+id/tv_favo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
