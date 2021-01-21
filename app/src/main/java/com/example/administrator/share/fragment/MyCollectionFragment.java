@@ -32,7 +32,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -42,7 +41,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
-    private TextView favRemindTv;
+    private TextView collectRemindTv;
     private ListView mListView;
 
     public static Fragment newInstance(String title){
@@ -66,7 +65,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
     private void findViewById(View view){
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        favRemindTv = view.findViewById(R.id.tv_fav_remind);
+        collectRemindTv = view.findViewById(R.id.tv_collect_remind);
     }
 
     private void initView(){
@@ -120,7 +119,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
      */
     private void getCollections() {
 
-        String url = Constants.BASE_URL + "Collection?method=getFavorsList";
+        String url = Constants.BASE_URL + "Collection?method=getCollectionsList";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -143,13 +142,11 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
                     if (mList == null || mList.size() == 0) {
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
-                        favRemindTv.setVisibility(View.VISIBLE);
+                        collectRemindTv.setVisibility(View.VISIBLE);
 //                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        // 设置数据倒叙
-                        Collections.reverse(mList);
-                        favRemindTv.setVisibility(View.INVISIBLE);
+                        collectRemindTv.setVisibility(View.INVISIBLE);
                         // 存储用户
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
