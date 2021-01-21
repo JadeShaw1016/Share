@@ -58,7 +58,7 @@ public class FirstPageListAdapter extends BaseAdapter
         ViewHolder viewHolder;
         if(convertView==null){
             viewHolder = new ViewHolder();
-            convertView=mInflater.inflate(R.layout.items_firstpage,null);
+            convertView=mInflater.inflate(R.layout.item_firstpage,null);
             viewHolder.pic=convertView.findViewById(R.id.item_pic);
             viewHolder.text=convertView.findViewById(R.id.item_text);
             viewHolder.time=convertView.findViewById(R.id.item_time);
@@ -118,4 +118,3 @@ public class FirstPageListAdapter extends BaseAdapter
     }
 
 }
-
