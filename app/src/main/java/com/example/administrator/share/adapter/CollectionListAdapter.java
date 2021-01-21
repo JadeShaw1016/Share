@@ -57,7 +57,7 @@ public class CollectionListAdapter extends BaseAdapter {
         // fill data
         NewsListItem detail = mList.get(position);
         viewHolder.title.setText(detail.getTitle());
-        viewHolder.username.setText(detail.getUsername());
+        viewHolder.username.setText("作者："+detail.getUsername());
         return convertView;
     }
 
