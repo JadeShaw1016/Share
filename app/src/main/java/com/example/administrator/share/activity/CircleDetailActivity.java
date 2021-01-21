@@ -62,6 +62,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView contentTV;
     private ImageView collectionIv;
     private TextView collectionTv;
+    private ImageView favorIv;
+    private TextView favorTv;
     private TextView authornameTv;
     private Button focusBtn;
 
@@ -74,6 +76,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ListViewWithScrollView commentsLV;
     private LinearLayout commentLL;
     private LinearLayout collectionLL;
+    private LinearLayout favorLL;
 
     private Context mContext;
 
@@ -109,6 +112,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
         commentLL = $(R.id.news_detail_add_comment);
         collectionLL = $(R.id.news_detail_add_collection);
+        favorLL = $(R.id.news_detail_add_favor);
 
         commentPane = $(R.id.news_detail_add_commment_pane);
         addCommentET = $(R.id.news_detail_add_commment_text);
@@ -117,6 +121,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentsLV = $(R.id.news_detail_comment);
         collectionIv = $(R.id.iv_collection);
         collectionTv = $(R.id.tv_collection);
+        favorIv = $(R.id.iv_favo);
+        favorTv = $(R.id.tv_favo);
         authornameTv = $(R.id.news_detail_username);
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
@@ -130,6 +136,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         this.title_back.setOnClickListener(this);
         commentLL.setOnClickListener(this);
         collectionLL.setOnClickListener(this);
+        favorLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
         focusBtn.setOnClickListener(this);
         imageIV.setOnClickListener(this);
@@ -137,6 +144,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
         isCollected();
+        isFavored();
         isFocused();
 
         //大图所依附的dialog
@@ -156,6 +164,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.news_detail_add_collection:
                 addNewCollection();
+                break;
+            case R.id.news_detail_add_favor:
+                addNewFavor();
                 break;
             case R.id.news_detail_add_commment_btn:
                 addNewComment();
@@ -226,13 +237,26 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
+    //添加新收藏
     private void addNewCollection() {
-        String url = Constants.BASE_URL + "Collection?method=addNewFavor";
+        String url = Constants.BASE_URL + "Collection?method=addNewCollection";
         OkHttpUtils
                 .post()
                 .url(url)
                 .id(2)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    //添加新点赞
+    private void addNewFavor() {
+        String url = Constants.BASE_URL + "Favor?method=addNewFavor";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(7)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
                 .build()
@@ -262,11 +286,23 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void isCollected(){
-        String url = Constants.BASE_URL + "Collection?method=isFavored";
+        String url = Constants.BASE_URL + "Collection?method=isCollected";
         OkHttpUtils
                 .post()
                 .url(url)
                 .id(4)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void isFavored(){
+        String url = Constants.BASE_URL + "Favor?method=isFavored";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(8)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
                 .build()
@@ -371,10 +407,10 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 4:
                     if(response.equals("已收藏")){
-                        collectionIv.setImageResource(R.drawable.ic_feed_is_fav);
+                        collectionIv.setImageResource(R.drawable.ic_is_colleted);
                         collectionTv.setText("已收藏");
                     } else{
-                        collectionIv.setImageResource(R.drawable.ic_feed_is_not_fav);
+                        collectionIv.setImageResource(R.drawable.ic_is_not_collected);
                         collectionTv.setText("收藏");
                     }
                     break;
@@ -387,6 +423,19 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         focusBtn.setText("已关注");
                     }else{
                         focusBtn.setText("关注");
+                    }
+                    break;
+                case 7:
+                    isFavored();
+                    DisplayToast(response);
+                    break;
+                case 8:
+                    if(response.equals("已点赞")){
+                        favorIv.setImageResource(R.drawable.ic_is_favor);
+                        favorTv.setText("已点赞");
+                    } else{
+                        favorIv.setImageResource(R.drawable.ic_is_not_favor);
+                        favorTv.setText("点赞");
                     }
                     break;
                 default:

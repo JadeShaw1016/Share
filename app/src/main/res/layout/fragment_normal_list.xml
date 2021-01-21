@@ -28,7 +28,7 @@
                 android:transcriptMode="alwaysScroll"
                 android:listSelector="@color/transparent"/>
             <TextView
-                android:id="@+id/tv_fav_remind"
+                android:id="@+id/tv_collect_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="还没有收藏哦，快去圈子看看吧！"
@@ -40,6 +40,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="还没有消息哦，快去发布一个圈子吧！"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_fav_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="还没有点赞哦，快去圈子看看吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone"/>
