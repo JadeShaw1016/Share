@@ -3,6 +3,7 @@ package com.example.administrator.share.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,6 +85,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	protected void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
+		View decorView = getWindow().getDecorView();
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+		getWindow().setStatusBarColor(Color.TRANSPARENT);
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 		AppManager.getInstance().addActivity(this);
 		if (!ImageLoader.getInstance().isInited())
 			ImageLoaderConfig.initImageLoader(this, Constants.BASE_IMAGE_CACHE);
