@@ -11,7 +11,7 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.dialog.BottomDialog;
 import com.example.administrator.share.fragment.CircleFragment;
-import com.example.administrator.share.fragment.FruitFragment;
+import com.example.administrator.share.fragment.FirstPageFragment;
 import com.example.administrator.share.fragment.MeFragment;
 import com.example.administrator.share.fragment.MessageFragment;
 import com.example.administrator.share.util.Constants;
@@ -60,7 +60,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initView() {
         BadgeView badgeView = new BadgeView(this);
-        mNavigateTabBar.addTab(FruitFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_firstpage, R.drawable.icon_selected_firstpage, TAG_PAGE_HOME));
+        mNavigateTabBar.addTab(FirstPageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_firstpage, R.drawable.icon_selected_firstpage, TAG_PAGE_HOME));
         mNavigateTabBar.addTab(CircleFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_circle, R.drawable.icon_selected_circle, TAG_PAGE_CIRCLE));
         mNavigateTabBar.addTab(null, new MainNavigateTabBar.TabParam(0, 0, TAG_PAGE_PUBLISH));
         mNavigateTabBar.addTab(MessageFragment.class, new MainNavigateTabBar.TabParam(R.drawable.icon_unselected_message, R.drawable.icon_selected_message, TAG_PAGE_MESSAGE, badgeView));

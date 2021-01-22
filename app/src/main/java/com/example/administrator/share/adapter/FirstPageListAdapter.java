@@ -1,120 +1,78 @@
 package com.example.administrator.share.adapter;
 
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
-import com.example.administrator.share.util.DataResource;
-import com.example.administrator.share.util.DownloadButton;
+import com.example.administrator.share.activity.FruitActivity;
+import com.example.administrator.share.entity.Fruit;
 
 import java.util.List;
-import java.util.Map;
 
-public class FirstPageListAdapter extends BaseAdapter
-{
-    Context mContext;
-    private LayoutInflater mInflater;
-    private List<Map<String,Object>> mapList;
-    private DataResource data;
-    private boolean isDownloading;
+public class FirstPageListAdapter extends RecyclerView.Adapter<FirstPageListAdapter.ViewHolder>{
 
-    public FirstPageListAdapter(Context mContext, List<Map<String,Object>> mapList, DataResource data){
-        this.mContext=mContext;
-        mInflater=LayoutInflater.from(mContext);
-        this.mapList=mapList;
-        this.data=data;
-    }
+    private static final String TAG = "FruitAdapter";
 
-    @Override
-    public int getCount() {
-        return mapList.size();
-    }
+    private Context mContext;
 
-    @Override
-    public Object getItem(int i) {
-        return mapList.get(i);
-    }
+    private List<Fruit> mFruitList;
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
+        ImageView fruitImage;
+        TextView fruitName;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView==null){
-            viewHolder = new ViewHolder();
-            convertView=mInflater.inflate(R.layout.item_firstpage,null);
-            viewHolder.pic=convertView.findViewById(R.id.item_pic);
-            viewHolder.text=convertView.findViewById(R.id.item_text);
-            viewHolder.time=convertView.findViewById(R.id.item_time);
-            viewHolder.btn=convertView.findViewById(R.id.download_btn);
-            convertView.setTag(viewHolder);
-        }else{
-            viewHolder=(ViewHolder)convertView.getTag();
+        public ViewHolder(View view) {
+            super(view);
+            cardView = (CardView) view;
+            fruitImage = (ImageView) view.findViewById(R.id.fruit_image);
+            fruitName = (TextView) view.findViewById(R.id.fruit_name);
         }
-        Uri uri = Uri.parse((String)data.getList().get(position).get("picUri"));
-        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
-        viewHolder.pic.setImageBitmap(bitmap);
-        viewHolder.text.setText((CharSequence) data.getList().get(position).get("text"));
-        viewHolder.time.setText((CharSequence) data.getList().get(position).get("time"));
+    }
 
-        isDownloading=false;
-        CompleteReceiver completeReceiver = new CompleteReceiver();
-        mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        viewHolder.btn.setUri(uri);
-        viewHolder.btn.setTime((String)data.getList().get(position).get("time"));
-        viewHolder.btn.setOnClickListener(new View.OnClickListener() {
+    public FirstPageListAdapter(List<Fruit> fruitList) {
+        mFruitList = fruitList;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mContext == null) {
+            mContext = parent.getContext();
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_fruit, parent, false);
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(isDownloading){
-                    Toast.makeText(mContext, "当前已在进行下载，请等待下载完成", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(mContext, "开始下载...", Toast.LENGTH_SHORT).show();
-                    isDownloading=true;
-                    Uri uri = ((DownloadButton)view).getUri();
-                    DownloadManager downloadManager;
-                    downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic"+((DownloadButton)view).getTime()+".jpg");
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    long reference = downloadManager.enqueue(request);
-                }
-
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                Fruit fruit = mFruitList.get(position);
+                Intent intent = new Intent(mContext, FruitActivity.class);
+                intent.putExtra(FruitActivity.FRUIT_NAME, fruit.getName());
+                intent.putExtra(FruitActivity.FRUIT_IMAGE_ID, fruit.getImageId());
+                mContext.startActivity(intent);
             }
         });
-        return convertView;
+        return holder;
     }
 
-    private class ViewHolder{
-        ImageView pic;
-        TextView text;
-        TextView time;
-        DownloadButton btn;
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Fruit fruit = mFruitList.get(position);
+        holder.fruitName.setText(fruit.getName());
+        Glide.with(mContext).load(fruit.getImageId()).into(holder.fruitImage);
     }
 
-    class CompleteReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(isDownloading){
-                Toast.makeText(mContext, "图片下载完成", Toast.LENGTH_SHORT).show();
-                isDownloading=false;
-            }
-        }
+    @Override
+    public int getItemCount() {
+        return mFruitList.size();
     }
 
 }
