@@ -36,17 +36,13 @@ public class FirstPageFragment extends Fragment{
     private FirstPageListAdapter2 adapter2;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
-
+    private List<Fruit> fruitList = new ArrayList<>();
 
     private Fruit[] fruits = {new Fruit("Apple", R.drawable.apple), new Fruit("Banana", R.drawable.banana),
             new Fruit("Orange", R.drawable.orange), new Fruit("Watermelon", R.drawable.watermelon),
             new Fruit("Pear", R.drawable.pear), new Fruit("Grape", R.drawable.grape),
             new Fruit("Pineapple", R.drawable.pineapple), new Fruit("Strawberry", R.drawable.strawberry),
             new Fruit("Cherry", R.drawable.cherry), new Fruit("Mango", R.drawable.mango)};
-
-    private List<Fruit> fruitList = new ArrayList<>();
-
-    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +52,13 @@ public class FirstPageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
+        initFruits();
+        findViewById(view);
+        setAdapter();
+        return view;
+    }
+
+    private void findViewById(View view){
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,13 +73,6 @@ public class FirstPageFragment extends Fragment{
                         .show();
             }
         });
-        initFruits();
-        findViewById(view);
-        setAdapter();
-        return view;
-    }
-
-    private void findViewById(View view){
         recyclerView = view.findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);

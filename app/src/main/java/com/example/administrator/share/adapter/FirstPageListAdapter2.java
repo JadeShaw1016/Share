@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAdapter2.ViewHolder> {
 
-    Context mContext;
+    private Context mContext;
     private LayoutInflater mInflater;
     private List<Map<String,Object>> mapList;
     private DataResource data;

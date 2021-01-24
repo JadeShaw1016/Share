@@ -20,9 +20,7 @@ import java.util.List;
 public class FirstPageListAdapter extends RecyclerView.Adapter<FirstPageListAdapter.ViewHolder>{
 
     private static final String TAG = "FruitAdapter";
-
     private Context mContext;
-
     private List<Fruit> mFruitList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
