@@ -1,21 +1,31 @@
 package com.example.administrator.share.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.base.BaseActivity;
 
 
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends BaseActivity {
+
+    @Override
+    protected void findViewById() {
+
+    }
+
+    @Override
+    protected void initView() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Integer time = 2000;
+        int time = 2000;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
