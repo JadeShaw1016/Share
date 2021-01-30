@@ -70,7 +70,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
         mListView.setOnItemClickListener(this);
         moreIv.setOnClickListener(this);
         messageLl.setVisibility(View.VISIBLE);
-        getComments();
     }
 
 
@@ -79,7 +78,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getComments();
-                refreshlayout.finishRefresh(500);
             }
 
         });
@@ -129,30 +127,40 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
      * 获取评论
      */
     private void getComments() {
-
-        String url = Constants.BASE_URL + "Comment?method=getCommentsList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("authorName", Constants.USER.getUsername())
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Comment?method=getCommentsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("authorName", Constants.USER.getUsername())
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     /**
      * 修改评论状态
      */
-    private void updateCommentStatus(NewsListItem newsListItem) {
-
-        String url = Constants.BASE_URL + "Comment?method=updateCommentStatus";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(2)
-                .addParams("commentId", String.valueOf(newsListItem.getCommentId()))
-                .build()
-                .execute(new MyStringCallback());
+    private void updateCommentStatus(final NewsListItem newsListItem) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Comment?method=updateCommentStatus";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(2)
+                        .addParams("commentId", String.valueOf(newsListItem.getCommentId()))
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
