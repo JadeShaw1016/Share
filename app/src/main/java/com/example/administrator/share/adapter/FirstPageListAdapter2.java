@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.MainMenuActivity;
-import com.example.administrator.share.util.DataResource;
 import com.example.administrator.share.util.DownloadButton;
 
 import java.util.List;
@@ -30,7 +29,6 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Map<String,Object>> mapList;
-    private DataResource data;
     private boolean isDownloading;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,11 +48,10 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
         }
     }
 
-    public FirstPageListAdapter2(Context mContext, List<Map<String,Object>> mapList, DataResource data) {
+    public FirstPageListAdapter2(Context mContext, List<Map<String,Object>> mapList) {
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mapList=mapList;
-        this.data=data;
     }
 
     @Override
@@ -75,7 +72,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
                 int position = holder.getAdapterPosition();
                 final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
                 ImageView imageView = new ImageView(MainMenuActivity.mContext);
-                imageView.setImageBitmap((Bitmap) data.getList().get(position).get("pic"));
+                imageView.setImageBitmap((Bitmap) mapList.get(position).get("pic"));
                 dialog.setContentView(imageView);
                 dialog.show();
 
@@ -111,17 +108,17 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Bitmap bitmap = (Bitmap) data.getList().get(position).get("pic");
+        Bitmap bitmap = (Bitmap) mapList.get(position).get("pic");
         holder.pic.setImageBitmap(bitmap);
-        holder.text.setText((CharSequence) data.getList().get(position).get("text"));
-        holder.time.setText((CharSequence) data.getList().get(position).get("time"));
+        holder.text.setText((CharSequence) mapList.get(position).get("text"));
+        holder.time.setText((CharSequence) mapList.get(position).get("time"));
 
-        Uri uri = Uri.parse((String)data.getList().get(position).get("picUri"));
+        Uri uri = Uri.parse((String)mapList.get(position).get("picUri"));
         isDownloading=false;
         CompleteReceiver completeReceiver = new CompleteReceiver();
         mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         holder.btn.setUri(uri);
-        holder.btn.setTime((String)data.getList().get(position).get("time"));
+        holder.btn.setTime((String)mapList.get(position).get("time"));
     }
 
     @Override
