@@ -58,14 +58,6 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         return view;
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        reLoadNews();
-    }
-
-
     private void findViewById(View view){
         calendarIv = view.findViewById(R.id.iv_record);
         circleList = view.findViewById(R.id.list_circle);
@@ -84,7 +76,6 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 reLoadNews();
-                refreshlayout.finishRefresh(1000);
             }
 
         });
@@ -117,13 +108,19 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private void reLoadNews() {
-        String url = Constants.BASE_URL + "News?method=getNewsList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "News?method=getNewsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -160,4 +157,9 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
+    }
 }

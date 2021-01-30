@@ -64,7 +64,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
         titleText.setText("我的关注");
         title_back.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
-        getFocus();
     }
 
 
@@ -87,7 +86,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getFocus();
-                refreshlayout.finishRefresh(1000);
             }
 
         });
@@ -104,15 +102,20 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
      * 获取关注者
      */
     private void getFocus() {
-
-        String url = Constants.BASE_URL + "Follows?method=getFocusList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=getFocusList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -152,5 +155,11 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
         public void onError(Call arg0, Exception arg1, int arg2) {
             DisplayToast("网络链接出错!");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
     }
 }

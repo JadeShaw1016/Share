@@ -70,7 +70,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
 
     private void initView(){
         mListView.setOnItemClickListener(this);
-        getFavors();
     }
 
     private void refreshListener(){
@@ -78,7 +77,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getFavors();
-                refreshlayout.finishRefresh(1000);
             }
 
         });
@@ -117,15 +115,20 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
      * 获取点赞
      */
     private void getFavors() {
-
-        String url = Constants.BASE_URL + "Favor?method=getFavorsList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Favor?method=getFavorsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -165,4 +168,9 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
+    }
 }

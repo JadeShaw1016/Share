@@ -76,8 +76,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         fansLl.setOnClickListener(this);
         focusLl.setOnClickListener(this);
         echo();
-        getFans();
-        getFocus();
     }
 
     @Override
@@ -122,30 +120,38 @@ public class MeFragment extends Fragment implements View.OnClickListener{
      * 获取粉丝数
      */
     private void getFans() {
-
-        String url = Constants.BASE_URL + "Follows?method=getFansList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MeFragment.MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=getFansList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MeFragment.MyStringCallback());
+            }
+        }).start();
     }
 
     /**
      * 获取关注数
      */
     private void getFocus() {
-
-        String url = Constants.BASE_URL + "Follows?method=getFocusList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(2)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MeFragment.MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=getFocusList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(2)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MeFragment.MyStringCallback());
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {

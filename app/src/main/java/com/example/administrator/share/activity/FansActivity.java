@@ -64,7 +64,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
         titleText.setText("我的粉丝");
         title_back.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
-        getFans();
     }
 
 
@@ -87,7 +86,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getFans();
-                refreshlayout.finishRefresh(1000);
             }
 
         });
@@ -104,15 +102,20 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
      * 获取粉丝数
      */
     private void getFans() {
-
-        String url = Constants.BASE_URL + "Follows?method=getFansList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=getFansList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -154,5 +157,9 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
+    }
 }

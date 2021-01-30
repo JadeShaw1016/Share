@@ -210,15 +210,19 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private void refreshData() {
 
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-
-        String url = Constants.BASE_URL + "News?method=getNewsDetail";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("newsId", newsId + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "News?method=getNewsDetail";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("newsId", newsId + "")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
 
@@ -286,51 +290,71 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void isCollected(){
-        String url = Constants.BASE_URL + "Collection?method=isCollected";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(4)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Collection?method=isCollected";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(4)
+                        .addParams("newsId", newsId + "")
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     private void isFavored(){
-        String url = Constants.BASE_URL + "Favor?method=isFavored";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(8)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Favor?method=isFavored";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(8)
+                        .addParams("newsId", newsId + "")
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     private void addFocus(){
-        String url = Constants.BASE_URL + "Follows?method=addFocus";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(5)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("fansId",fansId+"")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=addFocus";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(5)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("fansId",fansId+"")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     private void isFocused(){
-        String url = Constants.BASE_URL + "Follows?method=isFocused";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(6)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("fansId",fansId+"")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=isFocused";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(6)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("fansId",fansId+"")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -450,27 +474,32 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void getNewsImage(String imageName) {
-        String url = Constants.BASE_URL + "Download?method=getNewsImage";
+    private void getNewsImage(final String imageName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Download?method=getNewsImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("imageName", imageName)
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                                DisplayToast("无法获取图片");
+                            }
 
-        OkHttpUtils
-                .get()//
-                .url(url)//
-                .addParams("imageName", imageName)
-                .build()//
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int i) {
-                        DisplayToast("无法获取图片");
-                    }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                imageIV.setImageBitmap(bitmap);
+                                dialogIv.setImageBitmap(bitmap);
+                                dialog.setContentView(dialogIv);
+                            }
+                        });
+            }
+        }).start();
 
-                    @Override
-                    public void onResponse(Bitmap bitmap, int i) {
-                        imageIV.setImageBitmap(bitmap);
-                        dialogIv.setImageBitmap(bitmap);
-                        dialog.setContentView(dialogIv);
-                    }
-                });
     }
 
     //保存文件到指定路径

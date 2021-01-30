@@ -70,7 +70,6 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
 
     private void initView(){
         mListView.setOnItemClickListener(this);
-        getCollections();
     }
 
     private void refreshListener(){
@@ -78,7 +77,6 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getCollections();
-                refreshlayout.finishRefresh(1000);
             }
 
         });
@@ -118,15 +116,20 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
      * 获取收藏
      */
     private void getCollections() {
-
-        String url = Constants.BASE_URL + "Collection?method=getCollectionsList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Collection?method=getCollectionsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -165,4 +168,9 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLayout.autoRefresh();
+    }
 }
