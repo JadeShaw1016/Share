@@ -6,8 +6,8 @@
 <string name="hello_world">欢迎来到 Share</string>
 <string name="save_picture">保存图片</string>
 
-
 <!--登录/注册-->
+<string name="face">头像</string>
 <string name="username">用户名</string>
 <string name="login_txt">登录</string>
 <string name="register_txt">注册</string>
@@ -25,17 +25,13 @@
 <string name="hint_weight">你的体重</string>
 <!--登录/注册-->
 
-<!--锻炼-->
-<string name="learning_title"> 每日精选</string>
-
-<string name="save_title"> 收藏</string>
-
-
-<!--锻炼-->
-
+<!--标题栏-->
+<string name="firstpage_title">每日精选</string>
+<string name="message_title">通知</string>
+<string name="circle_title">圈子</string>
+<!--标题栏-->
 
 <!--我的-->
-
 <string name="me_hot_text">人气</string>
 <string name="me_focus_text">关注</string>
 <string name="me_fans_text">粉丝</string>
@@ -48,7 +44,6 @@
 <string name="me_record_number">0</string>
 <string name="me_app_version">V1.0</string>
 <!--我的-->
-
 
 <!--打卡-->
 <string name="date_check_text">今日打卡</string>
