@@ -72,11 +72,6 @@ public class FirstPageFragment extends Fragment{
         initFruits();
         findViewById(view);
         setAdapter();
-        try {
-            initData();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
         return view;
     }
 
@@ -171,6 +166,17 @@ public class FirstPageFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if(position == 1) {
+                    if(mList.isEmpty()){
+                        try {
+                            initData();
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        adapter2=new FirstPageListAdapter2(getActivity(),mList);
+                        adapter2.notifyDataSetChanged();
+                    }
                     recyclerView.setLayoutManager(layoutManager2);
                     recyclerView.setAdapter(adapter2);
                 }
