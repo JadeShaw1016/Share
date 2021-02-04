@@ -176,7 +176,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
         if (Build.VERSION.SDK_INT >= 24) {
             imageUri = FileProvider.getUriForFile(AddnewsActivity.this,
-                    "com.example.administrator.ifitapp2.fileprovider", outputImage);
+                    "com.example.administrator.share.fileprovider", outputImage);
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
