@@ -26,87 +26,97 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/wrap_layout">
-        <!-- 上圆角-->
-        <LinearLayout style="@style/top_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="我的资料" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <!-- 分割线 -->
-        <View style="@style/bg_line" />
-        <!-- 无圆角-->
-        <LinearLayout style="@style/mid_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="申请认证" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <View style="@style/bg_line2" />
-        <!-- 无圆角-->
-        <LinearLayout style="@style/mid_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="隐私设置" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <View style="@style/bg_line" />
-        <!-- 无圆角-->
-        <LinearLayout style="@style/mid_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="通用设置" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <View style="@style/bg_line2" />
-        <!-- 无圆角-->
-        <LinearLayout style="@style/mid_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="清理缓存" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <View style="@style/bg_line" />
-        <!-- 无圆角-->
-        <LinearLayout style="@style/mid_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="关于Share" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-        <View style="@style/bg_line" />
-        <!-- 下圆角-->
-        <LinearLayout style="@style/bottom_layout">
-            <TextView
-                style="@style/usertext"
-                android:text="@string/me_help_text" />
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout style="@style/wrap_layout">
-        <Button
-            android:id="@+id/btn_exit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/selector_orange"
-            android:text="@string/me_exit_text"
-            android:textSize="16sp"/>
-    </LinearLayout>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        android:text="@string/me_app_version" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout style="@style/wrap_layout">
+                <!-- 上圆角-->
+                <LinearLayout style="@style/top_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="我的资料" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <!-- 分割线 -->
+                <View style="@style/bg_line" />
+                <!-- 无圆角-->
+                <LinearLayout style="@style/mid_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="申请认证" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <View style="@style/bg_line2" />
+                <!-- 无圆角-->
+                <LinearLayout style="@style/mid_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="隐私设置" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <View style="@style/bg_line" />
+                <!-- 无圆角-->
+                <LinearLayout style="@style/mid_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="通用设置" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <View style="@style/bg_line2" />
+                <!-- 无圆角-->
+                <LinearLayout style="@style/mid_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="清理缓存" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <View style="@style/bg_line" />
+                <!-- 无圆角-->
+                <LinearLayout style="@style/mid_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="关于Share" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+                <View style="@style/bg_line" />
+                <!-- 下圆角-->
+                <LinearLayout style="@style/bottom_layout">
+                    <TextView
+                        style="@style/usertext"
+                        android:text="@string/me_help_text" />
+                    <ImageView style="@style/img_arrow" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/wrap_layout">
+                <Button
+                    android:id="@+id/btn_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selector_orange"
+                    android:text="@string/me_exit_text"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:gravity="center"
+                android:text="@string/me_app_version" />
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
