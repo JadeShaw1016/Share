@@ -2,6 +2,7 @@ package com.example.administrator.share.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.lang.reflect.Type;
@@ -38,12 +40,13 @@ public class MeFragment extends Fragment implements View.OnClickListener{
 
     private TabLayout tabLayout;
     private ViewPager pager;
-    private String [] title={"我的作品","我的点赞","我的收藏","我的草稿"};
+    private String [] title={"我的作品","我的点赞","我的收藏"};
 
     private ImageView settingIv;
     private TextView usernameTv;
     private TextView fansTv;
     private TextView focusTv;
+    private ImageView faceIv;
 
     List<FansListItem> mList;
 
@@ -56,7 +59,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         findViewById(view);
         initView();
         setAdapter();
-
         return view;
     }
 
@@ -69,6 +71,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         fansLl = view.findViewById(R.id.ll_fans);
         focusLl = view.findViewById(R.id.ll_focus);
         focusTv = view.findViewById(R.id.tv_focus);
+        faceIv = view.findViewById(R.id.me_face);
     }
 
     private void initView(){
@@ -105,7 +108,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         fragmentList.add(MyWorkFragment.newInstance(title[0]));
         fragmentList.add(MyFavoFragment.newInstance(title[1]));
         fragmentList.add(MyCollectionFragment.newInstance(title[2]));
-        fragmentList.add(MyScriptFragment.newInstance(title[3]));
+//        fragmentList.add(MyScriptFragment.newInstance(title[3]));
 
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
@@ -114,6 +117,30 @@ public class MeFragment extends Fragment implements View.OnClickListener{
 
     private void echo(){
         usernameTv.setText(Constants.USER.getUsername());
+        getUserFace();
+    }
+
+    private void getUserFace(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", Constants.USER.getFace())
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                faceIv.setImageBitmap(bitmap);
+                            }
+                        });
+            }
+        }).start();
     }
 
     /**

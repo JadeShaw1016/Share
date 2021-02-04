@@ -27,6 +27,7 @@ public class SharedPreferencesUtils {
             Editor editor = sharedPreferences.edit();
             //3.往Editor中添加数据
             editor.putInt("userId", user.getUserId());
+            editor.putString("face",user.getFace());
             editor.putString("username", user.getUsername());
             editor.putString("password", user.getPassword());
             editor.putString("sex", user.getSex());

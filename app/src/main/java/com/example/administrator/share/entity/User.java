@@ -7,6 +7,8 @@ package com.example.administrator.share.entity;
 public class User {
     private int userId;
 
+    private String face;
+
     private String username;
 
     private String password;
@@ -16,6 +18,14 @@ public class User {
     private double height;
 
     private double weight;
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
 
     public int getUserId() {
         return userId;
