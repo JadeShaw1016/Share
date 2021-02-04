@@ -130,19 +130,13 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
                     List<FansListItem> mList = gson.fromJson(response, type);
                     FansListAdapter adapter;
                     if (mList == null || mList.size() == 0) {
-                        adapter = new FansListAdapter(mContext, mList,1);
-                        mListView.setAdapter(adapter);
                         fansRemindTv.setVisibility(View.VISIBLE);
-//                        DisplayToast("暂无数据");
-                        return;
                     } else {
-                        // 设置数据倒叙
-//                        Collections.reverse(mList);
                         fansRemindTv.setVisibility(View.INVISIBLE);
-                        // 存储用户
-                        adapter = new FansListAdapter(mContext, mList,1);
-                        mListView.setAdapter(adapter);
                     }
+                    // 存储用户
+                    adapter = new FansListAdapter(mContext, mList,1);
+                    mListView.setAdapter(adapter);
                     break;
 
                 default:

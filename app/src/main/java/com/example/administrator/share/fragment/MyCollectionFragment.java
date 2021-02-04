@@ -107,6 +107,7 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
             Intent intent = new Intent();
             intent.setClass(getActivity(), CircleDetailActivity.class);
             intent.putExtra("newsId", mList.get(position).getNewsId());
+            intent.putExtra("be_focused_personId", mList.get(position).getUserId());
             startActivity(intent);
         }
     }
@@ -139,17 +140,14 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
             CollectionListAdapter adapter;
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<NewsListItem>>() {
-                    }.getType();
+                    Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
                     mList = gson.fromJson(response, type);
-                    if (mList == null || mList.size() == 0) {
-                        adapter = new CollectionListAdapter(getActivity(), mList);
-                        mListView.setAdapter(adapter);
-                        collectRemindTv.setVisibility(View.VISIBLE);
-//                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        collectRemindTv.setVisibility(View.INVISIBLE);
+                    if(getActivity() != null){
+                        if (mList == null || mList.size() == 0) {
+                            collectRemindTv.setVisibility(View.VISIBLE);
+                        } else {
+                            collectRemindTv.setVisibility(View.INVISIBLE);
+                        }
                         // 存储用户
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);

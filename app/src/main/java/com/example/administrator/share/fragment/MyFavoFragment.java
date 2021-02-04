@@ -138,17 +138,14 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
             CollectionListAdapter adapter;
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<NewsListItem>>() {
-                    }.getType();
+                    Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
                     mList = gson.fromJson(response, type);
-                    if (mList == null || mList.size() == 0) {
-                        adapter = new CollectionListAdapter(getActivity(), mList);
-                        mListView.setAdapter(adapter);
-                        favRemindTv.setVisibility(View.VISIBLE);
-//                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        favRemindTv.setVisibility(View.INVISIBLE);
+                    if(getActivity() != null){
+                        if (mList == null || mList.size() == 0) {
+                            favRemindTv.setVisibility(View.VISIBLE);
+                        } else {
+                            favRemindTv.setVisibility(View.INVISIBLE);
+                        }
                         // 存储用户
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);

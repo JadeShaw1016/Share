@@ -115,6 +115,7 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             Intent intent = new Intent();
             intent.setClass(getActivity(), CircleDetailActivity.class);
             intent.putExtra("newsId", newsListItem.getNewsId());
+            intent.putExtra("be_focused_personId", mList.get(position).getUserId());
             startActivity(intent);
             if(newsListItem.getStatus() == 0){
                 updateCommentStatus(newsListItem);
@@ -172,14 +173,12 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {
                     }.getType();
                     mList = gson.fromJson(response, type);
-                    if (mList == null || mList.size() == 0) {
-                        adapter = new MessageListAdapter(getActivity(), mList);
-                        mListView.setAdapter(adapter);
-                        msgRemindTv.setVisibility(View.VISIBLE);
-//                        Toast.makeText(getActivity(),"暂无数据",Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        msgRemindTv.setVisibility(View.INVISIBLE);
+                    if(getActivity() != null){
+                        if (mList == null || mList.size() == 0) {
+                            msgRemindTv.setVisibility(View.VISIBLE);
+                        } else {
+                            msgRemindTv.setVisibility(View.INVISIBLE);
+                        }
                         // 存储用户
                         adapter = new MessageListAdapter(getActivity(), mList);
                         mListView.setAdapter(adapter);
