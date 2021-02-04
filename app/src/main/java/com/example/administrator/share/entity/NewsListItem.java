@@ -9,6 +9,8 @@ public class NewsListItem {
     private String title;
 
     private int newsId;
+    //userId是发布圈子id为newsId的人的id
+    private int userId;
 
     private String username;
 
@@ -38,6 +40,10 @@ public class NewsListItem {
 
     public String getUsername() {
         return username;
+    }
+
+    public int getUserId(){
+        return userId;
     }
 
     public String getImage(){ return image; }
