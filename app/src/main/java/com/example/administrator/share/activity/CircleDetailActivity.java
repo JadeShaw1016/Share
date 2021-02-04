@@ -81,7 +81,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private Context mContext;
 
     private int newsId;
-    private int fansId;
+    private int be_focused_personId;
     private String replyUsername;
 
     private MyDialogHandler uiFlusHandler;
@@ -93,7 +93,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         newsId = getIntent().getIntExtra("newsId", 0);
-        fansId = getIntent().getIntExtra("fansId", 0);
+        be_focused_personId = getIntent().getIntExtra("be_focused_personId", 0);
         setContentView(R.layout.activity_circle_detail);
         findViewById();
         initView();
@@ -332,8 +332,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(5)
-                        .addParams("userId", Constants.USER.getUserId() + "")
-                        .addParams("fansId",fansId+"")
+                        .addParams("fansId", Constants.USER.getUserId() + "")
+                        .addParams("userId",be_focused_personId+"")
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -349,8 +349,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(6)
-                        .addParams("userId", Constants.USER.getUserId() + "")
-                        .addParams("fansId",fansId+"")
+                        .addParams("fansId", Constants.USER.getUserId() + "")
+                        .addParams("userId",be_focused_personId+"")
                         .build()
                         .execute(new MyStringCallback());
             }
