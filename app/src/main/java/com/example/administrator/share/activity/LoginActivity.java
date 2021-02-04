@@ -129,20 +129,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-
-
     private void checkUser() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-
-        String url = Constants.BASE_URL + "User?method=login";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("username", et_username.getText().toString().trim())
-                .addParams("password", et_password.getText().toString().trim())
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "User?method=login";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("username", et_username.getText().toString().trim())
+                        .addParams("password", et_password.getText().toString().trim())
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
