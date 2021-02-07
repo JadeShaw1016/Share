@@ -9,32 +9,35 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_share"
         android:label="Share"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activity.FocusActivity"/>
-        <activity android:name=".activity.FansActivity"/>
+        <activity android:name=".activity.MyInformationActivity"></activity>
+        <activity android:name=".activity.FocusActivity" />
+        <activity android:name=".activity.FansActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -49,7 +52,8 @@
         <activity android:name=".activity.DateCheckActivity" />
         <activity android:name=".activity.CircleDetailActivity" />
         <activity android:name=".activity.BadgeViewTwo" />
-        <activity android:name=".activity.FruitActivity"/>
+        <activity android:name=".activity.FruitActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.administrator.share.fileprovider"
