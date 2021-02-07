@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
@@ -16,6 +17,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private ImageView backIv;
     private Button exitBtn;
+    private LinearLayout myInfoLl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +29,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void findViewById() {
-        backIv = (ImageView) findViewById(R.id.title_back);
-        exitBtn = (Button) findViewById(R.id.btn_exit);
+        backIv =  findViewById(R.id.title_back);
+        exitBtn = findViewById(R.id.btn_exit);
+        myInfoLl = findViewById(R.id.ll_myinfo);
     }
 
     @Override
     protected void initView() {
         backIv.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
+        myInfoLl.setOnClickListener(this);
     }
 
     @Override
@@ -48,6 +52,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 AppManager.getInstance().killAllActivity();
                 SharedPreferencesUtils.clear(this);
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.ll_myinfo:
+                startActivity(new Intent(this, MyInformationActivity.class));
                 break;
         }
     }
