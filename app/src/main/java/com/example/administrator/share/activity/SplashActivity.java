@@ -139,7 +139,7 @@ public class SplashActivity extends BaseActivity {
         });
 
         //滑动事件监听滑动距离，点更随滑动。
-        mVp_Guide.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mVp_Guide.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 //当前viewpager显示的页码
