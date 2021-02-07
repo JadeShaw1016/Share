@@ -1,6 +1,7 @@
 package com.example.administrator.share.fragment;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FansActivity;
 import com.example.administrator.share.activity.FocusActivity;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.entity.FansListItem;
@@ -47,7 +49,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private TextView fansTv;
     private TextView focusTv;
     private ImageView faceIv;
-
     List<FansListItem> mList;
 
     private LinearLayout fansLl;
@@ -78,25 +79,40 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         settingIv.setOnClickListener(this);
         fansLl.setOnClickListener(this);
         focusLl.setOnClickListener(this);
+        faceIv.setOnClickListener(this);
         echo();
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent;
+        Intent intent = null;
         switch (view.getId()){
             case R.id.iv1:
                 intent=new Intent(getActivity(), SettingActivity.class);
-                startActivity(intent);
                 break;
             case R.id.ll_fans:
                 intent=new Intent(getActivity(), FansActivity.class);
-                startActivity(intent);
                 break;
             case R.id.ll_focus:
                 intent=new Intent(getActivity(), FocusActivity.class);
-                startActivity(intent);
                 break;
+            case R.id.me_face:
+                final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
+                ImageView imageView = new ImageView(MainMenuActivity.mContext);
+                imageView.setImageBitmap(Constants.FACEIMAGE);
+                dialog.setContentView(imageView);
+                dialog.show();
+                //大图的点击事件（点击让他消失）
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                break;
+        }
+        if(intent != null){
+            startActivity(intent);
         }
     }
 
@@ -137,6 +153,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                             @Override
                             public void onResponse(Bitmap bitmap, int i) {
                                 faceIv.setImageBitmap(bitmap);
+                                Constants.FACEIMAGE = bitmap;
                             }
                         });
             }
@@ -213,5 +230,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         super.onResume();
         getFans();
         getFocus();
+        faceIv.setImageBitmap(Constants.FACEIMAGE);
     }
 }
