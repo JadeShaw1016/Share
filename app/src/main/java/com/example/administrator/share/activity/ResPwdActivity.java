@@ -106,7 +106,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
     private void update() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "User?method=update";
+        String url = Constants.BASE_URL + "User?method=updatePassword";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -132,7 +132,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                         user = null;
                     }
                     if (user == null) {
-//                        DisplayToast(response);
                         new AlertDialog.Builder(mContext)
                                 .setTitle("提示")
                                 .setMessage("该用户不存在，请到注册界面进行注册！")
