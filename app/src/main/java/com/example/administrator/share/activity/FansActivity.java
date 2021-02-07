@@ -154,6 +154,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshLayout.autoRefresh();
+        getFans();
     }
 }

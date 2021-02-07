@@ -160,6 +160,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        refreshLayout.autoRefresh();
+        getFocus();
     }
 }

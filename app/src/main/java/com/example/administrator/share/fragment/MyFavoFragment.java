@@ -37,7 +37,7 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
@@ -96,10 +96,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
         });
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,6 +103,7 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
             Intent intent = new Intent();
             intent.setClass(getActivity(), CircleDetailActivity.class);
             intent.putExtra("newsId", mList.get(position).getNewsId());
+            intent.putExtra("be_focused_personId", mList.get(position).getUserId());
             startActivity(intent);
         }
     }
@@ -168,6 +165,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        refreshLayout.autoRefresh();
+        getFavors();
     }
 }

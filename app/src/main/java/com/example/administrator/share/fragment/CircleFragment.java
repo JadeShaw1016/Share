@@ -160,6 +160,6 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        refreshLayout.autoRefresh();
+        reLoadNews();
     }
 }

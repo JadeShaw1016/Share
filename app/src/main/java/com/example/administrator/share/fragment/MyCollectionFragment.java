@@ -37,7 +37,7 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class MyCollectionFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class MyCollectionFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
@@ -96,10 +96,6 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
         });
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -169,6 +165,6 @@ public class MyCollectionFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onResume() {
         super.onResume();
-        refreshLayout.autoRefresh();
+        getCollections();
     }
 }
