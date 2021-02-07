@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.FirstPageListAdapter;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
 import com.example.administrator.share.entity.Fruit;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 import static android.content.ContentValues.TAG;
 
@@ -140,9 +142,8 @@ public class FirstPageFragment extends Fragment{
     }
 
     private void initData() throws ExecutionException, InterruptedException {
-        List<Map<String,Object>> list = new ArrayList<>();
         DataAsyncTask myTask  = new DataAsyncTask();;
-        list.addAll(myTask.execute().get());
+        List<Map<String, Object>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
         mList.addAll(list);
         layoutManager2 = new LinearLayoutManager(getActivity());
         adapter2=new FirstPageListAdapter2(getActivity(),mList);
@@ -160,7 +161,6 @@ public class FirstPageFragment extends Fragment{
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
-//        spinner.getChildAt(-1).setVisibility(view.INVISIBLE);
         spinner.setAdapter(arr_adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -200,6 +200,12 @@ public class FirstPageFragment extends Fragment{
         DataAsyncTask(){
             super();
             list = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(MainMenuActivity.mContext,"切换中",Toast.LENGTH_SHORT).show();
         }
 
         @Override
