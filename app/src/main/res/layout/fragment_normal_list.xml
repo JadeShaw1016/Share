@@ -15,7 +15,7 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
         <RelativeLayout
@@ -34,6 +34,7 @@
                 android:text="还没有收藏哦，快去圈子看看吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_msg_remind"
@@ -42,6 +43,7 @@
                 android:text="还没有消息哦，快去发布一个圈子吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_fav_remind"
@@ -50,6 +52,7 @@
                 android:text="还没有点赞哦，快去圈子看看吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:visibility="gone"/>
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

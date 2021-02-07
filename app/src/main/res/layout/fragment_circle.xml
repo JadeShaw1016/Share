@@ -93,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="还没有圈子哦，可以自己先发布一个！"
+                android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 />
