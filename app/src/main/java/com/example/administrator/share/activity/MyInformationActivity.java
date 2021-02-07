@@ -111,7 +111,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
      * 回显
      */
     private void echo() {
-        faceIv.setImageBitmap(Constants.USER.getFaceImage());
+        faceIv.setImageBitmap(Constants.FACEIMAGE);
         usernameTv.setText(Constants.USER.getUsername());
         passwordEt.setText(Constants.USER.getPassword());
         confirmPwEt.setText(Constants.USER.getPassword());
@@ -244,7 +244,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                     break;
                 case 2:
                     Constants.USER.setFace(imageFile.getName());
-                    Constants.USER.setFaceImage(faceBitmap);
+                    Constants.FACEIMAGE = faceBitmap;
                     break;
                 default:
                     DisplayToast("what?");
