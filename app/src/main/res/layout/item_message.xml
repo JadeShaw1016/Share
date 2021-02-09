@@ -4,14 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    android:id="@+id/ll_message">
 
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_share" />
+        android:src="@drawable/default_image" />
 
     <LinearLayout
         android:layout_width="0dp"
