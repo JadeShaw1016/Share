@@ -131,6 +131,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         OkHttpUtils
                 .post()
                 .url(url)
+                .addParams("authorName",Constants.USER.getUsername())
                 .build()
                 .execute(new StringCallback(){
                     @Override
