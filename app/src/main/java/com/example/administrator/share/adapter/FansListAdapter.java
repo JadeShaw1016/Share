@@ -1,6 +1,7 @@
 package com.example.administrator.share.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.entity.FansListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.List;
@@ -28,16 +30,18 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
     private int flag;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView usernameTv;
-        public TextView descriptionTv;
-        public TextView stateTv;
-        public ImageView stateIv;
+        TextView usernameTv;
+        TextView descriptionTv;
+        TextView stateTv;
+        ImageView stateIv;
+        ImageView faceIv;
         public ViewHolder(View view) {
             super(view);
             usernameTv = view.findViewById(R.id.tv_username);
             descriptionTv = view.findViewById(R.id.tv_description);
             stateTv =view.findViewById(R.id.tv_state);
             stateIv = view.findViewById(R.id.iv_state);
+            faceIv = view.findViewById(R.id.iv_fans_focus);
         }
     }
 
@@ -71,6 +75,7 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
             holder.stateTv.setText("添加关注");
             isFocusedEachOther(detail.getFansId(),holder);
         }
+        getImage(detail.getFace(),holder);
     }
 
     @Override
@@ -100,6 +105,30 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
                                     viewHolder.stateIv.setImageResource(R.drawable.icon_focus_eachother);
                                     viewHolder.stateTv.setText("互相关注");
                                 }
+                            }
+                        });
+                return 0;
+            }
+        }.execute();
+    }
+
+    private void getImage(final String imageName, final ViewHolder holder) {
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", imageName)
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                holder.faceIv.setImageBitmap(bitmap);
                             }
                         });
                 return 0;
