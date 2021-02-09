@@ -8,8 +8,6 @@ import java.util.List;
 
 public class CircleDetail {
 
-    private int newsId;
-
     private String username;
 
     private String releaseTime;
@@ -22,13 +20,6 @@ public class CircleDetail {
 
     private List<Comment> comments;
 
-    public int getNewsId() {
-        return newsId;
-    }
-
-    public void setNewsId(int newsId) {
-        this.newsId = newsId;
-    }
 
     public String getUsername() {
         return username;
@@ -40,10 +31,6 @@ public class CircleDetail {
 
     public String getReleaseTime() {
         return releaseTime;
-    }
-
-    public void setReleaseTime(String releaseTime) {
-        this.releaseTime = releaseTime;
     }
 
     public String getTitle() {
@@ -74,7 +61,4 @@ public class CircleDetail {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }

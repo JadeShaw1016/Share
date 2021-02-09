@@ -6,8 +6,6 @@ package com.example.administrator.share.entity;
 
 public class Comment {
 
-    private int commentId;
-
     private String username;
 
     private String authorname;
@@ -18,24 +16,12 @@ public class Comment {
 
     private String commentTime;
 
-    public int getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getAuthorname() {
-        return authorname;
     }
 
     public void setAuthorname(String authorname) {

@@ -4,6 +4,7 @@ public class FansListItem {
     private String username;
     private int fansId;
     private int userId;
+    private String face;
 
     public String getUserName() {
         return username;
@@ -16,4 +17,6 @@ public class FansListItem {
     public int getUserId() {
         return userId;
     }
+
+    public String getFace(){return face;}
 }

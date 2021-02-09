@@ -55,10 +55,6 @@ public class User {
         return sex;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
     public double getHeight() {
         return height;
     }
