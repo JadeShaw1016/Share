@@ -2,22 +2,20 @@ package com.example.administrator.share.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.adapter.MessageListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -38,16 +36,15 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class MessageFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class MessageFragment extends Fragment implements View.OnClickListener{
 
-    private MessageListAdapter adapter;
-    private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
-    private ListView mListView;
-    private LinearLayout messageLl;
+    private RecyclerView mListView;
     private TextView msgRemindTv;
     private ImageView moreIv;
-
+    private Context mContext;
+    private LinearLayoutManager layoutManager;
+    private FrameLayout messageLl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -61,14 +58,15 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
     private void findViewById(View view){
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        messageLl = view.findViewById(R.id.layout_message);
         msgRemindTv = view.findViewById(R.id.tv_msg_remind);
         moreIv = view.findViewById(R.id.iv_more);
+        messageLl = view.findViewById(R.id.layout_message);
     }
 
     private void initView(){
-        mListView.setOnItemClickListener(this);
+        mContext = getActivity();
         moreIv.setOnClickListener(this);
+        layoutManager = new LinearLayoutManager(getActivity());
         messageLl.setVisibility(View.VISIBLE);
     }
 
@@ -108,22 +106,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(mList!=null && mList.size()>0){
-            NewsListItem newsListItem = mList.get(position);
-            Intent intent = new Intent();
-            intent.setClass(getActivity(), CircleDetailActivity.class);
-            intent.putExtra("newsId", newsListItem.getNewsId());
-            intent.putExtra("be_focused_personId", mList.get(position).getUserId());
-            startActivity(intent);
-            if(newsListItem.getStatus() == 0){
-                updateCommentStatus(newsListItem);
-            }
-        }
-    }
-
-
     /**
      * 获取评论
      */
@@ -144,25 +126,6 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
         }).start();
     }
 
-    /**
-     * 修改评论状态
-     */
-    private void updateCommentStatus(final NewsListItem newsListItem) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String url = Constants.BASE_URL + "Comment?method=updateCommentStatus";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(2)
-                        .addParams("commentId", String.valueOf(newsListItem.getCommentId()))
-                        .build()
-                        .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
-            }
-        }).start();
-    }
 
     public class MyStringCallback extends StringCallback {
         @Override
@@ -170,21 +133,19 @@ public class MessageFragment extends Fragment implements AdapterView.OnItemClick
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<NewsListItem>>() {
-                    }.getType();
-                    mList = gson.fromJson(response, type);
-                    if(getActivity() != null){
-                        if (mList == null || mList.size() == 0) {
+                    Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
+                    List<NewsListItem> mList = gson.fromJson(response, type);
+                    if(mContext != null){
+                        if (mList.size() == 0) {
                             msgRemindTv.setVisibility(View.VISIBLE);
                         } else {
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        adapter = new MessageListAdapter(getActivity(), mList);
+                        MessageListAdapter adapter = new MessageListAdapter(mContext, mList);
+                        mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                     }
-                    break;
-                case 2:
                     break;
                 default:
                     Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT).show();

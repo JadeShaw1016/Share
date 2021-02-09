@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.BeforeDateCheckActivity;
-import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.adapter.FoundCircleAdapter;
 import com.example.administrator.share.entity.CircleListForFound;
 import com.example.administrator.share.util.Constants;
@@ -39,14 +38,15 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class CircleFragment extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class CircleFragment extends Fragment implements View.OnClickListener{
 
     private ImageView calendarIv;
-    private ListView circleList;
-    private List<CircleListForFound> mList;
+    private RecyclerView circleList;
     private Context mContext;
     private RefreshLayout refreshLayout;
     private TextView circleRemindTv;
+
+    private LinearLayoutManager layoutManager;
 
 
     @Override
@@ -68,7 +68,7 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
     private void initView(){
         mContext = getActivity();
         calendarIv.setOnClickListener(this);
-        circleList.setOnItemClickListener(this);
+        layoutManager = new LinearLayoutManager(getActivity());
     }
 
     private void refreshListener(){
@@ -98,15 +98,6 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), CircleDetailActivity.class);
-        intent.putExtra("newsId", mList.get(position).getNewsId());
-        intent.putExtra("be_focused_personId", mList.get(position).getUserId());
-        startActivity(intent);
-    }
-
     private void reLoadNews() {
         new Thread(new Runnable() {
             @Override
@@ -127,9 +118,9 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
+            List<CircleListForFound> mList;
             try {
-                Type type = new TypeToken<ArrayList<CircleListForFound>>() {
-                }.getType();
+                Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
                 mList = gson.fromJson(response, type);
             } catch (Exception e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -139,6 +130,7 @@ public class CircleFragment extends Fragment implements AdapterView.OnItemClickL
                 case 1:
                     if (mList != null && mList.size() > 0) {
                         FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, mList);
+                        circleList.setLayoutManager(layoutManager);
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.INVISIBLE);
                     }else{

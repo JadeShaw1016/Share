@@ -1,20 +1,18 @@
 package com.example.administrator.share.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.adapter.CollectionListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -37,12 +35,13 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class MyFavoFragment extends Fragment{
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
     private TextView favRemindTv;
-    private ListView mListView;
+    private RecyclerView mListView;
+    private LinearLayoutManager layoutManager;
 
     public static Fragment newInstance(String title){
         MyFavoFragment fragmentOne = new MyFavoFragment();
@@ -69,7 +68,7 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private void initView(){
-        mListView.setOnItemClickListener(this);
+        layoutManager = new LinearLayoutManager(getActivity());
     }
 
     private void refreshListener(){
@@ -97,17 +96,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(mList!=null && mList.size()>0){
-            Intent intent = new Intent();
-            intent.setClass(getActivity(), CircleDetailActivity.class);
-            intent.putExtra("newsId", mList.get(position).getNewsId());
-            intent.putExtra("be_focused_personId", mList.get(position).getUserId());
-            startActivity(intent);
-        }
-    }
-
     /**
      * 获取点赞
      */
@@ -132,7 +120,6 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            CollectionListAdapter adapter;
             switch (id) {
                 case 1:
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
@@ -144,7 +131,8 @@ public class MyFavoFragment extends Fragment implements AdapterView.OnItemClickL
                             favRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        adapter = new CollectionListAdapter(getActivity(), mList);
+                        CollectionListAdapter adapter = new CollectionListAdapter(getActivity(), mList);
+                        mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                     }
                     break;

@@ -2,9 +2,9 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -30,20 +30,20 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class FocusActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class FocusActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView titleText;
     private RefreshLayout refreshLayout;
     private TextView focusRemindTv;
-    private ListView mListView;
+    private RecyclerView mListView;
     private View title_back;
-
     private Context mContext;
+    private LinearLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fans_focus);
-
         findViewById();
         initView();
         refreshListener();
@@ -63,7 +63,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
     protected void initView() {
         titleText.setText("我的关注");
         title_back.setOnClickListener(this);
-        mListView.setOnItemClickListener(this);
+        layoutManager = new LinearLayoutManager(this);
     }
 
 
@@ -74,11 +74,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
                 finish();
                 break;
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
     }
 
     private void refreshListener(){
@@ -128,23 +123,16 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener,
                     Type type = new TypeToken<ArrayList<FansListItem>>() {
                     }.getType();
                     List<FansListItem> mList = gson.fromJson(response, type);
-                    FansListAdapter adapter;
-                    if (mList == null || mList.size() == 0) {
-                        adapter = new FansListAdapter(mContext, mList,0);
-                        mListView.setAdapter(adapter);
+                    if (mList.size() == 0) {
                         focusRemindTv.setVisibility(View.VISIBLE);
-//                        DisplayToast("暂无数据");
-                        return;
                     } else {
-                        // 设置数据倒叙
-//                        Collections.reverse(mList);
                         focusRemindTv.setVisibility(View.INVISIBLE);
-                        // 存储用户
-                        adapter = new FansListAdapter(mContext, mList,0);
-                        mListView.setAdapter(adapter);
                     }
+                    //存储用户
+                    FansListAdapter adapter = new FansListAdapter(mContext, mList,0);
+                    mListView.setAdapter(adapter);
+                    mListView.setLayoutManager(layoutManager);
                     break;
-
                 default:
                     DisplayToast("what?");
                     break;
