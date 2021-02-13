@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/title_custom" />
@@ -18,58 +19,54 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:gravity="center_vertical">
 
                 <ImageView
+                    android:id="@+id/iv_circle_detail_face"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/ic_share" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_image" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@id/news_detail_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="vertical">
+                    android:layout_toEndOf="@+id/iv_circle_detail_face"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/app_name" />
 
-                    <TextView
-                        android:id="@id/news_detail_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_name" />
-
-                    <TextView
-                        android:id="@id/news_detail_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_name"
-                        android:textColor="@color/darkgrey"
-                        android:textSize="10sp" />
-                </LinearLayout>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/level_title_icon_size" />
+                    android:id="@id/news_detail_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:layout_toEndOf="@+id/iv_circle_detail_face"
+                    android:layout_below="@+id/news_detail_username"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="10sp" />
+
                 <Button
                     android:id="@+id/btn_focus"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:text="关注"
-                    android:gravity="center"
+                    android:layout_alignParentEnd="true"
                     android:textColor="@color/fuxk_base_color_black"
                     android:background="@drawable/selector_orange_2"/>
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@id/detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:text="@string/app_name" />
 
             <TextView
@@ -137,7 +134,7 @@
             android:layout_weight="1"
             android:background="@drawable/edit_text_round_bg"
             android:hint="@string/new_detail_add_comment_hint"
-            android:paddingLeft="5dp" />
+            android:paddingStart="5dp" />
 
         <ImageView
             android:id="@id/news_detail_add_commment_btn"
@@ -178,12 +175,6 @@
                 android:text="@string/new_detail_add_comment" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:background="@color/aliceblue" />
-
         <LinearLayout
             android:id="@id/news_detail_add_collection"
             android:layout_width="0dp"
@@ -205,12 +196,6 @@
                 android:gravity="center"
                 android:text="@string/new_detail_add_collection" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:background="@color/aliceblue" />
 
         <LinearLayout
             android:id="@id/news_detail_add_favor"
