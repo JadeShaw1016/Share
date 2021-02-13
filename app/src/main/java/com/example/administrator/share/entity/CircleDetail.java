@@ -12,6 +12,8 @@ public class CircleDetail {
 
     private String releaseTime;
 
+    private String face;
+
     private String title;
 
     private String image;
@@ -20,6 +22,7 @@ public class CircleDetail {
 
     private List<Comment> comments;
 
+    public String getFace(){return face;}
 
     public String getUsername() {
         return username;

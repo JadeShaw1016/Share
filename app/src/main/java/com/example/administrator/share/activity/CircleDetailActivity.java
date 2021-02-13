@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -50,11 +51,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private CircleDetailCommnetsAdapter adapter;
     private List<Comment> mList;
-
     private String TITLE_NAME = "圈子详情";
     private View title_back;
     private TextView titleText;
-
     private TextView usernameTV;
     private TextView titleTV;
     private TextView releaseTimeTV;
@@ -66,27 +65,22 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView favorTv;
     private TextView authornameTv;
     private Button focusBtn;
-
     private LinearLayout commentPane;
     private EditText addCommentET;
     private ImageView addCommentIV;
     private boolean isShowCommentPane;
-
-
     private ListViewWithScrollView commentsLV;
     private LinearLayout commentLL;
     private LinearLayout collectionLL;
     private LinearLayout favorLL;
-
     private Context mContext;
-
     private int newsId;
     private int be_focused_personId;
     private String replyUsername;
-
     private MyDialogHandler uiFlusHandler;
     private Dialog dialog;
     private ImageView dialogIv;
+    private ImageView faceIv;
 
 
     @Override
@@ -103,21 +97,17 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void findViewById() {
         this.title_back = $(R.id.title_back);
         this.titleText = $(R.id.titleText);
-
         usernameTV = $(R.id.news_detail_username);
         releaseTimeTV = $(R.id.news_detail_time);
         imageIV = $(R.id.news_detail_image);
         contentTV = $(R.id.news_detail_content);
         titleTV = $(R.id.detail_title);
-
         commentLL = $(R.id.news_detail_add_comment);
         collectionLL = $(R.id.news_detail_add_collection);
         favorLL = $(R.id.news_detail_add_favor);
-
         commentPane = $(R.id.news_detail_add_commment_pane);
         addCommentET = $(R.id.news_detail_add_commment_text);
         addCommentIV = $(R.id.news_detail_add_commment_btn);
-
         commentsLV = $(R.id.news_detail_comment);
         collectionIv = $(R.id.iv_collection);
         collectionTv = $(R.id.tv_collection);
@@ -126,6 +116,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         authornameTv = $(R.id.news_detail_username);
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
+        faceIv = $(R.id.iv_circle_detail_face);
     }
 
     @Override
@@ -207,8 +198,21 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void refreshData() {
+    private void showCommemtPane() {
+        isShowCommentPane = !isShowCommentPane;
+        if (isShowCommentPane) {
+            commentPane.setVisibility(View.VISIBLE);
+            replyUsername = "";
+            addCommentET.requestFocus();
+        } else {
+            commentPane.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(addCommentET.getWindowToken(), 0);
+            // imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 
+    private void refreshData() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         new Thread(new Runnable() {
             @Override
@@ -223,22 +227,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .execute(new MyStringCallback());
             }
         }).start();
-    }
-
-
-    private void showCommemtPane() {
-        isShowCommentPane = !isShowCommentPane;
-        if (isShowCommentPane) {
-            commentPane.setVisibility(View.VISIBLE);
-            addCommentET.setHint("发表新评论");
-            replyUsername = "";
-            addCommentET.requestFocus();
-        } else {
-            commentPane.setVisibility(View.GONE);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(addCommentET.getWindowToken(), 0);
-            // imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
     //添加新收藏
@@ -376,6 +364,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                                 imageIV.setVisibility(View.VISIBLE);
                                 imageIV.setImageResource(R.drawable.default_image);
                                 getNewsImage(circleDetail.getImage());
+                                getFaceImage(circleDetail.getFace());
                             } else {
                                 imageIV.setVisibility(View.GONE);
                             }
@@ -475,9 +464,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void getNewsImage(final String imageName) {
-        new Thread(new Runnable() {
+        new AsyncTask<Void, Void, Integer>(){
             @Override
-            public void run() {
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Download?method=getNewsImage";
                 OkHttpUtils
                         .get()//
@@ -497,9 +486,33 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                                 dialog.setContentView(dialogIv);
                             }
                         });
+                return 0;
             }
-        }).start();
+        }.execute();
+    }
 
+    private void getFaceImage(final String face) {
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", face)
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                faceIv.setImageBitmap(bitmap);
+                            }
+                        });
+                return 0;
+            }
+        }.execute();
     }
 
     //保存文件到指定路径
