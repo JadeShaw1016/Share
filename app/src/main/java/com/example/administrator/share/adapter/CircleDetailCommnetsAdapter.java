@@ -1,6 +1,8 @@
 package com.example.administrator.share.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +14,13 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.entity.Comment;
+import com.example.administrator.share.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by djzhao on 17/05/02.
@@ -53,7 +60,6 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
         ViewHolder viewholder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_circle_detail_comment, null);
-
             viewholder = new ViewHolder();
             viewholder.username = (TextView) convertView.findViewById(R.id.news_detail_comment_username);
             viewholder.commentTime = (TextView) convertView.findViewById(R.id.news_detail_comment_time);
@@ -61,6 +67,7 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
             viewholder.replyContainer = (LinearLayout) convertView.findViewById(R.id.news_detail_reply_info);
             viewholder.content = (TextView) convertView.findViewById(R.id.news_detail_commment_content);
             viewholder.addComment = (ImageView) convertView.findViewById(R.id.news_detail_comment_add_reply);
+            viewholder.faceIv = convertView.findViewById(R.id.iv_comment_face);
             convertView.setTag(viewholder);
         } else {
             viewholder = (ViewHolder) convertView.getTag();
@@ -76,13 +83,13 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
         }
         viewholder.commentTime.setText(comment.getCommentTime());
         viewholder.content.setText(comment.getComment());
-
         viewholder.addComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doButtonClickAction(mList.get(position).getUsername());
             }
         });
+        getFaceImage(comment.getFace(),viewholder);
         return convertView;
     }
 
@@ -93,6 +100,7 @@ public class CircleDetailCommnetsAdapter extends BaseAdapter {
         private TextView content;
         private ImageView addComment;
         private LinearLayout replyContainer;
+        private ImageView faceIv;
     }
 
 public interface OnCommentButtonClickListner {
@@ -108,4 +116,28 @@ public void doButtonClickAction(String replyUser) {
         onCommentButtonClickListner.OnCommentButtonClicked(replyUser);
     }
 }
+
+    private void getFaceImage(final String face, final ViewHolder viewHolder) {
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", face)
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                viewHolder.faceIv.setImageBitmap(bitmap);
+                            }
+                        });
+                return 0;
+            }
+        }.execute();
+    }
 }

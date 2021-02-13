@@ -8,6 +8,8 @@ public class Comment {
 
     private String username;
 
+    private String face;
+
     private String authorname;
 
     private String replyUser;
@@ -15,6 +17,8 @@ public class Comment {
     private String comment;
 
     private String commentTime;
+
+    public String getFace(){return face;}
 
     public String getUsername() {
         return username;
