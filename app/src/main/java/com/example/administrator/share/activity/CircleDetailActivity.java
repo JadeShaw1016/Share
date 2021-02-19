@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,7 +29,6 @@ import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.DateUtils;
 import com.example.administrator.share.util.MyDialogHandler;
-import com.example.administrator.share.widgets.ListViewWithScrollView;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -69,7 +70,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private EditText addCommentET;
     private ImageView addCommentIV;
     private boolean isShowCommentPane;
-    private ListViewWithScrollView commentsLV;
     private LinearLayout commentLL;
     private LinearLayout collectionLL;
     private LinearLayout favorLL;
@@ -81,7 +81,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private Dialog dialog;
     private ImageView dialogIv;
     private ImageView faceIv;
-
+    private RecyclerView commentsRv;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -108,7 +109,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentPane = $(R.id.news_detail_add_commment_pane);
         addCommentET = $(R.id.news_detail_add_commment_text);
         addCommentIV = $(R.id.news_detail_add_commment_btn);
-        commentsLV = $(R.id.news_detail_comment);
+        commentsRv = $(R.id.news_detail_comment);
         collectionIv = $(R.id.iv_collection);
         collectionTv = $(R.id.tv_collection);
         favorIv = $(R.id.iv_favo);
@@ -123,7 +124,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void initView() {
         mContext = this;
         this.titleText.setText(TITLE_NAME);
-
         this.title_back.setOnClickListener(this);
         commentLL.setOnClickListener(this);
         collectionLL.setOnClickListener(this);
@@ -132,16 +132,15 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         focusBtn.setOnClickListener(this);
         imageIV.setOnClickListener(this);
         dialogIv.setOnClickListener(this);
+        layoutManager = new LinearLayoutManager(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
         isCollected();
         isFavored();
         isFocused();
-
         //大图所依附的dialog
         dialog = new Dialog(mContext, R.style.MyDialogStyle_fullScreen_black);
         dialogListener();
-
     }
 
     @Override
@@ -377,7 +376,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     if (mList != null && mList.size() > 0) {
                         adapter = new CircleDetailCommnetsAdapter(mContext, mList);
                         adapter.setOnCommentButtonClickListner(new CircleDetailCommnetsAdapter.OnCommentButtonClickListner() {
-
                             @Override
                             public void OnCommentButtonClicked(String replyUser) {
                                 commentPane.setVisibility(View.VISIBLE);
@@ -385,7 +383,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                                 replyUsername = replyUser;
                             }
                         });
-                        commentsLV.setAdapter(adapter);
+                        commentsRv.setLayoutManager(layoutManager);
+                        commentsRv.setAdapter(adapter);
                     }
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     break;
@@ -405,17 +404,18 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         comment.setUsername(Constants.USER.getUsername());
                         comment.setAuthorname(authornameTv.getText().toString());
                         if (mList == null) {
-                            mList = new ArrayList<Comment>();
+                            mList = new ArrayList<>();
                         }
                         mList.add(0, comment);
                         if (adapter == null) {
                             adapter = new CircleDetailCommnetsAdapter(mContext, mList);
-                            commentsLV.setAdapter(adapter);
+                            commentsRv.setAdapter(adapter);
                         }
                         adapter.notifyDataSetChanged();
                         replyUsername = "";
                         addCommentET.setText("");
                         commentPane.setVisibility(View.GONE);
+                        refreshData();
                     }
                     break;
                 case 4:
