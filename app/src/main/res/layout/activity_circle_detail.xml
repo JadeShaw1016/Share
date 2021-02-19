@@ -49,7 +49,7 @@
                     android:layout_below="@+id/news_detail_username"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/darkgrey"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/btn_focus"
@@ -108,13 +108,10 @@
                 android:layout_height="0.1dp"
                 android:background="@color/aliceblue" />
 
-            <com.example.administrator.share.widgets.ListViewWithScrollView
-                android:id="@id/news_detail_comment"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/news_detail_comment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:listSelector="@color/transparent">
-            </com.example.administrator.share.widgets.ListViewWithScrollView>
-
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
@@ -175,6 +172,12 @@
                 android:text="@string/new_detail_add_comment" />
         </LinearLayout>
 
+        <TextView
+            android:layout_weight="0.005"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/darkgray"/>
+
         <LinearLayout
             android:id="@id/news_detail_add_collection"
             android:layout_width="0dp"
@@ -196,6 +199,12 @@
                 android:gravity="center"
                 android:text="@string/new_detail_add_collection" />
         </LinearLayout>
+
+        <TextView
+            android:layout_weight="0.005"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/darkgray"/>
 
         <LinearLayout
             android:id="@id/news_detail_add_favor"

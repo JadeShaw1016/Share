@@ -25,6 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="10.0dip"
-        android:singleLine="true" />
+        android:lines="1"
+        android:ellipsize="end"/>
 
 </RelativeLayout>

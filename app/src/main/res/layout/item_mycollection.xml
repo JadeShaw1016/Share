@@ -23,9 +23,9 @@
             android:id="@id/item_normal_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="start"
+            android:ellipsize="end"
             android:text="@string/app_name"
-            android:singleLine="true" />
+            android:lines="1"/>
 
         <TextView
             android:id="@id/item_normal_username"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textColor="@color/darkgrey"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </LinearLayout>

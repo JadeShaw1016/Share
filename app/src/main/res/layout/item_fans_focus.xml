@@ -24,16 +24,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:lines="1"
             android:text="@string/app_name" />
         <TextView
-            android:id="@id/tv_description"
+            android:id="@id/tv_signature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:text="@string/app_name"
+            android:text="@string/content_signature"
             android:textColor="@color/darkgrey"
-            android:textSize="10sp" />
+            android:textSize="12sp"
+            android:lines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 
 
@@ -53,7 +55,7 @@
             android:layout_height="wrap_content"
             android:text="关注"
             android:textColor="@color/darkgrey"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:layout_gravity="center"/>
     </LinearLayout>
 
