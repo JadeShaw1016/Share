@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,10 +55,12 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     private EditText confirmPwEt;
     private EditText heightEt;
     private EditText weightEt;
+    private EditText signatureEt;
     private TextView sexTv;
     private Button confrimBtn;
     private File imageFile;
     private Bitmap faceBitmap;
+    private LinearLayout myinfoLl;
 
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
@@ -91,9 +94,11 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         confirmPwEt = $(R.id.myinfo_et_repassword);
         heightEt = $(R.id.myinfo_et_height);
         weightEt = $(R.id.myinfo_et_weight);
+        signatureEt = $(R.id.myinfo_et_signature);
         sexTv = $(R.id.myinfo_tv_sex);
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
+        myinfoLl = $(R.id.myinfo_ll);
     }
 
     @Override
@@ -118,6 +123,9 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         sexTv.setText(Constants.USER.getSex());
         heightEt.setText(String.valueOf(Constants.USER.getHeight()));
         weightEt.setText(String.valueOf(Constants.USER.getWeight()));
+        if(Constants.USER.getSignature() != null){
+            signatureEt.setText(Constants.USER.getSignature());
+        }
     }
 
     @Override
@@ -193,7 +201,6 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     private void checkInfo() {
         String password = passwordEt.getText().toString().trim();
         String repassword = confirmPwEt.getText().toString().trim();
-
         if( TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)){
             DisplayToast("密码不能为空！");
             return;
@@ -218,6 +225,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                 .addParams("password", passwordEt.getText().toString().trim())
                 .addParams("height", heightEt.getText().toString().trim())
                 .addParams("weight", weightEt.getText().toString().trim())
+                .addParams("signature",signatureEt.getText().toString().trim())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -235,8 +243,10 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                     Constants.USER.setPassword(user.getPassword());
                     Constants.USER.setHeight(user.getHeight());
                     Constants.USER.setWeight(user.getWeight());
+                    Constants.USER.setSignature(user.getSignature());
                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                     if (result) {
+                        myinfoLl.clearFocus();
                         Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(mContext, "用户信息存储失败", Toast.LENGTH_SHORT).show();

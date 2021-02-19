@@ -49,6 +49,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private TextView fansTv;
     private TextView focusTv;
     private ImageView faceIv;
+    private TextView signatureTv;
     List<FansListItem> mList;
 
     private LinearLayout fansLl;
@@ -73,6 +74,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         focusLl = view.findViewById(R.id.ll_focus);
         focusTv = view.findViewById(R.id.tv_focus);
         faceIv = view.findViewById(R.id.me_face);
+        signatureTv = view.findViewById(R.id.me_signature);
     }
 
     private void initView(){
@@ -231,5 +233,8 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         getFans();
         getFocus();
         faceIv.setImageBitmap(Constants.FACEIMAGE);
+        if(Constants.USER.getSignature() != null){
+            signatureTv.setText(Constants.USER.getSignature());
+        }
     }
 }

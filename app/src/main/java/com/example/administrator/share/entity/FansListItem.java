@@ -5,6 +5,7 @@ public class FansListItem {
     private int fansId;
     private int userId;
     private String face;
+    private String signature;
 
     public String getUserName() {
         return username;
@@ -19,4 +20,6 @@ public class FansListItem {
     }
 
     public String getFace(){return face;}
+
+    public String getSignature(){return signature;}
 }

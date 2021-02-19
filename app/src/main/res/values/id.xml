@@ -2275,7 +2275,7 @@
     <item name="wconut" type="id"/>
     <item name="wname" type="id"/>
     <item name="img_topic_face" type="id"/>
-    <item name="tv_description" type="id"/>
+    <item name="tv_signature" type="id"/>
     <item name="user_img" type="id"/>
     <item name="rl_progress" type="id"/>
     <item name="xlistview_footer_content" type="id"/>

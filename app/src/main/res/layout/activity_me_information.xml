@@ -15,8 +15,8 @@
         android:layout_weight="1"
         android:background="#fff"
         android:scrollbars="none">
-
         <LinearLayout
+            android:id="@+id/myinfo_ll"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -29,7 +29,6 @@
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -44,8 +43,8 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/default_image"
                     android:background="@color/transparent"/>
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +53,6 @@
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="match_parent"
@@ -62,7 +60,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/username"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <TextView
                     android:id="@+id/myinfo_tv_username"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -74,7 +71,6 @@
                     android:paddingLeft="@dimen/dd_dimen_6px"
                     android:paddingRight="@dimen/dd_dimen_6px"
                     android:maxLines="1" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -86,7 +82,6 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -94,7 +89,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/password"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/myinfo_et_password"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -110,6 +104,7 @@
                     android:paddingRight="@dimen/dd_dimen_6px"
                     android:maxLines="1" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -119,7 +114,6 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -127,7 +121,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/repassword"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/myinfo_et_repassword"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -153,7 +146,6 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -161,7 +153,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/sex"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <TextView
                     android:id="@+id/myinfo_tv_sex"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -184,14 +175,12 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"
                     android:text="@string/height"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/myinfo_et_height"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -217,14 +206,12 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"
                     android:text="@string/weight"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/myinfo_et_weight"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -236,6 +223,35 @@
                     android:gravity="center_vertical"
                     android:hint="@string/hint_weight"
                     android:inputType="number"
+                    android:paddingLeft="@dimen/dd_dimen_6px"
+                    android:paddingRight="@dimen/dd_dimen_6px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fuxk_base_color_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dd_dimen_30px"
+                android:paddingRight="@dimen/dd_dimen_30px"
+                android:paddingTop="20dp">
+                <TextView
+                    android:layout_width="@dimen/dd_dimen_200px"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/signature"
+                    android:textColor="@color/fuxk_base_color_gray_black" />
+                <EditText
+                    android:id="@+id/myinfo_et_signature"
+                    style="@style/Fuxk_Base_Content_28_Style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dd_dimen_90px"
+                    android:layout_margin="@dimen/dd_dimen_6px"
+                    android:background="@drawable/bg_edit_text_manage"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/content_signature"
                     android:paddingLeft="@dimen/dd_dimen_6px"
                     android:paddingRight="@dimen/dd_dimen_6px" />
             </LinearLayout>

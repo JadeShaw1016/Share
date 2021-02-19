@@ -45,12 +45,15 @@
                     android:textColor="@color/darkgray"
                     android:textSize="20sp" />
                 <TextView
+                    android:id="@+id/me_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="这个人很懒，什么都没有留下"
                     android:textSize="12sp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:lines="1"
+                    android:ellipsize="end"/>
             </LinearLayout>
             <ImageView
                 android:id="@+id/iv1"

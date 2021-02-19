@@ -19,6 +19,8 @@ public class User {
 
     private double weight;
 
+    private String signature;
+
     public String getFace() {
         return face;
     }
@@ -69,5 +71,13 @@ public class User {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }
