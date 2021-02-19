@@ -31,14 +31,14 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTv;
-        TextView descriptionTv;
+        TextView signatureTv;
         TextView stateTv;
         ImageView stateIv;
         ImageView faceIv;
         public ViewHolder(View view) {
             super(view);
             usernameTv = view.findViewById(R.id.tv_username);
-            descriptionTv = view.findViewById(R.id.tv_description);
+            signatureTv = view.findViewById(R.id.tv_signature);
             stateTv =view.findViewById(R.id.tv_state);
             stateIv = view.findViewById(R.id.iv_state);
             faceIv = view.findViewById(R.id.iv_fans_focus);
@@ -66,6 +66,9 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FansListItem detail = mList.get(position);
         holder.usernameTv.setText(detail.getUserName());
+        if(detail.getSignature() != null){
+            holder.signatureTv.setText(detail.getSignature());
+        }
         if(flag == 0){
             holder.stateIv.setImageResource(R.drawable.icon_has_focused);
             holder.stateTv.setText("\u0020\u0020已关注\u0020\u0020");
