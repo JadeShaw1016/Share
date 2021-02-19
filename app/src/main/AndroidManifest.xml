@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activity.MyInformationActivity"></activity>
+        <activity android:name=".activity.MyInformationActivity"/>
         <activity android:name=".activity.FocusActivity" />
         <activity android:name=".activity.FansActivity" />
         <activity android:name=".activity.SplashActivity">
@@ -34,7 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainMenuActivity">
+        <activity android:name=".activity.MainMenuActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
 
