@@ -126,7 +126,6 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         fragmentList.add(MyWorkFragment.newInstance(title[0]));
         fragmentList.add(MyFavoFragment.newInstance(title[1]));
         fragmentList.add(MyCollectionFragment.newInstance(title[2]));
-//        fragmentList.add(MyScriptFragment.newInstance(title[3]));
 
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
