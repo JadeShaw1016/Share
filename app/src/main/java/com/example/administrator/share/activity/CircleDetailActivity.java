@@ -135,6 +135,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         layoutManager = new LinearLayoutManager(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         refreshData();
+        addClickTimes();
         isCollected();
         isFavored();
         isFocused();
@@ -213,9 +214,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private void refreshData() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        new Thread(new Runnable() {
+        new AsyncTask<Void, Void, Integer>() {
             @Override
-            public void run() {
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "News?method=getNewsDetail";
                 OkHttpUtils
                         .post()
@@ -224,13 +225,33 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .addParams("newsId", newsId + "")
                         .build()
                         .execute(new MyStringCallback());
+                return 0;
             }
-        }).start();
+        }.execute();
+    }
+
+    private void addClickTimes(){
+        if(be_focused_personId != Constants.USER.getUserId()){
+            new AsyncTask<Void, Void, Integer>() {
+                @Override
+                protected Integer doInBackground(Void... voids) {
+                    String url = Constants.BASE_URL + "News?method=addClickTimes";
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .id(9)
+                            .addParams("newsId", newsId + "")
+                            .build()
+                            .execute(new MyStringCallback());
+                    return 0;
+                }
+            }.execute();
+        }
     }
 
     //添加新收藏
     private void addNewCollection() {
-        String url = Constants.BASE_URL + "Collection?method=addNewCollection";
+        String url = Constants.BASE_URL + "GetCircleList?method=addNewCollection";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -243,7 +264,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     //添加新点赞
     private void addNewFavor() {
-        String url = Constants.BASE_URL + "Favor?method=addNewFavor";
+        String url = Constants.BASE_URL + "GetCircleList?method=addNewFavor";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -280,7 +301,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Collection?method=isCollected";
+                String url = Constants.BASE_URL + "GetCircleList?method=isCollected";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -297,7 +318,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Favor?method=isFavored";
+                String url = Constants.BASE_URL + "GetCircleList?method=isFavored";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -450,6 +471,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         favorIv.setImageResource(R.drawable.ic_is_not_favor);
                         favorTv.setText("点赞");
                     }
+                    break;
+                case 9:
                     break;
                 default:
                     Toast.makeText(mContext, "what！", Toast.LENGTH_SHORT).show();

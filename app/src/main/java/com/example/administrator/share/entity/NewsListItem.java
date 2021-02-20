@@ -24,6 +24,8 @@ public class NewsListItem {
 
     private String commentTime;
 
+    private Integer clickTimes;
+
     public String getCommentTime() {
         return commentTime;
     }
@@ -49,4 +51,6 @@ public class NewsListItem {
     public String getImage(){ return image; }
 
     public String getComment(){ return comment; }
+
+    public Integer getClickTimes(){ return clickTimes; }
 }
