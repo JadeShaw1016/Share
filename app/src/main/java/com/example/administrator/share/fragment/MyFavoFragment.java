@@ -103,7 +103,7 @@ public class MyFavoFragment extends Fragment{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Favor?method=getFavorsList";
+                String url = Constants.BASE_URL + "GetCircleList?method=getFavorsList";
                 OkHttpUtils
                         .post()
                         .url(url)

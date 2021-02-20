@@ -102,7 +102,7 @@ public class MyCollectionFragment extends Fragment{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Collection?method=getCollectionsList";
+                String url = Constants.BASE_URL + "GetCircleList?method=getCollectionsList";
                 OkHttpUtils
                         .post()
                         .url(url)
