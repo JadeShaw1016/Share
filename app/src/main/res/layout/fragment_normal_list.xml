@@ -6,10 +6,10 @@
 
     <FrameLayout
         android:id="@+id/layout_message"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
-        <include layout="@layout/title_message" />
+        <include layout="@layout/title_custom" />
     </FrameLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -38,7 +38,7 @@
                 android:id="@+id/tv_msg_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="还没有消息哦，快去发布一个圈子吧！"
+                android:text="还没有评论哦，快去发布一个圈子吧！"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:gravity="center"
