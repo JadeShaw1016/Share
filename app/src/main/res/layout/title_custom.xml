@@ -3,20 +3,14 @@
     android:layout_height="@dimen/title_height"
     android:background="@color/orange" >
 
-    <FrameLayout
-        android:layout_width="50.0dip"
+    <ImageView
+        android:id="@id/title_back"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:background="#00000000" >
-
-        <ImageView
-            android:id="@id/title_back"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/top_back_bottom_height"
-            android:layout_gravity="center"
-            android:paddingLeft="15.0dip"
-            android:paddingRight="15.0dip"
-            android:src="@drawable/title_back_selector2" />
-    </FrameLayout>
+        android:layout_gravity="center"
+        android:paddingLeft="15.0dip"
+        android:paddingRight="15.0dip"
+        android:src="@drawable/title_back_selector2" />
 
     <TextView
         android:id="@id/titleText"
