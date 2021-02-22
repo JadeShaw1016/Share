@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -62,11 +63,6 @@ public class FirstPageFragment extends Fragment{
             new Fruit("Pear", R.drawable.pear), new Fruit("Grape", R.drawable.grape),
             new Fruit("Pineapple", R.drawable.pineapple), new Fruit("Strawberry", R.drawable.strawberry),
             new Fruit("Cherry", R.drawable.cherry), new Fruit("Mango", R.drawable.mango)};
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,12 +120,7 @@ public class FirstPageFragment extends Fragment{
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-                getActivity().runOnUiThread(new Runnable() {
+                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         initFruits();
@@ -157,7 +148,7 @@ public class FirstPageFragment extends Fragment{
         data_list.add("   干货分享   ");
 
         //适配器
-        ArrayAdapter<String> arr_adapter = new ArrayAdapter<>(getActivity().getBaseContext(), android.R.layout.simple_spinner_item, data_list);
+        ArrayAdapter<String> arr_adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()).getBaseContext(), android.R.layout.simple_spinner_item, data_list);
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
@@ -193,7 +184,7 @@ public class FirstPageFragment extends Fragment{
         });
     }
 
-    class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,Object>>> {
+    static class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,Object>>> {
 
         private List<Map<String,Object>> list;
 
@@ -259,7 +250,6 @@ public class FirstPageFragment extends Fragment{
             return null;
         }
 
-
         private String readStream(InputStream inputStream) throws IOException{
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -272,6 +262,5 @@ public class FirstPageFragment extends Fragment{
             inputStream.close();
             return  outputStream.toString();
         }
-
     }
 }
