@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/title_message" />
+    <include layout="@layout/title_common" />
 
     <LinearLayout android:orientation="vertical"
         android:layout_height="match_parent"

@@ -3,6 +3,7 @@ package com.example.administrator.share.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,7 +46,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private Context mContext;
     private RefreshLayout refreshLayout;
     private TextView circleRemindTv;
-
+    private TextView titleText;
     private LinearLayoutManager layoutManager;
 
 
@@ -59,6 +60,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void findViewById(View view){
+        titleText = view.findViewById(R.id.titleText);
         calendarIv = view.findViewById(R.id.iv_record);
         circleList = view.findViewById(R.id.list_circle);
         refreshLayout = view.findViewById(R.id.refreshLayout);
@@ -67,6 +69,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
 
     private void initView(){
         mContext = getActivity();
+        titleText.setText("圈子");
+        calendarIv.setVisibility(View.VISIBLE);
         calendarIv.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(getActivity());
     }
@@ -99,9 +103,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void reLoadNews() {
-        new Thread(new Runnable() {
+        new AsyncTask<Void,Void,Integer>(){
             @Override
-            public void run() {
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "News?method=getNewsList";
                 OkHttpUtils
                         .post()
@@ -110,8 +114,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                         .build()
                         .execute(new MyStringCallback());
                 refreshLayout.finishRefresh();
+                return null;
             }
-        }).start();
+        }.execute();
     }
 
     public class MyStringCallback extends StringCallback {

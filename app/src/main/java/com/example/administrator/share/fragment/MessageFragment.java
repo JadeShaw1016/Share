@@ -29,6 +29,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private LinearLayout commentLl;
     private BadgeView badge;
     private TextView badgeTv;
+    private TextView titleText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -39,6 +40,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     }
 
     private void findViewById(View view){
+        titleText = view.findViewById(R.id.titleText);
         moreIv = view.findViewById(R.id.iv_more);
         commentLl = view.findViewById(R.id.ll_message_comment);
         badgeTv = view.findViewById(R.id.tv_message_badge);
@@ -46,6 +48,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
 
     private void initView(){
         mContext = getActivity();
+        titleText.setText("通知");
+        moreIv.setVisibility(View.VISIBLE);
         moreIv.setOnClickListener(this);
         commentLl.setOnClickListener(this);
         badge = new BadgeView(mContext);

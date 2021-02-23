@@ -27,12 +27,6 @@
     <string name="content_signature">这个人很懒，什么都没有留下</string>
     <!--个人信息-->
 
-    <!--标题栏-->
-    <string name="firstpage_title">每日精选</string>
-    <string name="message_title">通知</string>
-    <string name="circle_title">圈子</string>
-    <!--标题栏-->
-
     <!--我的-->
     <string name="me_hot_text">人气</string>
     <string name="me_focus_text">关注</string>
