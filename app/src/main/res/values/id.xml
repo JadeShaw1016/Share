@@ -44,7 +44,7 @@
     <!--我的-->
     <item name="me_homepage_username" type="id" />
     <item name="me_homepage" type="id"/>
-    <item name="me_exercise_time" type="id"/>
+    <item name="me_popularity" type="id"/>
     <item name="me_fans" type="id"/>
     <item name="me_item_comment" type="id"/>
     <item name="me_item_reord" type="id"/>
