@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -48,10 +49,11 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private TextView usernameTv;
     private TextView fansTv;
     private TextView focusTv;
+    private TextView popularityTv;
     private ImageView faceIv;
     private TextView signatureTv;
-    List<FansListItem> mList;
-
+    private List<FansListItem> mFocusList;
+    private List<FansListItem> mFansList;
     private LinearLayout fansLl;
     private LinearLayout focusLl;
 
@@ -73,6 +75,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         fansLl = view.findViewById(R.id.ll_fans);
         focusLl = view.findViewById(R.id.ll_focus);
         focusTv = view.findViewById(R.id.tv_focus);
+        popularityTv = view.findViewById(R.id.me_popularity);
         faceIv = view.findViewById(R.id.me_face);
         signatureTv = view.findViewById(R.id.me_signature);
     }
@@ -94,9 +97,11 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.ll_fans:
                 intent=new Intent(getActivity(), FansActivity.class);
+                intent.putParcelableArrayListExtra("mFansList", (ArrayList<? extends Parcelable>) mFansList);
                 break;
             case R.id.ll_focus:
                 intent=new Intent(getActivity(), FocusActivity.class);
+                intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
                 final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
@@ -199,6 +204,25 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         }).start();
     }
 
+    /**
+     * 获取人气数
+     */
+    private void getPopularity() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "Follows?method=getPopularity";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(3)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MeFragment.MyStringCallback());
+            }
+        }).start();
+    }
+
     public class MyStringCallback extends StringCallback {
 
         @Override
@@ -206,13 +230,17 @@ public class MeFragment extends Fragment implements View.OnClickListener{
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<FansListItem>>() {
             }.getType();
-            mList = gson.fromJson(response, type);
             switch (id) {
                 case 1:
-                    fansTv.setText(String.valueOf(mList.size()));
+                    mFansList = gson.fromJson(response, type);
+                    fansTv.setText(String.valueOf(mFansList.size()));
                     break;
                 case 2:
-                    focusTv.setText(String.valueOf(mList.size()));
+                    mFocusList = gson.fromJson(response, type);
+                    focusTv.setText(String.valueOf(mFocusList.size()));
+                    break;
+                case 3:
+                    popularityTv.setText(String.valueOf(response));
                     break;
                 default:
                     Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();
@@ -231,6 +259,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         super.onResume();
         getFans();
         getFocus();
+        getPopularity();
         faceIv.setImageBitmap(Constants.FACEIMAGE);
         if(Constants.USER.getSignature() != null){
             signatureTv.setText(Constants.USER.getSignature());

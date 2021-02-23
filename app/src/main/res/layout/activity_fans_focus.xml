@@ -6,39 +6,33 @@
 
     <include layout="@layout/title_custom" />
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/normal_list_lv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/normal_list_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_fans_remind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="还没有粉丝哦，快去发布一个圈子吧！"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:visibility="gone"/>
-            <TextView
-                android:id="@+id/tv_focus_remind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="还没有关注哦，快去圈子关注你喜欢的人吧！"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:visibility="gone"/>
-        </RelativeLayout>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_fans_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="还没有粉丝哦，快去发布一个圈子吧！"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_focus_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="还没有关注哦，快去圈子关注你喜欢的人吧！"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
 </LinearLayout>
