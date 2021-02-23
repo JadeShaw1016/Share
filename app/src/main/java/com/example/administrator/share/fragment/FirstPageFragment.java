@@ -1,5 +1,6 @@
 package com.example.administrator.share.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -18,16 +19,22 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.MainMenuActivity;
-import com.example.administrator.share.adapter.FirstPageListAdapter;
+import com.example.administrator.share.adapter.FirstPageListAdapter0;
+import com.example.administrator.share.adapter.FirstPageListAdapter1;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
+import com.example.administrator.share.entity.CircleListForFound;
 import com.example.administrator.share.entity.Fruit;
 import com.example.administrator.share.util.BingPic;
+import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,19 +51,26 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
+import okhttp3.Call;
+
 import static android.content.ContentValues.TAG;
 
-public class FirstPageFragment extends Fragment{
+public class FirstPageFragment extends Fragment implements View.OnClickListener{
 
+    private Context mContext;
+    private TextView titleText;
     private Spinner spinner;
     private List<Map<String,Object>> mList;
-    private FirstPageListAdapter adapter;
+    private FirstPageListAdapter0 adapter0;
+    private FirstPageListAdapter1 adapter1;
     private FirstPageListAdapter2 adapter2;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
     private List<Fruit> fruitList = new ArrayList<>();
-    private GridLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManager2;
+    private FloatingActionButton fab;
+    private int POSITION = 0;
 
     private Fruit[] fruits = {new Fruit("Apple", R.drawable.apple), new Fruit("Banana", R.drawable.banana),
             new Fruit("Orange", R.drawable.orange), new Fruit("Watermelon", R.drawable.watermelon),
@@ -69,15 +83,57 @@ public class FirstPageFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
         initFruits();
         findViewById(view);
+        initView();
         setAdapter();
         return view;
     }
 
     private void findViewById(View view){
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        titleText = view.findViewById(R.id.titleText);
+        fab = view.findViewById(R.id.fab);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        swipeRefresh = view.findViewById(R.id.swipe_refresh);
+        spinner = view.findViewById(R.id.spinner);
+        mList=new ArrayList<>();
+    }
+
+    private void initView(){
+        mContext = getActivity();
+        titleText.setText("每日精选");
+        spinner.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(this);
+        swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View view) {
+            public void onRefresh() {
+                switch (POSITION){
+                    case 0:
+                        getSelectedCircles();
+                        break;
+                    case 1:
+                        refreshFruits();
+                        break;
+                }
+            }
+        });
+        layoutManager = new GridLayoutManager(getActivity(), 2);
+        layoutManager2 = new LinearLayoutManager(getActivity());
+        getSelectedCircles();
+    }
+
+    private void initFruits() {
+        fruitList.clear();
+        for (int i = 0; i < 50; i++) {
+            Random random = new Random();
+            int index = random.nextInt(fruits.length);
+            fruitList.add(fruits[index]);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.fab:
                 Snackbar.make(view, "Data deleted", Snackbar.LENGTH_SHORT)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
@@ -86,33 +142,7 @@ public class FirstPageFragment extends Fragment{
                             }
                         })
                         .show();
-            }
-        });
-        recyclerView = view.findViewById(R.id.recycler_view);
-        layoutManager = new GridLayoutManager(getActivity(), 2);
-        adapter = new FirstPageListAdapter(fruitList);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshFruits();
-            }
-        });
-
-        spinner = view.findViewById(R.id.spinner);
-        mList=new ArrayList<>();
-    }
-
-
-    private void initFruits() {
-        fruitList.clear();
-        for (int i = 0; i < 50; i++) {
-            Random random = new Random();
-            int index = random.nextInt(fruits.length);
-            fruitList.add(fruits[index]);
+                break;
         }
     }
 
@@ -124,7 +154,7 @@ public class FirstPageFragment extends Fragment{
                     @Override
                     public void run() {
                         initFruits();
-                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }
                 });
@@ -136,7 +166,6 @@ public class FirstPageFragment extends Fragment{
         DataAsyncTask myTask  = new DataAsyncTask();;
         List<Map<String, Object>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
         mList.addAll(list);
-        layoutManager2 = new LinearLayoutManager(getActivity());
         adapter2=new FirstPageListAdapter2(getActivity(),mList);
         adapter2.notifyDataSetChanged();
     }
@@ -144,6 +173,7 @@ public class FirstPageFragment extends Fragment{
     private void setAdapter(){
         //数据
         List<String> data_list = new ArrayList<>();
+        data_list.add("   每日精选   ");
         data_list.add("   我的关注   ");
         data_list.add("   干货分享   ");
 
@@ -156,24 +186,37 @@ public class FirstPageFragment extends Fragment{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if(position == 1) {
-                    if(mList.isEmpty()){
-                        try {
-                            initData();
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                switch (position){
+                    case 0:
+                        titleText.setText("每日精选");
+                        POSITION = 0;
+                        recyclerView.setLayoutManager(layoutManager2);
+                        recyclerView.setAdapter(adapter0);
+                        break;
+                    case 1:
+                        titleText.setText("我的关注");
+                        POSITION = 1;
+                        adapter1 = new FirstPageListAdapter1(fruitList);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(adapter1);
+                        break;
+                    case 2:
+                        titleText.setText("干货分享");
+                        POSITION = 2;
+                        if(mList.isEmpty()){
+                            try {
+                                initData();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                    else{
-                        adapter2=new FirstPageListAdapter2(getActivity(),mList);
-                        adapter2.notifyDataSetChanged();
-                    }
-                    recyclerView.setLayoutManager(layoutManager2);
-                    recyclerView.setAdapter(adapter2);
-                }
-                else{
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(adapter);
+                        else{
+                            adapter2=new FirstPageListAdapter2(getActivity(),mList);
+                            adapter2.notifyDataSetChanged();
+                        }
+                        recyclerView.setLayoutManager(layoutManager2);
+                        recyclerView.setAdapter(adapter2);
+                        break;
                 }
             }
 
@@ -261,6 +304,56 @@ public class FirstPageFragment extends Fragment{
             outputStream.close();
             inputStream.close();
             return  outputStream.toString();
+        }
+    }
+
+    private void getSelectedCircles() {
+        new AsyncTask<Void,Void,Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=getNewsListWithLabel";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("label","jingxuan")
+                        .build()
+                        .execute(new MyStringCallback());
+                return null;
+            }
+        }.execute();
+    }
+
+    public class MyStringCallback extends StringCallback {
+        @Override
+        public void onResponse(String response, int id) {
+            Gson gson = new Gson();
+            List<CircleListForFound> mList;
+            try {
+                Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
+                mList = gson.fromJson(response, type);
+            } catch (Exception e) {
+                Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                mList = null;
+            }
+            switch (id) {
+                case 1:
+                    if (mList != null && mList.size() > 0) {
+                        adapter0 = new FirstPageListAdapter0(mContext, mList);
+                        recyclerView.setLayoutManager(layoutManager2);
+                        recyclerView.setAdapter(adapter0);
+                        swipeRefresh.setRefreshing(false);
+                    }
+                    break;
+                default:
+                    Toast.makeText(mContext, "what！", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        @Override
+        public void onError(Call arg0, Exception arg1, int arg2) {
+            Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
         }
     }
 }

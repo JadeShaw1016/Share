@@ -17,7 +17,7 @@ import com.example.administrator.share.entity.Fruit;
 
 import java.util.List;
 
-public class FirstPageListAdapter extends RecyclerView.Adapter<FirstPageListAdapter.ViewHolder>{
+public class FirstPageListAdapter1 extends RecyclerView.Adapter<FirstPageListAdapter1.ViewHolder>{
 
     private static final String TAG = "FruitAdapter";
     private Context mContext;
@@ -36,7 +36,7 @@ public class FirstPageListAdapter extends RecyclerView.Adapter<FirstPageListAdap
         }
     }
 
-    public FirstPageListAdapter(List<Fruit> fruitList) {
+    public FirstPageListAdapter1(List<Fruit> fruitList) {
         mFruitList = fruitList;
     }
 
