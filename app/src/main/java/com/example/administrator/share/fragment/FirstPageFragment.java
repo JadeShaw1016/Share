@@ -316,7 +316,7 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("label","jingxuan")
+                        .addParams("label","精选")
                         .build()
                         .execute(new MyStringCallback());
                 return null;
