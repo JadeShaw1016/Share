@@ -1,5 +1,6 @@
 package com.example.administrator.share.activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.TextView;
@@ -49,25 +50,37 @@ public class BeforeDateCheckActivity extends BaseActivity{
 
 
     private void getCheckedList() {
-        String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .build()
-                .execute(new MyStringCallback());
+        new AsyncTask<Void,Void,Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                return null;
+            }
+        }.execute();
     }
 
     private void getRecords() {
-        String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .id(2)
-                .build()
-                .execute(new MyStringCallback());
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .id(2)
+                        .build()
+                        .execute(new MyStringCallback());
+                return null;
+            }
+        }.execute();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -100,8 +113,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
                     }
                     break;
                 case 2:
-                    String[] items = response.split(":");
-                    recorddaysTv.setText("已打卡"+items[0]+"天");
+                    recorddaysTv.setText("已打卡"+response+"天");
                     break;
             }
         }
