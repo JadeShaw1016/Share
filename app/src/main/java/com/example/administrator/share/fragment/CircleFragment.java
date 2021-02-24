@@ -48,7 +48,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private TextView circleRemindTv;
     private TextView titleText;
     private LinearLayoutManager layoutManager;
-
+    private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
+    private TextView indexTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +66,11 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         circleList = view.findViewById(R.id.list_circle);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         circleRemindTv = view.findViewById(R.id.tv_circle_remind);
+        bianpingTv = view.findViewById(R.id.tv_circle_bianping);
+        oumeiTv = view.findViewById(R.id.tv_circle_oumei);
+        erchaTv = view.findViewById(R.id.tv_circle_ercha);
+        xieshiTv = view.findViewById(R.id.tv_circle_xieshi);
+        chouxiangTv = view.findViewById(R.id.tv_circle_chouxiang);
     }
 
     private void initView(){
@@ -72,14 +78,24 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         titleText.setText("圈子");
         calendarIv.setVisibility(View.VISIBLE);
         calendarIv.setOnClickListener(this);
+        bianpingTv.setOnClickListener(this);
+        oumeiTv.setOnClickListener(this);
+        erchaTv.setOnClickListener(this);
+        xieshiTv.setOnClickListener(this);
+        chouxiangTv.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(getActivity());
+        getNewsList();
     }
 
     private void refreshListener(){
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                reLoadNews();
+                if(indexTv != null){
+                    getNewsListWithLabel(indexTv.getText().toString());
+                }else {
+                    getNewsList();
+                }
             }
 
         });
@@ -99,10 +115,75 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                 Intent intent=new Intent(getActivity(), BeforeDateCheckActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.tv_circle_bianping:
+                if(indexTv != null){
+                    indexTv.setBackgroundResource(R.drawable.bg_username);
+                    if(indexTv == bianpingTv){
+                        indexTv = null;
+                        getNewsList();
+                        break;
+                    }
+                }
+                bianpingTv.setBackgroundResource(R.drawable.bg_username_selected);
+                indexTv = bianpingTv;
+                getNewsListWithLabel(indexTv.getText().toString());
+                break;
+            case R.id.tv_circle_oumei:
+                if(indexTv != null){
+                    indexTv.setBackgroundResource(R.drawable.bg_username);
+                    if(indexTv == oumeiTv){
+                        indexTv = null;
+                        getNewsList();
+                        break;
+                    }
+                }
+                oumeiTv.setBackgroundResource(R.drawable.bg_username_selected);
+                indexTv = oumeiTv;
+                getNewsListWithLabel(indexTv.getText().toString());
+                break;
+            case R.id.tv_circle_ercha:
+                if(indexTv != null){
+                    indexTv.setBackgroundResource(R.drawable.bg_username);
+                    if(indexTv == erchaTv){
+                        indexTv = null;
+                        getNewsList();
+                        break;
+                    }
+                }
+                erchaTv.setBackgroundResource(R.drawable.bg_username_selected);
+                indexTv = erchaTv;
+                getNewsListWithLabel(indexTv.getText().toString());
+                break;
+            case R.id.tv_circle_xieshi:
+                if(indexTv != null){
+                    indexTv.setBackgroundResource(R.drawable.bg_username);
+                    if(indexTv == xieshiTv){
+                        indexTv = null;
+                        getNewsList();
+                        break;
+                    }
+                }
+                xieshiTv.setBackgroundResource(R.drawable.bg_username_selected);
+                indexTv = xieshiTv;
+                getNewsListWithLabel(indexTv.getText().toString());
+                break;
+            case R.id.tv_circle_chouxiang:
+                if(indexTv != null){
+                    indexTv.setBackgroundResource(R.drawable.bg_username);
+                    if(indexTv == chouxiangTv){
+                        indexTv = null;
+                        getNewsList();
+                        break;
+                    }
+                }
+                chouxiangTv.setBackgroundResource(R.drawable.bg_username_selected);
+                indexTv = chouxiangTv;
+                getNewsListWithLabel(indexTv.getText().toString());
+                break;
         }
     }
 
-    private void reLoadNews() {
+    private void getNewsList() {
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
@@ -111,6 +192,24 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                         .post()
                         .url(url)
                         .id(1)
+                        .build()
+                        .execute(new MyStringCallback());
+                refreshLayout.finishRefresh();
+                return null;
+            }
+        }.execute();
+    }
+
+    private void getNewsListWithLabel(final String label){
+        new AsyncTask<Void,Void,Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=getNewsListWithLabel";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("label",label)
                         .build()
                         .execute(new MyStringCallback());
                 refreshLayout.finishRefresh();
@@ -154,9 +253,4 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        reLoadNews();
-    }
 }

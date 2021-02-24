@@ -21,6 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_circle_bianping"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -31,6 +32,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_circle_oumei"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -42,6 +44,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_circle_ercha"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,6 +56,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_circle_xieshi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,6 +68,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_circle_chouxiang"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -75,6 +80,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
