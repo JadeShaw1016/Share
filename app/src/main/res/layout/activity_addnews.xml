@@ -9,21 +9,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="14dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
         <ImageView
             android:id="@+id/title_back"
             android:layout_width="15dp"
             android:layout_height="match_parent"
             android:src="@drawable/title_back_selector2"
             android:adjustViewBounds="true"/>
-        <ImageView
+        <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/text_sendwork"/>
+            android:layout_height="wrap_content"
+            android:text="@string/send_works"
+            android:textColor="@color/fuxk_base_color_black"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_marginTop="4dp"/>
         <Button
             android:id="@id/add_news_btn_release"
             android:layout_width="60dp"
@@ -42,7 +44,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -86,7 +88,7 @@
                     android:maxLines="1"
                     android:hint="@string/add_news_et_title_hint_text"
                     android:maxLength="12"
-                    android:background="@drawable/rounded_4dp"/>
+                    android:background="@drawable/rounded_4dp" />
 
                 <TextView
                     android:id="@+id/add_news_tv_title_length"
