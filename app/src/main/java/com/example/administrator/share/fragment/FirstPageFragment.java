@@ -5,11 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,10 +22,8 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.FirstPageListAdapter0;
-import com.example.administrator.share.adapter.FirstPageListAdapter1;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
 import com.example.administrator.share.entity.CircleListForFound;
-import com.example.administrator.share.entity.Fruit;
 import com.example.administrator.share.util.BingPic;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
@@ -47,7 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
@@ -55,33 +49,23 @@ import okhttp3.Call;
 
 import static android.content.ContentValues.TAG;
 
-public class FirstPageFragment extends Fragment implements View.OnClickListener{
+public class FirstPageFragment extends Fragment{
 
     private Context mContext;
     private TextView titleText;
     private Spinner spinner;
     private List<Map<String,Object>> mList;
     private FirstPageListAdapter0 adapter0;
-    private FirstPageListAdapter1 adapter1;
     private FirstPageListAdapter2 adapter2;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
-    private List<Fruit> fruitList = new ArrayList<>();
     private LinearLayoutManager layoutManager;
-    private LinearLayoutManager layoutManager2;
-    private FloatingActionButton fab;
     private int POSITION = 0;
 
-    private Fruit[] fruits = {new Fruit("Apple", R.drawable.apple), new Fruit("Banana", R.drawable.banana),
-            new Fruit("Orange", R.drawable.orange), new Fruit("Watermelon", R.drawable.watermelon),
-            new Fruit("Pear", R.drawable.pear), new Fruit("Grape", R.drawable.grape),
-            new Fruit("Pineapple", R.drawable.pineapple), new Fruit("Strawberry", R.drawable.strawberry),
-            new Fruit("Cherry", R.drawable.cherry), new Fruit("Mango", R.drawable.mango)};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
-        initFruits();
         findViewById(view);
         initView();
         setAdapter();
@@ -90,7 +74,6 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
 
     private void findViewById(View view){
         titleText = view.findViewById(R.id.titleText);
-        fab = view.findViewById(R.id.fab);
         recyclerView = view.findViewById(R.id.recycler_view);
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
         spinner = view.findViewById(R.id.spinner);
@@ -101,7 +84,6 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
         mContext = getActivity();
         titleText.setText("每日精选");
         spinner.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(this);
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -111,56 +93,18 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
                         getSelectedCircles();
                         break;
                     case 1:
-                        refreshFruits();
+                        getMyFocusCircles();
+                        break;
+                    case 2:
+                        swipeRefresh.setRefreshing(false);
                         break;
                 }
             }
         });
-        layoutManager = new GridLayoutManager(getActivity(), 2);
-        layoutManager2 = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         getSelectedCircles();
     }
 
-    private void initFruits() {
-        fruitList.clear();
-        for (int i = 0; i < 50; i++) {
-            Random random = new Random();
-            int index = random.nextInt(fruits.length);
-            fruitList.add(fruits[index]);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.fab:
-                Snackbar.make(view, "Data deleted", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getActivity(), "Data restored", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
-                break;
-        }
-    }
-
-    private void refreshFruits() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initFruits();
-                        adapter1.notifyDataSetChanged();
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
-            }
-        }).start();
-    }
 
     private void initData() throws ExecutionException, InterruptedException {
         DataAsyncTask myTask  = new DataAsyncTask();;
@@ -190,15 +134,16 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
                     case 0:
                         titleText.setText("每日精选");
                         POSITION = 0;
-                        recyclerView.setLayoutManager(layoutManager2);
+                        getSelectedCircles();
+                        recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
                         break;
                     case 1:
                         titleText.setText("我的关注");
                         POSITION = 1;
-                        adapter1 = new FirstPageListAdapter1(fruitList);
+                        getMyFocusCircles();
                         recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter1);
+                        recyclerView.setAdapter(adapter0);
                         break;
                     case 2:
                         titleText.setText("干货分享");
@@ -214,7 +159,7 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
                             adapter2=new FirstPageListAdapter2(getActivity(),mList);
                             adapter2.notifyDataSetChanged();
                         }
-                        recyclerView.setLayoutManager(layoutManager2);
+                        recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter2);
                         break;
                 }
@@ -324,6 +269,23 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
         }.execute();
     }
 
+    private void getMyFocusCircles() {
+        new AsyncTask<Void,Void,Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=getMyFocusNewsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(1)
+                        .addParams("userId",String.valueOf(Constants.USER.getUserId()))
+                        .build()
+                        .execute(new MyStringCallback());
+                return null;
+            }
+        }.execute();
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -340,7 +302,7 @@ public class FirstPageFragment extends Fragment implements View.OnClickListener{
                 case 1:
                     if (mList != null && mList.size() > 0) {
                         adapter0 = new FirstPageListAdapter0(mContext, mList);
-                        recyclerView.setLayoutManager(layoutManager2);
+                        recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
                         swipeRefresh.setRefreshing(false);
                     }
