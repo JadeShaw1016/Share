@@ -2,6 +2,7 @@ package com.example.administrator.share.activity;//这里换成你自己的
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,7 +40,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     private MainNavigateTabBar mNavigateTabBar;
     public static Context mContext;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +52,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void findViewById() {
-
         mNavigateTabBar = findViewById(R.id.mainTabBar);
-
     }
 
     @Override
@@ -116,33 +114,38 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         return super.dispatchKeyEvent(event);
     }
 
+    /**
+     * 统计消息数量
+     */
+    private void findCommentStatus() {
+        new AsyncTask<Void,Void,Integer>(){
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Message?method=findMessageStatus";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .addParams("authorName",Constants.USER.getUsername())
+                        .addParams("authorId",Constants.USER.getUserId()+"")
+                        .build()
+                        .execute(new StringCallback(){
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                            }
+                            @Override
+                            public void onResponse(String response, int id) {
+                                mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
+                            }
+                        });
+                return null;
+            }
+        }.execute();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         findCommentStatus();
     }
-
-    /**
-     * 修改评论状态
-     */
-    private void findCommentStatus() {
-
-        String url = Constants.BASE_URL + "Comment?method=findCommentStatus";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .addParams("authorName",Constants.USER.getUsername())
-                .build()
-                .execute(new StringCallback(){
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
-                    @Override
-                    public void onResponse(String response, int id) {
-                        mNavigateTabBar.disPlayBadgeCount(2, Integer.parseInt(response));
-                    }
-                });
-    }
-
-
 }

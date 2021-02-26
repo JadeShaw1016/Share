@@ -271,6 +271,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(7)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("be_focused_personId",be_focused_personId + "")
+                .addParams("favorTime",DateUtils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -282,7 +284,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             DisplayToast("请先输入内容");
             return;
         }
-        String url = Constants.BASE_URL + "Comment?method=addNewComment";
+        String url = Constants.BASE_URL + "Message?method=addNewComment";
         OkHttpUtils
                 .post()
                 .url(url)
