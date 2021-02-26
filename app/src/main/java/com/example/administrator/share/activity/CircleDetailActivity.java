@@ -258,6 +258,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(2)
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("collectionTime",DateUtils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
