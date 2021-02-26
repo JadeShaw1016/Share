@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.Constants;
+import com.example.administrator.share.util.DateUtils;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -132,32 +133,19 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         String titleStr = titleEt.getText().toString();
         String contentStr = contentEt.getText().toString();
         uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-        String url;
-        if (imageFile != null && imageFile.exists()) {
-            url = Constants.BASE_URL + "News?method=releaseNewsWithImage";
-            OkHttpUtils
-                    .post()
-                    .addFile("image", imageFile.getName(), imageFile)
-                    .url(url)
-                    .id(1)
-                    .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
-                    .addParams("title", titleStr)
-                    .addParams("content", contentStr)
-                    .addParams("userId", Constants.USER.getUserId() + "")
-                    .build()
-                    .execute(new MyStringCallback());
-        } else {
-            url = Constants.BASE_URL + "News?method=releaseNewsWithoutImage";
-            OkHttpUtils
-                    .post()
-                    .url(url)
-                    .id(1)
-                    .addParams("title", titleStr)
-                    .addParams("content", contentStr)
-                    .addParams("userId", Constants.USER.getUserId() + "")
-                    .build()
-                    .execute(new MyStringCallback());
-        }
+        String url = Constants.BASE_URL + "News?method=releaseNewsWithImage";
+        OkHttpUtils
+                .post()
+                .addFile("image", imageFile.getName(), imageFile)
+                .url(url)
+                .id(1)
+                .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
+                .addParams("title", titleStr)
+                .addParams("content", contentStr)
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("releaseTime", DateUtils.getCurrentDatetime())
+                .build()
+                .execute(new MyStringCallback());
     }
 
     private void takePhoto(){
@@ -208,6 +196,10 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         if (TextUtils.isEmpty(contentStr)) {
             DisplayToast("请输入想说的话");
             contentEt.requestFocus();
+            return;
+        }
+        if (imageFile == null || !imageFile.exists()) {
+            DisplayToast("请上传你的作品图片");
             return;
         }
         releaseNews();
