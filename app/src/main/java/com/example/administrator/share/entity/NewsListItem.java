@@ -22,7 +22,11 @@ public class NewsListItem {
 
     private int commentId;
 
+    private int favorId;
+
     private String commentTime;
+
+    private String favorTime;
 
     private Integer clickTimes;
 
@@ -30,7 +34,13 @@ public class NewsListItem {
         return commentTime;
     }
 
+    public String getFavorTime() {
+        return favorTime;
+    }
+
     public int getCommentId(){return commentId;}
+
+    public int getFavorId(){return favorId;}
 
     public int getStatus(){return status;}
 

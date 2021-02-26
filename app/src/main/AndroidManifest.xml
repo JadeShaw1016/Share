@@ -61,6 +61,7 @@
         <activity
             android:name=".activity.FruitActivity"
             android:theme="@style/FruitActivityTheme" />
+        <activity android:name=".activity.FavorActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

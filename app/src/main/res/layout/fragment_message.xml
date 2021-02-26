@@ -13,12 +13,17 @@
 
         <LinearLayout style="@style/mid_layout"
             android:id="@+id/ll_message_comment">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/icon_comment2"/>
             <TextView
                 style="@style/usertext"
                 android:text="评论"
-                android:layout_marginStart="5dp"/>
+                android:layout_marginStart="10dp"/>
             <TextView
-                android:id="@+id/tv_message_badge"
+                android:id="@+id/tv_comment_badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"/>
@@ -29,21 +34,37 @@
             android:layout_marginEnd="17dp"/>
 
         <LinearLayout style="@style/mid_layout">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/icon_fans"/>
             <TextView
                 style="@style/usertext"
                 android:text="粉丝"
-                android:layout_marginStart="5dp"/>
+                android:layout_marginStart="10dp"/>
         </LinearLayout>
 
         <View style="@style/bg_line"
             android:layout_marginStart="17dp"
             android:layout_marginEnd="17dp"/>
 
-        <LinearLayout style="@style/mid_layout">
+        <LinearLayout style="@style/mid_layout"
+            android:id="@+id/ll_message_favor">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/icon_dianzan"/>
             <TextView
                 style="@style/usertext"
                 android:text="点赞"
-                android:layout_marginStart="5dp"/>
+                android:layout_marginStart="10dp"/>
+            <TextView
+                android:id="@+id/tv_favor_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"/>
         </LinearLayout>
 
         <View style="@style/bg_line"
@@ -51,15 +72,20 @@
             android:layout_marginEnd="17dp"/>
 
         <LinearLayout style="@style/mid_layout">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/icon_xitongtongzhi"/>
             <TextView
                 style="@style/usertext"
                 android:text="系统通知"
-                android:layout_marginStart="5dp"/>
+                android:layout_marginStart="10dp"/>
         </LinearLayout>
 
         <View style="@style/bg_line2" />
 
-        <LinearLayout style="@style/mid_layout">
+        <LinearLayout style="@style/base_layout">
             <TextView
                 style="@style/usertext"
                 android:text="全部私信"

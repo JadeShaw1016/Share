@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CommentActivity;
+import com.example.administrator.share.activity.FavorActivity;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -27,8 +28,11 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private Context mContext;
     private ImageView moreIv;
     private LinearLayout commentLl;
-    private BadgeView badge;
-    private TextView badgeTv;
+    private LinearLayout favorLl;
+    private BadgeView commentBadge;
+    private BadgeView favorBadge;
+    private TextView commentBadgeTv;
+    private TextView favorBadgeTv;
     private TextView titleText;
 
     @Override
@@ -43,7 +47,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         titleText = view.findViewById(R.id.titleText);
         moreIv = view.findViewById(R.id.iv_more);
         commentLl = view.findViewById(R.id.ll_message_comment);
-        badgeTv = view.findViewById(R.id.tv_message_badge);
+        favorLl = view.findViewById(R.id.ll_message_favor);
+        commentBadgeTv = view.findViewById(R.id.tv_comment_badge);
+        favorBadgeTv = view.findViewById(R.id.tv_favor_badge);
     }
 
     private void initView(){
@@ -52,15 +58,23 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         moreIv.setVisibility(View.VISIBLE);
         moreIv.setOnClickListener(this);
         commentLl.setOnClickListener(this);
-        badge = new BadgeView(mContext);
-        badge.setTargetView(badgeTv);
+        favorLl.setOnClickListener(this);
+        commentBadge = new BadgeView(mContext);
+        commentBadge.setTargetView(commentBadgeTv);
+        favorBadge = new BadgeView(mContext);
+        favorBadge.setTargetView(favorBadgeTv);
     }
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()){
             case R.id.ll_message_comment:
-                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                intent = new Intent(getActivity(), CommentActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_message_favor:
+                intent = new Intent(getActivity(), FavorActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_more:
@@ -69,7 +83,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     }
 
     private void findCommentStatus() {
-        String url = Constants.BASE_URL + "Comment?method=findCommentStatus";
+        String url = Constants.BASE_URL + "Message?method=findCommentStatus";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -81,7 +95,25 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                     }
                     @Override
                     public void onResponse(String response, int id) {
-                        badge.setBadgeCount(Integer.parseInt(response));
+                        commentBadge.setBadgeCount(Integer.parseInt(response));
+                    }
+                });
+    }
+
+    private void findFavorStatus() {
+        String url = Constants.BASE_URL + "Message?method=findFavorStatus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("authorId",Constants.USER.getUserId()+"")
+                .build()
+                .execute(new StringCallback(){
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        favorBadge.setBadgeCount(Integer.parseInt(response));
                     }
                 });
     }
@@ -90,5 +122,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         findCommentStatus();
+        findFavorStatus();
     }
 }
