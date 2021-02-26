@@ -29,7 +29,7 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
+public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
 
     private Context mContext;
     private LayoutInflater inflater;
@@ -54,7 +54,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         }
     }
 
-    public MessageListAdapter(Context mContext, List<NewsListItem> mList) {
+    public CommentListAdapter(Context mContext, List<NewsListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -66,7 +66,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = inflater.inflate(R.layout.item_message, parent, false);
+        View view = inflater.inflate(R.layout.item_comment, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.messageLl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +82,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
                         protected Integer doInBackground(Void... voids) {
-                            String url = Constants.BASE_URL + "Comment?method=updateCommentStatus";
+                            String url = Constants.BASE_URL + "Message?method=updateCommentStatus";
                             OkHttpUtils
                                     .post()
                                     .url(url)

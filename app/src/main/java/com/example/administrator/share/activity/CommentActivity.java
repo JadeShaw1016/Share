@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.adapter.MessageListAdapter;
+import com.example.administrator.share.adapter.CommentListAdapter;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -111,7 +111,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Comment?method=getCommentsList";
+                String url = Constants.BASE_URL + "Message?method=getCommentsList";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -140,7 +140,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        MessageListAdapter adapter = new MessageListAdapter(mContext, mList);
+                        CommentListAdapter adapter = new CommentListAdapter(mContext, mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                     }
