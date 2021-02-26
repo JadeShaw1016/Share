@@ -20,7 +20,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/item_pic"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:lines="4"
         android:ellipsize="end"
         android:textColor="#000000"/>
@@ -31,11 +31,10 @@
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/item_pic"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="bottom"
         android:layout_marginBottom="15dp"
         android:textColor="#666666"/>
-
 
     <com.example.administrator.share.util.DownloadButton
         android:id="@+id/download_btn"
@@ -48,8 +47,7 @@
         android:focusable="false"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_toEndOf="@+id/item_time"
+        android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/item_time" />
-
 
 </RelativeLayout>

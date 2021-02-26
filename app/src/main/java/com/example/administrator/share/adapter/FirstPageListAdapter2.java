@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.FruitActivity;
 import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.util.DownloadButton;
 
@@ -62,7 +63,10 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Toast.makeText(v.getContext(), "you clicked view " + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, FruitActivity.class);
+                intent.putExtra("text",(CharSequence) mapList.get(position).get("text"));
+                intent.putExtra("uri", Uri.parse((String)mapList.get(position).get("picUri")));
+                mContext.startActivity(intent);
             }
         });
         holder.pic.setOnClickListener(new View.OnClickListener() {
