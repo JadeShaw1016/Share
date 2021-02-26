@@ -198,7 +198,7 @@ public class BadgeViewTwo extends Activity implements View.OnClickListener {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (null == convertView) {
-                convertView = View.inflate(parent.getContext(), R.layout.item_message, null);
+                convertView = View.inflate(parent.getContext(), R.layout.item_comment, null);
                 viewHolder = new ViewHolder();
                 viewHolder.text = (TextView) convertView.findViewById(R.id.tv_badge);
                 //                viewHolder.text.setText(position);
