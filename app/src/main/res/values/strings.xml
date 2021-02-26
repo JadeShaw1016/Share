@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">欢迎来到 Share</string>
     <string name="save_picture">保存图片</string>
+    <string name="send_works">发布作品</string>
 
     <!--个人信息-->
     <string name="face">头像</string>
@@ -38,7 +39,7 @@
     <string name="me_favor_text">我的收藏</string>
     <string name="me_report_text">成长报告</string>
     <string name="me_record_number">0</string>
-    <string name="me_app_version">V1.2</string>
+    <string name="me_app_version">V1.3</string>
     <string name="confirm_modify_text">确认修改</string>
     <!--我的-->
 
