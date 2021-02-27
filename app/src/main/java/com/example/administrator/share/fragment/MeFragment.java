@@ -4,6 +4,7 @@ package com.example.administrator.share.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
@@ -143,9 +144,10 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void getUserFace(){
-        new Thread(new Runnable() {
+        new AsyncTask<Void,Void,Integer>(){
+
             @Override
-            public void run() {
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
                 OkHttpUtils
                         .get()//
@@ -162,8 +164,9 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                                 Constants.FACEIMAGE = bitmap;
                             }
                         });
+                return null;
             }
-        }).start();
+        }.execute();
     }
 
     /**
