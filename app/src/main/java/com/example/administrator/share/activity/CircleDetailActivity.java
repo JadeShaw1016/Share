@@ -163,7 +163,12 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 addNewComment();
                 break;
             case R.id.btn_focus:
-                addFocus();
+                if(be_focused_personId == Constants.USER.getUserId()){
+                    DisplayToast("不能关注自己哦！");
+                }
+                else{
+                    addFocus();
+                }
                 break;
             case R.id.news_detail_image:
                 dialog.show();
