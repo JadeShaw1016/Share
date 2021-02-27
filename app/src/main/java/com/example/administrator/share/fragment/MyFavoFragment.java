@@ -111,7 +111,6 @@ public class MyFavoFragment extends Fragment{
                         .addParams("userId", Constants.USER.getUserId() + "")
                         .build()
                         .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
             }
         }).start();
     }
@@ -134,6 +133,7 @@ public class MyFavoFragment extends Fragment{
                         CollectionListAdapter adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
+                        refreshLayout.finishRefresh();
                     }
                     break;
 

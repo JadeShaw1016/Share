@@ -56,7 +56,7 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
         title_back = $(R.id.title_back);
         mListView = findViewById(R.id.normal_list_lv);
         refreshLayout = findViewById(R.id.refreshLayout);
-        msgRemindTv = findViewById(R.id.tv_msg_remind);
+        msgRemindTv = findViewById(R.id.tv_fav_remind);
         messageLl = findViewById(R.id.layout_message);
     }
 
@@ -119,7 +119,6 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
             }
         }).start();
     }
@@ -143,6 +142,7 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
                         FavorListAdapter adapter = new FavorListAdapter(mContext, mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
+                        refreshLayout.finishRefresh();
                     }
                     break;
                 default:
