@@ -88,6 +88,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 .post()
                 .url(url)
                 .addParams("authorName",Constants.USER.getUsername())
+                .addParams("userId",Constants.USER.getUserId()+"")
                 .build()
                 .execute(new StringCallback(){
                     @Override
