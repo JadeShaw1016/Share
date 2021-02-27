@@ -194,7 +194,6 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                         .id(1)
                         .build()
                         .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
                 return null;
             }
         }.execute();
@@ -212,7 +211,6 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                         .addParams("label",label)
                         .build()
                         .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
                 return null;
             }
         }.execute();
@@ -240,6 +238,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                     }else{
                         circleRemindTv.setVisibility(View.VISIBLE);
                     }
+                    refreshLayout.finishRefresh();
                     break;
                 default:
                     Toast.makeText(mContext, "what！", Toast.LENGTH_SHORT).show();
