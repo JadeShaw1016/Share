@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -40,6 +42,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private LinearLayoutManager layoutManager;
     private FrameLayout messageLl;
     private View title_back;
+    private List<NewsListItem> mList;
+    private CommentListAdapter adapter;
+    private final int PAGE_COUNT = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,21 +76,25 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
 
     private void refreshListener(){
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if(adapter != null){
+                    adapter.resetDatas();
+                }
                 getComments();
             }
 
         });
         //上拉加载
-//        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//                refreshlayout.finishLoadmore(1000);
-//            }
-//
-//        });
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
+            }
+
+        });
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
@@ -104,13 +113,34 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<NewsListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+        } else {
+            DisplayToast("我已经到底咯");
+        }
+        refreshLayout.finishLoadmore();
+    }
+
     /**
      * 获取评论
      */
     private void getComments() {
-        new Thread(new Runnable() {
+        new AsyncTask<Void,Void,Integer>(){
+
             @Override
-            public void run() {
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Message?method=getCommentsList";
                 OkHttpUtils
                         .post()
@@ -119,9 +149,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         .addParams("authorName", Constants.USER.getUsername())
                         .build()
                         .execute(new MyStringCallback());
-                refreshLayout.finishRefresh();
+                return null;
             }
-        }).start();
+        }.execute();
     }
 
 
@@ -132,7 +162,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             switch (id) {
                 case 1:
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
-                    List<NewsListItem> mList = gson.fromJson(response, type);
+                    mList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mList.size() == 0) {
                             msgRemindTv.setVisibility(View.VISIBLE);
@@ -140,9 +170,10 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        CommentListAdapter adapter = new CommentListAdapter(mContext, mList);
+                        adapter = new CommentListAdapter(mContext, getDatas(0, PAGE_COUNT));
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
+                        refreshLayout.finishRefresh();
                     }
                     break;
                 default:

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -24,6 +24,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         ImageView imageIv;
         TextView commentTimeTv;
         BadgeView badge;
-        LinearLayout messageLl;
+        RelativeLayout messageLl;
         public ViewHolder(View view) {
             super(view);
             usernameTv = view.findViewById(R.id.tv_msg_username);
@@ -168,5 +169,16 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         } else{
             return false;
         }
+    }
+
+    public void updateList(List<NewsListItem> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void resetDatas() {
+        mList = new ArrayList<>();
     }
 }
