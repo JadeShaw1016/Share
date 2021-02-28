@@ -1,12 +1,10 @@
 package com.example.administrator.share.adapter;
 
-import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FruitActivity;
-import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.util.DownloadButton;
 
 import java.util.List;
@@ -29,11 +27,11 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Map<String,Object>> mapList;
+    private List<Map<String,String>> mapList;
     private boolean isDownloading;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        View fruitView;
+        View mView;
         ImageView pic;
         TextView text;
         TextView time;
@@ -41,7 +39,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
 
         public ViewHolder(View view) {
             super(view);
-            fruitView = view;
+            mView = view;
             pic=view.findViewById(R.id.item_pic);
             text=view.findViewById(R.id.item_text);
             time=view.findViewById(R.id.item_time);
@@ -49,7 +47,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
         }
     }
 
-    public FirstPageListAdapter2(Context mContext, List<Map<String,Object>> mapList) {
+    public FirstPageListAdapter2(Context mContext, List<Map<String,String>> mapList) {
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mapList=mapList;
@@ -59,34 +57,14 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_firstpage, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-        holder.fruitView.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, FruitActivity.class);
                 intent.putExtra("text",(CharSequence) mapList.get(position).get("text"));
-                intent.putExtra("uri", Uri.parse((String)mapList.get(position).get("picUri")));
+                intent.putExtra("uri", Uri.parse(mapList.get(position).get("picUri")));
                 mContext.startActivity(intent);
-            }
-        });
-        holder.pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //大图所依附的dialog
-                int position = holder.getAdapterPosition();
-                final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
-                ImageView imageView = new ImageView(MainMenuActivity.mContext);
-                imageView.setImageBitmap((Bitmap) mapList.get(position).get("pic"));
-                dialog.setContentView(imageView);
-                dialog.show();
-
-                //大图的点击事件（点击让他消失）
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
             }
         });
         holder.btn.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +81,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
                     DownloadManager.Request request = new DownloadManager.Request(uri);
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic"+((DownloadButton)view).getTime()+".jpg");
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    long reference = downloadManager.enqueue(request);
+                    downloadManager.enqueue(request);
                 }
             }
         });
@@ -112,17 +90,15 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Bitmap bitmap = (Bitmap) mapList.get(position).get("pic");
-        holder.pic.setImageBitmap(bitmap);
-        holder.text.setText((CharSequence) mapList.get(position).get("text"));
-        holder.time.setText((CharSequence) mapList.get(position).get("time"));
-
-        Uri uri = Uri.parse((String)mapList.get(position).get("picUri"));
+        holder.text.setText(mapList.get(position).get("text"));
+        holder.time.setText(mapList.get(position).get("time"));
+        Uri uri = Uri.parse(mapList.get(position).get("picUri"));
+        Glide.with(mContext).load(uri).into(holder.pic);
         isDownloading=false;
         CompleteReceiver completeReceiver = new CompleteReceiver();
         mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         holder.btn.setUri(uri);
-        holder.btn.setTime((String)mapList.get(position).get("time"));
+        holder.btn.setTime(mapList.get(position).get("time"));
     }
 
     @Override
