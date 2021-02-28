@@ -1,10 +1,10 @@
 package com.example.administrator.share.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.FirstPageListAdapter0;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
 import com.example.administrator.share.entity.CircleListForFound;
@@ -49,19 +48,22 @@ import okhttp3.Call;
 
 import static android.content.ContentValues.TAG;
 
-public class FirstPageFragment extends Fragment{
+public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private Context mContext;
     private TextView titleText;
     private Spinner spinner;
-    private List<Map<String,Object>> mList;
+    private List<Map<String,String>> mList;
     private FirstPageListAdapter0 adapter0;
     private FirstPageListAdapter2 adapter2;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
     private LinearLayoutManager layoutManager;
     private int POSITION = 0;
-
+    private List<CircleListForFound> mCircleList;
+    private final int PAGE_COUNT = 5;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private int lastVisibleItem = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,30 +87,63 @@ public class FirstPageFragment extends Fragment{
         titleText.setText("每日精选");
         spinner.setVisibility(View.VISIBLE);
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefresh.setOnRefreshListener(this);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onRefresh() {
-                switch (POSITION){
-                    case 0:
-                        getSelectedCircles();
-                        break;
-                    case 1:
-                        getMyFocusCircles();
-                        break;
-                    case 2:
-                        swipeRefresh.setRefreshing(false);
-                        break;
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!adapter0.isFadeTips() && lastVisibleItem + 1 == adapter0.getItemCount()) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
+                            }
+                        }, 500);
+                    }
+
+                    if (adapter0.isFadeTips() && lastVisibleItem + 2 == adapter0.getItemCount()) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
+                            }
+                        }, 500);
+                    }
                 }
             }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
         });
-        layoutManager = new LinearLayoutManager(getActivity());
         getSelectedCircles();
     }
 
+    @Override
+    public void onRefresh() {
+        switch (POSITION){
+            case 0:
+                if(adapter0 != null){
+                    adapter0.resetDatas();
+                }
+                getSelectedCircles();
+                break;
+            case 1:
+                getMyFocusCircles();
+                break;
+            case 2:
+                swipeRefresh.setRefreshing(false);
+                break;
+        }
+    }
 
     private void initData() throws ExecutionException, InterruptedException {
-        DataAsyncTask myTask  = new DataAsyncTask();;
-        List<Map<String, Object>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
+        DataAsyncTask myTask  = new DataAsyncTask();
+        List<Map<String, String>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
         mList.addAll(list);
         adapter2=new FirstPageListAdapter2(getActivity(),mList);
         adapter2.notifyDataSetChanged();
@@ -172,9 +207,9 @@ public class FirstPageFragment extends Fragment{
         });
     }
 
-    static class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,Object>>> {
+    static class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,String>>> {
 
-        private List<Map<String,Object>> list;
+        private List<Map<String,String>> list;
 
         DataAsyncTask(){
             super();
@@ -182,13 +217,7 @@ public class FirstPageFragment extends Fragment{
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Toast.makeText(MainMenuActivity.mContext,"切换中",Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        protected List<Map<String,Object>> doInBackground(Void... params) {
+        protected List<Map<String,String>> doInBackground(Void... params) {
             try{
                 for(int count = 0;count<14;count+=7){
                     String path = "http://www.bing.com/HPImageArchive.aspx?format=js&idx="+count+"&n=7";
@@ -203,10 +232,9 @@ public class FirstPageFragment extends Fragment{
                         Gson gson = new Gson();
                         BingPic bingPic = gson.fromJson(data,type);
                         for(i=0;i<7;i++){
-                            Map<String,Object> map;
+                            Map<String,String> map;
                             map=new HashMap<>();
                             map.put("picUri","http://cn.bing.com"+bingPic.getImages().get(i).getUrl());
-                            map.put("pic",getBitmap("http://cn.bing.com"+bingPic.getImages().get(i).getUrl()));
                             map.put("text",bingPic.getImages().get(i).getCopyright());
                             map.put("time",bingPic.getImages().get(i).getEnddate());
                             list.add(map);
@@ -221,21 +249,6 @@ public class FirstPageFragment extends Fragment{
                 e.printStackTrace();
             }
             return list;
-        }
-
-        private  Bitmap getBitmap(String path) throws IOException {
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setRequestMethod("GET");
-            if (conn.getResponseCode() == 200){
-                InputStream inputStream = conn.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                conn.disconnect();
-                return bitmap;
-            }
-            conn.disconnect();
-            return null;
         }
 
         private String readStream(InputStream inputStream) throws IOException{
@@ -290,18 +303,17 @@ public class FirstPageFragment extends Fragment{
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            List<CircleListForFound> mList;
             try {
                 Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
-                mList = gson.fromJson(response, type);
+                mCircleList = gson.fromJson(response, type);
             } catch (Exception e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                mList = null;
+                mCircleList = null;
             }
             switch (id) {
                 case 1:
-                    if (mList != null && mList.size() > 0) {
-                        adapter0 = new FirstPageListAdapter0(mContext, mList);
+                    if (mCircleList != null && mCircleList.size() > 0) {
+                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
                         swipeRefresh.setRefreshing(false);
@@ -316,6 +328,25 @@ public class FirstPageFragment extends Fragment{
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private List<CircleListForFound> getDatas(final int firstIndex, final int lastIndex) {
+        List<CircleListForFound> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mCircleList.size()) {
+                resList.add(mCircleList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<CircleListForFound> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter0.updateList(newDatas,true);
+        } else {
+            adapter0.updateList(null, false);
         }
     }
 }
