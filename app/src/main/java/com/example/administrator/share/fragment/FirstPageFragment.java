@@ -94,22 +94,43 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!adapter0.isFadeTips() && lastVisibleItem + 1 == adapter0.getItemCount()) {
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
-                            }
-                        }, 500);
-                    }
+                    if(POSITION == 0 || POSITION == 1){
+                        if (!adapter0.isFadeTips() && lastVisibleItem + 1 == adapter0.getItemCount()) {
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
+                                }
+                            }, 500);
+                        }
 
-                    if (adapter0.isFadeTips() && lastVisibleItem + 2 == adapter0.getItemCount()) {
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
-                            }
-                        }, 500);
+                        if (adapter0.isFadeTips() && lastVisibleItem + 2 == adapter0.getItemCount()) {
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateRecyclerView(adapter0.getRealLastPosition(), adapter0.getRealLastPosition() + PAGE_COUNT);
+                                }
+                            }, 500);
+                        }
+                    }
+                    else{
+                        if (!adapter2.isFadeTips() && lastVisibleItem + 1 == adapter2.getItemCount()) {
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateRecyclerView2(adapter2.getRealLastPosition(), adapter2.getRealLastPosition() + PAGE_COUNT);
+                                }
+                            }, 500);
+                        }
+
+                        if (adapter2.isFadeTips() && lastVisibleItem + 2 == adapter2.getItemCount()) {
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateRecyclerView2(adapter2.getRealLastPosition(), adapter2.getRealLastPosition() + PAGE_COUNT);
+                                }
+                            }, 500);
+                        }
                     }
                 }
             }
@@ -127,9 +148,6 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     public void onRefresh() {
         switch (POSITION){
             case 0:
-                if(adapter0 != null){
-                    adapter0.resetDatas();
-                }
                 getSelectedCircles();
                 break;
             case 1:
@@ -145,7 +163,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         DataAsyncTask myTask  = new DataAsyncTask();
         List<Map<String, String>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
         mList.addAll(list);
-        adapter2=new FirstPageListAdapter2(getActivity(),mList);
+        adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
         adapter2.notifyDataSetChanged();
     }
 
@@ -191,7 +209,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                             }
                         }
                         else{
-                            adapter2=new FirstPageListAdapter2(getActivity(),mList);
+                            adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
                             adapter2.notifyDataSetChanged();
                         }
                         recyclerView.setLayoutManager(layoutManager);
@@ -347,6 +365,25 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             adapter0.updateList(newDatas,true);
         } else {
             adapter0.updateList(null, false);
+        }
+    }
+
+    private List<Map<String,String>> getDatas2(final int firstIndex, final int lastIndex) {
+        List<Map<String,String>> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView2(int fromIndex, int toIndex) {
+        List<Map<String,String>> newDatas = getDatas2(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter2.updateList(newDatas,true);
+        } else {
+            adapter2.updateList(null, false);
         }
     }
 }

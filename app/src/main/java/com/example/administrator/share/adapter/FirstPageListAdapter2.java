@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +25,17 @@ import com.example.administrator.share.util.DownloadButton;
 import java.util.List;
 import java.util.Map;
 
-public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAdapter2.ViewHolder> {
+public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Map<String,String>> mapList;
     private boolean isDownloading;
+    private int normalType = 0;
+    private int footType = 1;
+    private boolean hasMore;
+    private boolean fadeTips = false;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
@@ -47,63 +54,101 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
         }
     }
 
-    public FirstPageListAdapter2(Context mContext, List<Map<String,String>> mapList) {
+    static class FootHolder extends RecyclerView.ViewHolder {
+        private TextView tips;
+
+        public FootHolder(View itemView) {
+            super(itemView);
+            tips = itemView.findViewById(R.id.tips);
+        }
+    }
+
+    public FirstPageListAdapter2(Context mContext, List<Map<String,String>> mapList,boolean hasMore) {
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mapList=mapList;
+        this.hasMore = hasMore;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_firstpage, parent, false);
-        final ViewHolder holder = new ViewHolder(view);
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                Intent intent = new Intent(mContext, FruitActivity.class);
-                intent.putExtra("text",(CharSequence) mapList.get(position).get("text"));
-                intent.putExtra("uri", Uri.parse(mapList.get(position).get("picUri")));
-                mContext.startActivity(intent);
-            }
-        });
-        holder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isDownloading){
-                    Toast.makeText(mContext, "当前已在进行下载，请等待下载完成", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(mContext, "开始下载...", Toast.LENGTH_SHORT).show();
-                    isDownloading=true;
-                    Uri uri = ((DownloadButton)view).getUri();
-                    DownloadManager downloadManager;
-                    downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic"+((DownloadButton)view).getTime()+".jpg");
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    downloadManager.enqueue(request);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final RecyclerView.ViewHolder holder;
+        if (viewType == normalType) {
+            View view = mInflater.inflate(R.layout.item_firstpage, parent, false);
+            holder = new ViewHolder(view);
+            ((ViewHolder)holder).mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    Intent intent = new Intent(mContext, FruitActivity.class);
+                    intent.putExtra("text",(CharSequence) mapList.get(position).get("text"));
+                    intent.putExtra("uri", Uri.parse(mapList.get(position).get("picUri")));
+                    mContext.startActivity(intent);
                 }
-            }
-        });
+            });
+            ((ViewHolder)holder).btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isDownloading){
+                        Toast.makeText(mContext, "当前已在进行下载，请等待下载完成", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(mContext, "开始下载...", Toast.LENGTH_SHORT).show();
+                        isDownloading=true;
+                        Uri uri = ((DownloadButton)view).getUri();
+                        DownloadManager downloadManager;
+                        downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                        DownloadManager.Request request = new DownloadManager.Request(uri);
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic"+((DownloadButton)view).getTime()+".jpg");
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        downloadManager.enqueue(request);
+                    }
+                }
+            });
+        } else {
+            View view = mInflater.inflate(R.layout.footview, parent, false);
+            holder = new FootHolder(view);
+        }
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.text.setText(mapList.get(position).get("text"));
-        holder.time.setText(mapList.get(position).get("time"));
-        Uri uri = Uri.parse(mapList.get(position).get("picUri"));
-        Glide.with(mContext).load(uri).into(holder.pic);
-        isDownloading=false;
-        CompleteReceiver completeReceiver = new CompleteReceiver();
-        mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        holder.btn.setUri(uri);
-        holder.btn.setTime(mapList.get(position).get("time"));
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ViewHolder) {
+            ((ViewHolder)holder).text.setText(mapList.get(position).get("text"));
+            ((ViewHolder)holder).time.setText(mapList.get(position).get("time"));
+            Uri uri = Uri.parse(mapList.get(position).get("picUri"));
+            Glide.with(mContext).load(uri).into(((ViewHolder)holder).pic);
+            isDownloading=false;
+            CompleteReceiver completeReceiver = new CompleteReceiver();
+            mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            ((ViewHolder)holder).btn.setUri(uri);
+            ((ViewHolder)holder).btn.setTime(mapList.get(position).get("time"));
+        } else {
+            ((FootHolder) holder).tips.setVisibility(View.VISIBLE);
+            if (hasMore) {
+                fadeTips = false;
+                if (mapList.size() > 0) {
+                    ((FootHolder) holder).tips.setText("正在加载更多...");
+                }
+            } else {
+                if (mapList.size() > 0) {
+                    ((FootHolder) holder).tips.setText("没有更多数据了");
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((FootHolder) holder).tips.setVisibility(View.GONE);
+                            fadeTips = true;
+                            hasMore = true;
+                        }
+                    }, 500);
+                }
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mapList.size();
+        return mapList.size()+1;
     }
 
     class CompleteReceiver extends BroadcastReceiver {
@@ -113,6 +158,31 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<FirstPageListAda
                 Toast.makeText(mContext, "图片下载完成", Toast.LENGTH_SHORT).show();
                 isDownloading=false;
             }
+        }
+    }
+
+    public void updateList(List<Map<String,String>> newDatas, boolean hasMore) {
+        if (newDatas != null) {
+            mapList.addAll(newDatas);
+        }
+        this.hasMore = hasMore;
+        notifyDataSetChanged();
+    }
+
+    public boolean isFadeTips() {
+        return fadeTips;
+    }
+
+    public int getRealLastPosition() {
+        return mapList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getItemCount() - 1) {
+            return footType;
+        } else {
+            return normalType;
         }
     }
 }

@@ -20,7 +20,6 @@ import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -159,10 +158,6 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
 
     public boolean isFadeTips() {
         return fadeTips;
-    }
-
-    public void resetDatas() {
-        mList = new ArrayList<>();
     }
 
     public int getRealLastPosition() {
