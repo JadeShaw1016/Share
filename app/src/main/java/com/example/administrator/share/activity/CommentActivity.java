@@ -3,6 +3,7 @@ package com.example.administrator.share.activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,13 +17,15 @@ import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -74,19 +77,11 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         messageLl.setVisibility(View.VISIBLE);
     }
 
-
     private void refreshListener(){
-        //下拉刷新
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                if(adapter != null){
-                    adapter.resetDatas();
-                }
-                getComments();
-            }
-
-        });
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
         //上拉加载
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -96,10 +91,17 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
         });
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-//                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
-                return new MaterialHeader(context).setShowBezierWave(false);
+                return new FalsifyHeader(context);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
     }
@@ -111,26 +113,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
         }
-    }
-
-    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<NewsListItem> resList = new ArrayList<>();
-        for (int i = firstIndex; i < lastIndex; i++) {
-            if (i < mList.size()) {
-                resList.add(mList.get(i));
-            }
-        }
-        return resList;
-    }
-
-    private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
-        if (newDatas.size() > 0) {
-            adapter.updateList(newDatas);
-        } else {
-            DisplayToast("我已经到底咯");
-        }
-        refreshLayout.finishLoadmore();
     }
 
     /**
@@ -194,4 +176,23 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         getComments();
     }
 
+    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<NewsListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
+        }
+    }
 }

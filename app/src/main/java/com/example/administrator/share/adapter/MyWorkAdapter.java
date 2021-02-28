@@ -106,4 +106,11 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
     public int getItemCount() {
         return mList.size();
     }
+
+    public void updateList(List<NewsListItem> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
 }

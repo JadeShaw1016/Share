@@ -105,5 +105,11 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         return mList.size();
     }
 
+    public void updateList(List<CircleListForFound> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
 
 }

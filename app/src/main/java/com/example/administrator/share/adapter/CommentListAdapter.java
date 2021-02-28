@@ -24,7 +24,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -176,9 +175,5 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             mList.addAll(newDatas);
         }
         notifyDataSetChanged();
-    }
-
-    public void resetDatas() {
-        mList = new ArrayList<>();
     }
 }

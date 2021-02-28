@@ -139,5 +139,10 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
         }.execute();
     }
 
-
+    public void updateList(List<FansListItem> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
 }

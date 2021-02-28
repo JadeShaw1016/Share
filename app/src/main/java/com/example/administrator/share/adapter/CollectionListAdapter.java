@@ -111,4 +111,11 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
             }
         }.execute();
     }
+
+    public void updateList(List<NewsListItem> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
 }

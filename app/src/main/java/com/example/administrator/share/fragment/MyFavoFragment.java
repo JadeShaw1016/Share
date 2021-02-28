@@ -2,6 +2,7 @@ package com.example.administrator.share.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,12 +20,14 @@ import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -42,6 +45,8 @@ public class MyFavoFragment extends Fragment{
     private TextView favRemindTv;
     private RecyclerView mListView;
     private LinearLayoutManager layoutManager;
+    private CollectionListAdapter adapter;
+    private final int PAGE_COUNT = 10;
 
     public static Fragment newInstance(String title){
         MyFavoFragment fragmentOne = new MyFavoFragment();
@@ -72,25 +77,29 @@ public class MyFavoFragment extends Fragment{
     }
 
     private void refreshListener(){
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getFavors();
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
             }
-
         });
-        //下拉加载
-//        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//                refreshlayout.finishLoadmore(1000);
-//            }
-//
-//        });
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
+                return new FalsifyHeader(context);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
     }
@@ -130,7 +139,7 @@ public class MyFavoFragment extends Fragment{
                             favRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        CollectionListAdapter adapter = new CollectionListAdapter(getActivity(), mList);
+                        adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                         refreshLayout.finishRefresh();
@@ -154,5 +163,25 @@ public class MyFavoFragment extends Fragment{
     public void onResume() {
         super.onResume();
         getFavors();
+    }
+
+    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<NewsListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
+        }
     }
 }

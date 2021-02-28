@@ -2,6 +2,7 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,7 +12,17 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FansListAdapter;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.FansListItem;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FocusActivity extends BaseActivity implements View.OnClickListener{
@@ -23,6 +34,9 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
     private Context mContext;
     private LinearLayoutManager layoutManager;
     private List<FansListItem> mFocusList;
+    private RefreshLayout refreshLayout;
+    private FansListAdapter adapter;
+    private final int PAGE_COUNT = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +45,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_fans_focus);
         findViewById();
         initView();
+        refreshListener();
     }
 
     @Override
@@ -38,8 +53,9 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         mContext = this;
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
-        mListView = findViewById(R.id.normal_list_lv);
-        focusRemindTv = findViewById(R.id.tv_focus_remind);
+        mListView = $(R.id.normal_list_lv);
+        focusRemindTv = $(R.id.tv_focus_remind);
+        refreshLayout = $(R.id.refreshLayout);
     }
 
     @Override
@@ -48,6 +64,35 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         getFocus();
+    }
+
+    private void refreshListener(){
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
+            }
+
+        });
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                return new FalsifyHeader(context);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
     }
 
     @Override
@@ -69,9 +114,28 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
             focusRemindTv.setVisibility(View.INVISIBLE);
         }
         //存储用户
-        FansListAdapter adapter = new FansListAdapter(mContext, mFocusList,0);
+        adapter = new FansListAdapter(mContext, mFocusList,0);
         mListView.setAdapter(adapter);
         mListView.setLayoutManager(layoutManager);
     }
 
+    private List<FansListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<FansListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mFocusList.size()) {
+                resList.add(mFocusList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<FansListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
+        }
+    }
 }

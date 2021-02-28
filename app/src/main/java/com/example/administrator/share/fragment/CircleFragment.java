@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,11 +24,15 @@ import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -50,6 +55,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private LinearLayoutManager layoutManager;
     private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
     private TextView indexTv;
+    private FoundCircleAdapter adapter;
+    private List<CircleListForFound> mList;
+    private final int PAGE_COUNT = 5;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,9 +97,15 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void refreshListener(){
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.resetNoMoreData();
                 if(indexTv != null){
                     getNewsListWithLabel(indexTv.getText().toString());
                 }else {
@@ -101,10 +115,27 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
 
         });
 
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
+            }
+
+        });
+
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
                 return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
     }
@@ -221,7 +252,6 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            List<CircleListForFound> mList;
             try {
                 Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
                 mList = gson.fromJson(response, type);
@@ -232,11 +262,11 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
             switch (id) {
                 case 1:
                     if (mList != null && mList.size() > 0) {
-                        FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, mList);
+                        adapter = new FoundCircleAdapter(mContext, getDatas(0, PAGE_COUNT));
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.INVISIBLE);
                     }else{
-                        FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleListForFound>());
+                        adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleListForFound>());
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.VISIBLE);
                     }
@@ -251,6 +281,26 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private List<CircleListForFound> getDatas(final int firstIndex, final int lastIndex) {
+        List<CircleListForFound> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<CircleListForFound> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
         }
     }
 

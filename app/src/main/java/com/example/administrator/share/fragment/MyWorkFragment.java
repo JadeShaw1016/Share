@@ -1,11 +1,12 @@
 package com.example.administrator.share.fragment;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,15 @@ import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -34,10 +44,11 @@ public class MyWorkFragment extends Fragment {
 
     private List<NewsListItem> mList;
     private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefresh;
+    private RefreshLayout refreshLayout;
     private GridLayoutManager layoutManager;
     private TextView myworkRemindTv;
     private MyWorkAdapter adapter;
+    private final int PAGE_COUNT = 10;
 
     public static Fragment newInstance(String title){
         MyWorkFragment fragmentOne = new MyWorkFragment();
@@ -52,22 +63,48 @@ public class MyWorkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_mywork,container,false);
         findViewById(view);
-        getMyWorks();
+        initView();
+        refreshListener();
         return view;
     }
 
     private void findViewById(View view){
         recyclerView = view.findViewById(R.id.rv_mywork);
+        refreshLayout = view.findViewById(R.id.swipe_refresh_mywork);
+        myworkRemindTv = view.findViewById(R.id.tv_mywork_remind);
+    }
+
+    private void initView(){
         layoutManager = new GridLayoutManager(getActivity(), 2);
-        swipeRefresh = view.findViewById(R.id.swipe_refresh_mywork);
-        swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    }
+
+    private void refreshListener(){
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
-            public void onRefresh() {
-                getMyWorks();
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
+            }
+
+        });
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                return new FalsifyHeader(context);
             }
         });
-        myworkRemindTv = view.findViewById(R.id.tv_mywork_remind);
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
     }
 
     /**
@@ -109,7 +146,7 @@ public class MyWorkFragment extends Fragment {
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                        swipeRefresh.setRefreshing(false);
+                        refreshLayout.finishRefresh();
                     }
                     break;
 
@@ -129,5 +166,25 @@ public class MyWorkFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getMyWorks();
+    }
+
+    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<NewsListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
+        }
     }
 }

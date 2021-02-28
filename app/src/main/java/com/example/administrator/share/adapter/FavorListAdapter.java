@@ -166,4 +166,11 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
             return false;
         }
     }
+
+    public void updateList(List<NewsListItem> newDatas) {
+        if (newDatas != null) {
+            mList.addAll(newDatas);
+        }
+        notifyDataSetChanged();
+    }
 }

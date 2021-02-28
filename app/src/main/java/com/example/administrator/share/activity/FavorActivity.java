@@ -2,6 +2,7 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,12 +16,15 @@ import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,6 +44,9 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
     private LinearLayoutManager layoutManager;
     private FrameLayout messageLl;
     private View title_back;
+    private FavorListAdapter adapter;
+    private List<NewsListItem> mList;
+    private final int PAGE_COUNT = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +61,10 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
     protected void findViewById(){
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
-        mListView = findViewById(R.id.normal_list_lv);
-        refreshLayout = findViewById(R.id.refreshLayout);
-        msgRemindTv = findViewById(R.id.tv_fav_remind);
-        messageLl = findViewById(R.id.layout_message);
+        mListView = $(R.id.normal_list_lv);
+        refreshLayout = $(R.id.refreshLayout);
+        msgRemindTv = $(R.id.tv_fav_remind);
+        messageLl = $(R.id.layout_message);
     }
 
     @Override
@@ -69,28 +76,30 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
         messageLl.setVisibility(View.VISIBLE);
     }
 
-
     private void refreshListener(){
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getComments();
-            }
-
-        });
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
+        refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用列表惯性滑动到底部时自动加载更多
         //上拉加载
-//        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//                refreshlayout.finishLoadmore(1000);
-//            }
-//
-//        });
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                updateRecyclerView(adapter.getItemCount(), adapter.getItemCount() + PAGE_COUNT);
+            }
+        });
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-//                return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
-                return new MaterialHeader(context).setShowBezierWave(false);
+                return new FalsifyHeader(context);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
     }
@@ -131,7 +140,7 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
             switch (id) {
                 case 1:
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
-                    List<NewsListItem> mList = gson.fromJson(response, type);
+                    mList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mList.size() == 0) {
                             msgRemindTv.setVisibility(View.VISIBLE);
@@ -139,7 +148,7 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
-                        FavorListAdapter adapter = new FavorListAdapter(mContext, mList);
+                        adapter = new FavorListAdapter(mContext, mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                         refreshLayout.finishRefresh();
@@ -161,6 +170,26 @@ public class FavorActivity extends BaseActivity implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         getComments();
+    }
+
+    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<NewsListItem> resList = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            if (i < mList.size()) {
+                resList.add(mList.get(i));
+            }
+        }
+        return resList;
+    }
+
+    private void updateRecyclerView(int fromIndex, int toIndex) {
+        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        if (newDatas.size() > 0) {
+            adapter.updateList(newDatas);
+            refreshLayout.finishLoadmore();
+        } else {
+            refreshLayout.finishLoadmoreWithNoMoreData();
+        }
     }
 
 }
