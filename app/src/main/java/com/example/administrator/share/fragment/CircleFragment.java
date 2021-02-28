@@ -84,6 +84,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         xieshiTv.setOnClickListener(this);
         chouxiangTv.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(getActivity());
+        circleList.setLayoutManager(layoutManager);
         getNewsList();
     }
 
@@ -232,10 +233,11 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                 case 1:
                     if (mList != null && mList.size() > 0) {
                         FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, mList);
-                        circleList.setLayoutManager(layoutManager);
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.INVISIBLE);
                     }else{
+                        FoundCircleAdapter adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleListForFound>());
+                        circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.VISIBLE);
                     }
                     refreshLayout.finishRefresh();
