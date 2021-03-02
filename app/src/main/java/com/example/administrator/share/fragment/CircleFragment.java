@@ -52,7 +52,6 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private RefreshLayout refreshLayout;
     private TextView circleRemindTv;
     private TextView titleText;
-    private LinearLayoutManager layoutManager;
     private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
     private TextView indexTv;
     private FoundCircleAdapter adapter;
@@ -91,7 +90,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         erchaTv.setOnClickListener(this);
         xieshiTv.setOnClickListener(this);
         chouxiangTv.setOnClickListener(this);
-        layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         circleList.setLayoutManager(layoutManager);
         getNewsList();
     }

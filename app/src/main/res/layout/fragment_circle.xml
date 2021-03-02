@@ -1,90 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <include layout="@layout/title_common" />
-
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:orientation="vertical">
+        android:background="@color/white">
 
-        <LinearLayout
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_circle_bianping"
-                android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@android:color/transparent">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/bg_username"
-                android:padding="5dp"
-                android:text="扁平"
-                android:gravity="center"
-                android:textSize="15sp" />
+                android:orientation="vertical">
+                <include layout="@layout/title_common" />
+                <ImageView
+                    android:id="@+id/fruit_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="173dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/circle_meiridaka" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_circle_oumei"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/bg_username"
-                android:padding="5dp"
-                android:text="欧美"
-                android:gravity="center"
-                android:textSize="15sp" />
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-            <TextView
-                android:id="@+id/tv_circle_ercha"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/bg_username"
-                android:padding="5dp"
-                android:text="儿插"
-                android:gravity="center"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_circle_xieshi"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/bg_username"
-                android:padding="5dp"
-                android:text="写实"
-                android:gravity="center"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_circle_chouxiang"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/bg_username"
-                android:padding="5dp"
-                android:text="抽象"
-                android:gravity="center"
-                android:textSize="15sp" />
-        </LinearLayout>
-    </LinearLayout>
+        <include layout="@layout/circle_toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -94,15 +50,12 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_circle_remind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="还没有圈子哦，可以自己先发布一个！"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                />
+                android:text="还没有圈子哦，可以自己先发布一个！" />
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
