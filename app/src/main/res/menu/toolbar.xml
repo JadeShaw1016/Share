@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/icon_search"
+        android:orderInCategory="100"
+        android:title="@string/abc_search_hint"
+        app:showAsAction="always"
+        android:visible="false"/>
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/icon_calender"
+        android:title="圈子"
+        app:showAsAction="always"
+        android:visible="false"/>
+    <item
+        android:id="@+id/more"
+        android:icon="@drawable/inform_text2"
+        app:showAsAction="always"
+        android:visible="false"/>
+    <item
+        android:id="@+id/meirijingxuan"
+        android:title="每日精选"
+        app:showAsAction="never"
+        android:visible="false"/>
+    <item
+        android:id="@+id/myfocus"
+        android:title="我的关注"
+        app:showAsAction="never"
+        android:visible="false"/>
+    <item
+        android:id="@+id/ganhuofenxiang"
+        android:title="干货分享"
+        app:showAsAction="never"
+        android:visible="false"/>
+</menu>

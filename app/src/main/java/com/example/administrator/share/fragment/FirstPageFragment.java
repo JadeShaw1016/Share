@@ -7,16 +7,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -27,6 +28,7 @@ import com.example.administrator.share.util.BingPic;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,7 +42,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
@@ -51,8 +52,6 @@ import static android.content.ContentValues.TAG;
 public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private Context mContext;
-    private TextView titleText;
-    private Spinner spinner;
     private List<Map<String,String>> mList;
     private FirstPageListAdapter0 adapter0;
     private FirstPageListAdapter2 adapter2;
@@ -64,31 +63,63 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private final int PAGE_COUNT = 5;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastVisibleItem = 0;
+    private MaterialSearchView materialSearchView;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_firstpage, null);
+        setHasOptionsMenu(true);
         findViewById(view);
         initView();
-        setAdapter();
+        searchListener();
+        recyclerViewListener();
         return view;
     }
 
     private void findViewById(View view){
-        titleText = view.findViewById(R.id.titleText);
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         recyclerView = view.findViewById(R.id.recycler_view);
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        spinner = view.findViewById(R.id.spinner);
+        materialSearchView = view.findViewById(R.id.search_view);
         mList=new ArrayList<>();
     }
 
     private void initView(){
         mContext = getActivity();
-        titleText.setText("每日精选");
-        spinner.setVisibility(View.VISIBLE);
+        toolbar.setTitle("每日精选");
+        materialSearchView.setHint("搜索");
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
         swipeRefresh.setOnRefreshListener(this);
         layoutManager = new LinearLayoutManager(getActivity());
+        getSelectedCircles();
+    }
+
+    @Override
+    public void onRefresh() {
+        switch (POSITION){
+            case 0:
+                getSelectedCircles();
+                break;
+            case 1:
+                getMyFocusCircles();
+                break;
+            case 2:
+                swipeRefresh.setRefreshing(false);
+                break;
+        }
+    }
+
+    private void initData() throws ExecutionException, InterruptedException {
+        DataAsyncTask myTask  = new DataAsyncTask();
+        List<Map<String, String>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
+        mList.addAll(list);
+        adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
+        adapter2.notifyDataSetChanged();
+    }
+
+    private void recyclerViewListener(){
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -141,88 +172,86 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
-        getSelectedCircles();
+    }
+
+    private void searchListener(){
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+//                Snackbar.make(getView().findViewById(R.id.container), "Query: " + query, Snackbar.LENGTH_LONG)
+//                        .show();
+                getSearchCircles(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+            }
+        });
     }
 
     @Override
-    public void onRefresh() {
-        switch (POSITION){
-            case 0:
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(true);
+        materialSearchView.setMenuItem(item);
+        menu.findItem(R.id.meirijingxuan).setVisible(true);
+        menu.findItem(R.id.myfocus).setVisible(true);
+        menu.findItem(R.id.ganhuofenxiang).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.meirijingxuan:
+                toolbar.setTitle("每日精选");
+                POSITION = 0;
                 getSelectedCircles();
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter0);
                 break;
-            case 1:
+            case R.id.myfocus:
+                toolbar.setTitle("我的关注");
+                POSITION = 1;
                 getMyFocusCircles();
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter0);
                 break;
-            case 2:
-                swipeRefresh.setRefreshing(false);
+            case R.id.ganhuofenxiang:
+                toolbar.setTitle("干货分享");
+                POSITION = 2;
+                if(mList.isEmpty()){
+                    try {
+                        initData();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
+                    adapter2.notifyDataSetChanged();
+                }
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter2);
                 break;
         }
-    }
-
-    private void initData() throws ExecutionException, InterruptedException {
-        DataAsyncTask myTask  = new DataAsyncTask();
-        List<Map<String, String>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
-        mList.addAll(list);
-        adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
-        adapter2.notifyDataSetChanged();
-    }
-
-    private void setAdapter(){
-        //数据
-        List<String> data_list = new ArrayList<>();
-        data_list.add("   每日精选   ");
-        data_list.add("   我的关注   ");
-        data_list.add("   干货分享   ");
-
-        //适配器
-        ArrayAdapter<String> arr_adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()).getBaseContext(), android.R.layout.simple_spinner_item, data_list);
-        //设置样式
-        arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //加载适配器
-        spinner.setAdapter(arr_adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        titleText.setText("每日精选");
-                        POSITION = 0;
-                        getSelectedCircles();
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter0);
-                        break;
-                    case 1:
-                        titleText.setText("我的关注");
-                        POSITION = 1;
-                        getMyFocusCircles();
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter0);
-                        break;
-                    case 2:
-                        titleText.setText("干货分享");
-                        POSITION = 2;
-                        if(mList.isEmpty()){
-                            try {
-                                initData();
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else{
-                            adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
-                            adapter2.notifyDataSetChanged();
-                        }
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter2);
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        return super.onOptionsItemSelected(item);
     }
 
     static class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,String>>> {
@@ -317,6 +346,23 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         }.execute();
     }
 
+    private void getSearchCircles(final String text) {
+        new AsyncTask<Void,Void,Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=getSearchNewsList";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(2)
+                        .addParams("text","%"+text+"%")
+                        .build()
+                        .execute(new MyStringCallback());
+                return null;
+            }
+        }.execute();
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -335,6 +381,16 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
                         swipeRefresh.setRefreshing(false);
+                    }
+                    break;
+                case 2:
+                    if (mCircleList != null && mCircleList.size() > 0) {
+                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(adapter0);
+                        swipeRefresh.setRefreshing(false);
+                    }else{
+                        Toast.makeText(mContext, "暂时没有搜索到相关的内容", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 default:

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,26 +14,31 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@android:color/transparent">
+            app:contentScrim="@color/white"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <include layout="@layout/title_common" />
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/Toolbar.Theme"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:titleTextAppearance="@style/Toolbar.TitleText" />
                 <ImageView
                     android:id="@+id/fruit_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="173dp"
                     android:scaleType="centerCrop"
                     android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/circle_meiridaka" />
             </LinearLayout>
-
         </android.support.design.widget.CollapsingToolbarLayout>
-
         <include layout="@layout/circle_toolbar" />
     </android.support.design.widget.AppBarLayout>
 

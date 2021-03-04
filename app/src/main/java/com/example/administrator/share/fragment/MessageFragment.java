@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,26 +30,26 @@ import okhttp3.Call;
 public class MessageFragment extends Fragment implements View.OnClickListener{
 
     private Context mContext;
-    private ImageView moreIv;
     private LinearLayout commentLl;
     private LinearLayout favorLl;
     private BadgeView commentBadge;
     private BadgeView favorBadge;
     private TextView commentBadgeTv;
     private TextView favorBadgeTv;
-    private TextView titleText;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_message,container,false);
+        setHasOptionsMenu(true);
         findViewById(view);
         initView();
         return view;
     }
 
     private void findViewById(View view){
-        titleText = view.findViewById(R.id.titleText);
-        moreIv = view.findViewById(R.id.iv_more);
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         commentLl = view.findViewById(R.id.ll_message_comment);
         favorLl = view.findViewById(R.id.ll_message_favor);
         commentBadgeTv = view.findViewById(R.id.tv_comment_badge);
@@ -54,15 +58,29 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
 
     private void initView(){
         mContext = getActivity();
-        titleText.setText("通知");
-        moreIv.setVisibility(View.VISIBLE);
-        moreIv.setOnClickListener(this);
+        toolbar.setTitle("通知");
         commentLl.setOnClickListener(this);
         favorLl.setOnClickListener(this);
         commentBadge = new BadgeView(mContext);
         commentBadge.setTargetView(commentBadgeTv);
         favorBadge = new BadgeView(mContext);
         favorBadge.setTargetView(favorBadgeTv);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.more:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar, menu);
+        menu.findItem(R.id.more).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -76,8 +94,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
             case R.id.ll_message_favor:
                 intent = new Intent(getActivity(), FavorActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.iv_more:
                 break;
         }
     }

@@ -7,12 +7,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,21 +50,21 @@ import okhttp3.Call;
 
 public class CircleFragment extends Fragment implements View.OnClickListener{
 
-    private ImageView calendarIv;
     private RecyclerView circleList;
     private Context mContext;
     private RefreshLayout refreshLayout;
     private TextView circleRemindTv;
-    private TextView titleText;
     private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
     private TextView indexTv;
     private FoundCircleAdapter adapter;
     private List<CircleListForFound> mList;
     private final int PAGE_COUNT = 5;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_circle, container, false);
+        setHasOptionsMenu(true);
         findViewById(view);
         initView();
         refreshListener();
@@ -68,8 +72,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void findViewById(View view){
-        titleText = view.findViewById(R.id.titleText);
-        calendarIv = view.findViewById(R.id.iv_record);
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         circleList = view.findViewById(R.id.list_circle);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         circleRemindTv = view.findViewById(R.id.tv_circle_remind);
@@ -81,10 +85,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
+        toolbar.setTitle("圈子");
         mContext = getActivity();
-        titleText.setText("圈子");
-        calendarIv.setVisibility(View.VISIBLE);
-        calendarIv.setOnClickListener(this);
         bianpingTv.setOnClickListener(this);
         oumeiTv.setOnClickListener(this);
         erchaTv.setOnClickListener(this);
@@ -140,12 +142,26 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.iv_record:
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.calendar:
                 Intent intent=new Intent(getActivity(), BeforeDateCheckActivity.class);
                 startActivity(intent);
                 break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar, menu);
+        menu.findItem(R.id.calendar).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
             case R.id.tv_circle_bianping:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
