@@ -36,7 +36,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/face"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-                <ImageButton
+                <com.example.administrator.share.util.OvalImageView
                     android:id="@+id/myinfo_face"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

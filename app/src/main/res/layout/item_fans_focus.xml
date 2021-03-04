@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <ImageView
+    <com.example.administrator.share.util.OvalImageView
         android:id="@+id/iv_fans_focus"
         android:layout_width="40dp"
         android:layout_height="40dp"
