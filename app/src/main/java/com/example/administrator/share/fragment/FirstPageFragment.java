@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,17 +19,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FirstPageListAdapter0;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
 import com.example.administrator.share.entity.CircleListForFound;
+import com.example.administrator.share.util.AppBarStateChangeListener;
 import com.example.administrator.share.util.BingPic;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -63,8 +65,9 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private final int PAGE_COUNT = 5;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastVisibleItem = 0;
-    private MaterialSearchView materialSearchView;
     private Toolbar toolbar;
+    private AppBarLayout appBarLayout;
+    private SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         initView();
         searchListener();
         recyclerViewListener();
+        appBarLayoutListener();
         return view;
     }
 
@@ -82,16 +86,17 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         recyclerView = view.findViewById(R.id.recycler_view);
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        materialSearchView = view.findViewById(R.id.search_view);
         mList=new ArrayList<>();
+        appBarLayout = view.findViewById(R.id.appbar_firstpage);
+        searchView = view.findViewById(R.id.sv_firstpage);
     }
 
     private void initView(){
         mContext = getActivity();
         toolbar.setTitle("每日精选");
-        materialSearchView.setHint("搜索");
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
         swipeRefresh.setOnRefreshListener(this);
+        searchView.setSubmitButtonEnabled(true);
         layoutManager = new LinearLayoutManager(getActivity());
         getSelectedCircles();
     }
@@ -175,41 +180,41 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void searchListener(){
-        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-//                Snackbar.make(getView().findViewById(R.id.container), "Query: " + query, Snackbar.LENGTH_LONG)
-//                        .show();
-                getSearchCircles(query);
+            public boolean onQueryTextSubmit(String s) {
+                getSearchCircles(s);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                //Do some magic
+            public boolean onQueryTextChange(String s) {
                 return false;
             }
         });
 
-        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                //Do some magic
-            }
+    }
 
+    private void appBarLayoutListener(){
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
-            public void onSearchViewClosed() {
-                //Do some magic
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                if( state == State.EXPANDED ) {
+                    //展开状态
+                    searchView.setVisibility(View.INVISIBLE);
+                }else if(state == State.COLLAPSED){
+                    //折叠状态
+                    searchView.setVisibility(View.VISIBLE);
+                }
             }
         });
+
+
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        item.setVisible(true);
-        materialSearchView.setMenuItem(item);
         menu.findItem(R.id.meirijingxuan).setVisible(true);
         menu.findItem(R.id.myfocus).setVisible(true);
         menu.findItem(R.id.ganhuofenxiang).setVisible(true);

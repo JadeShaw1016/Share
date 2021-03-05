@@ -8,6 +8,7 @@
     android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_firstpage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.design.widget.CollapsingToolbarLayout
@@ -26,11 +27,8 @@
                     android:theme="@style/Toolbar.Theme"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:titleTextAppearance="@style/Toolbar.TitleText" />
-                <com.miguelcatalan.materialsearchview.MaterialSearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </FrameLayout>
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -49,4 +47,14 @@
         </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <SearchView
+        android:id="@+id/sv_firstpage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:imeOptions="actionSearch"
+        android:queryHint="搜索"
+        android:iconifiedByDefault="false"
+        android:visibility="gone">
+    </SearchView>
 </android.support.design.widget.CoordinatorLayout>
