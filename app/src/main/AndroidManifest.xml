@@ -57,9 +57,7 @@
         <activity android:name=".activity.DateCheckActivity" />
         <activity android:name=".activity.CircleDetailActivity" />
         <activity android:name=".activity.BadgeViewTwo" />
-        <activity
-            android:name=".activity.FruitActivity"
-            android:theme="@style/FruitActivityTheme" />
+        <activity android:name=".activity.FruitActivity" />
         <activity android:name=".activity.FavorActivity"/>
 
         <provider
