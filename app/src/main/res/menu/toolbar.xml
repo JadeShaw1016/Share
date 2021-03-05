@@ -4,12 +4,13 @@
     <item
         android:id="@+id/calendar"
         android:icon="@drawable/icon_calender"
-        android:title="圈子"
+        android:title="打卡日历"
         app:showAsAction="always"
         android:visible="false"/>
     <item
         android:id="@+id/more"
         android:icon="@drawable/inform_text2"
+        android:title="更多"
         app:showAsAction="always"
         android:visible="false"/>
     <item
