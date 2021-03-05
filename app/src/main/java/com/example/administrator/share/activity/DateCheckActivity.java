@@ -75,8 +75,8 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
     protected void findViewById() {
         this.title_back = $(R.id.title_back);
         this.titleText = $(R.id.titleText);
-        picker = (DatePicker) findViewById(R.id.date_date_picker);
-        btnPick = (Button) findViewById(R.id.date_btn_check);
+        picker = findViewById(R.id.date_date_picker);
+        btnPick = findViewById(R.id.date_btn_check);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
         Calendar today = Calendar.getInstance();
 
         picker.setDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1);
-        picker.setFestivalDisplay(true);
+        picker.setFestivalDisplay(false);
         picker.setTodayDisplay(true);
         picker.setMode(DPMode.NONE);
         picker.setDPDecor(new DPDecor() {
