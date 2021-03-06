@@ -8,7 +8,7 @@
     android:paddingEnd="10dp"
     android:id="@+id/ll_message">
 
-    <ImageView
+    <com.example.administrator.share.util.OvalImageView
         android:id="@+id/iv_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
