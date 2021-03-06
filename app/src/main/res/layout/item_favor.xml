@@ -42,4 +42,7 @@
             android:layout_gravity="end"/>
     </LinearLayout>
 
+    <View style="@style/bg_line"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_image"/>
 </RelativeLayout>

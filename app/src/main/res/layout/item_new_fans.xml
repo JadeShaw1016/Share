@@ -31,4 +31,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
 
+    <View style="@style/bg_line"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_msg_newfans_image"/>
 </RelativeLayout>

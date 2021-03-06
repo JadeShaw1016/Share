@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/iv_mycollection"
         android:orientation="vertical">
-
         <TextView
             android:id="@id/item_normal_title"
             android:layout_width="wrap_content"
@@ -26,7 +26,6 @@
             android:ellipsize="end"
             android:text="@string/app_name"
             android:lines="1"/>
-
         <TextView
             android:id="@id/item_normal_username"
             android:layout_width="wrap_content"
@@ -36,4 +35,7 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-</LinearLayout>
+    <View style="@style/bg_line"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_mycollection"/>
+</RelativeLayout>
