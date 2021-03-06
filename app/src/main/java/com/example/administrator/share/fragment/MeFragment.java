@@ -176,7 +176,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getFansList";
+                String url = Constants.BASE_URL + "Follows?method=getCurrentFansList";
                 OkHttpUtils
                         .post()
                         .url(url)

@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CommentActivity;
-import com.example.administrator.share.activity.FavorActivity;
+import com.example.administrator.share.activity.FavorFansActivity;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -32,10 +32,13 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private Context mContext;
     private LinearLayout commentLl;
     private LinearLayout favorLl;
+    private LinearLayout fansLl;
     private BadgeView commentBadge;
     private BadgeView favorBadge;
+    private BadgeView fansBadge;
     private TextView commentBadgeTv;
     private TextView favorBadgeTv;
+    private TextView fansBadgeTv;
     private Toolbar toolbar;
 
     @Override
@@ -52,8 +55,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         commentLl = view.findViewById(R.id.ll_message_comment);
         favorLl = view.findViewById(R.id.ll_message_favor);
+        fansLl = view.findViewById(R.id.ll_message_fans);
         commentBadgeTv = view.findViewById(R.id.tv_comment_badge);
         favorBadgeTv = view.findViewById(R.id.tv_favor_badge);
+        fansBadgeTv = view.findViewById(R.id.tv_fans_badge);
     }
 
     private void initView(){
@@ -61,10 +66,13 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         toolbar.setTitle("通知");
         commentLl.setOnClickListener(this);
         favorLl.setOnClickListener(this);
+        fansLl.setOnClickListener(this);
         commentBadge = new BadgeView(mContext);
         commentBadge.setTargetView(commentBadgeTv);
         favorBadge = new BadgeView(mContext);
         favorBadge.setTargetView(favorBadgeTv);
+        fansBadge = new BadgeView(mContext);
+        fansBadge.setTargetView(fansBadgeTv);
     }
 
     @Override
@@ -89,13 +97,18 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()){
             case R.id.ll_message_comment:
                 intent = new Intent(getActivity(), CommentActivity.class);
-                startActivity(intent);
                 break;
             case R.id.ll_message_favor:
-                intent = new Intent(getActivity(), FavorActivity.class);
-                startActivity(intent);
+                intent = new Intent(getActivity(), FavorFansActivity.class);
+                intent.putExtra("index",0);
+                break;
+            case R.id.ll_message_fans:
+                intent = new Intent(getActivity(), FavorFansActivity.class);
+                intent.putExtra("index",1);
+                updateNewFansStatus();
                 break;
         }
+        startActivity(intent);
     }
 
     private void findCommentStatus() {
@@ -135,10 +148,46 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 });
     }
 
+    private void findNewFansStatus() {
+        String url = Constants.BASE_URL + "Message?method=findNewFansStatus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("userId",Constants.USER.getUserId()+"")
+                .build()
+                .execute(new StringCallback(){
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        fansBadge.setBadgeCount(Integer.parseInt(response));
+                    }
+                });
+    }
+
+    private void updateNewFansStatus(){
+        String url = Constants.BASE_URL + "Message?method=updateNewFansStatus";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("userId",Constants.USER.getUserId()+"")
+                .build()
+                .execute(new StringCallback(){
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                    }
+                });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         findCommentStatus();
         findFavorStatus();
+        findNewFansStatus();
     }
 }

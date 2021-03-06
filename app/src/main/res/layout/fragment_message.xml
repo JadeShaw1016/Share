@@ -44,7 +44,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginEnd="17dp"/>
 
-        <LinearLayout style="@style/mid_layout">
+        <LinearLayout style="@style/mid_layout"
+            android:id="@+id/ll_message_fans">
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -54,6 +55,11 @@
                 style="@style/usertext"
                 android:text="粉丝"
                 android:layout_marginStart="10dp"/>
+            <TextView
+                android:id="@+id/tv_fans_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"/>
         </LinearLayout>
 
         <View style="@style/bg_line"

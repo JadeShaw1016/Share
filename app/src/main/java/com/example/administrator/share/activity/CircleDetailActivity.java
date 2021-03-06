@@ -350,6 +350,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .id(5)
                         .addParams("fansId", Constants.USER.getUserId() + "")
                         .addParams("userId",be_focused_personId+"")
+                        .addParams("followTime",DateUtils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
             }

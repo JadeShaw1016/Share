@@ -9,6 +9,7 @@ public class FansListItem implements Parcelable {
     private int userId;
     private String face;
     private String signature;
+    private String followTime;
 
     protected FansListItem(Parcel in) {
         username = in.readString();
@@ -45,6 +46,8 @@ public class FansListItem implements Parcelable {
     public String getFace(){return face;}
 
     public String getSignature(){return signature;}
+
+    public String getFollowTime(){return followTime;}
 
     @Override
     public int describeContents() {

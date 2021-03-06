@@ -117,7 +117,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     /**
      * 统计消息数量
      */
-    private void findCommentStatus() {
+    private void findMessageStatus() {
         new AsyncTask<Void,Void,Integer>(){
 
             @Override
@@ -146,6 +146,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        findCommentStatus();
+        findMessageStatus();
     }
 }

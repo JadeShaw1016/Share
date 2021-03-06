@@ -58,7 +58,7 @@
         <activity android:name=".activity.CircleDetailActivity" />
         <activity android:name=".activity.BadgeViewTwo" />
         <activity android:name=".activity.FruitActivity" />
-        <activity android:name=".activity.FavorActivity"/>
+        <activity android:name=".activity.FavorFansActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
