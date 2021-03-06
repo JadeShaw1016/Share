@@ -116,7 +116,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
                 holder.favorTimeTv.setText(time.substring(0,11));
             }else{
                 //设置为时分
-                holder.favorTimeTv.setText(time.substring(11,16));
+                holder.favorTimeTv.setText("今天 "+time.substring(11,16));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -160,11 +160,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         String standardTime = nowTime.substring(0,11)+"00:00:00";
         Date date1 = sdf.parse(standardTime);
         Date date2 = sdf.parse(time);
-        if(date1.getTime()>date2.getTime()){
-            return true;
-        } else{
-            return false;
-        }
+        return date1.getTime() > date2.getTime();
     }
 
     public void updateList(List<NewsListItem> newDatas) {

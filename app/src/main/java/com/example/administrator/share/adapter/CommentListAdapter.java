@@ -119,7 +119,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 holder.commentTimeTv.setText(time.substring(0,11));
             }else{
                 //设置为时分
-                holder.commentTimeTv.setText(time.substring(11,16));
+                holder.commentTimeTv.setText("今天 "+time.substring(11,16));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -163,11 +163,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         String standardTime = nowTime.substring(0,11)+"00:00:00";
         Date date1 = sdf.parse(standardTime);
         Date date2 = sdf.parse(time);
-        if(date1.getTime()>date2.getTime()){
-            return true;
-        } else{
-            return false;
-        }
+        return date1.getTime() > date2.getTime();
     }
 
     public void updateList(List<NewsListItem> newDatas) {
