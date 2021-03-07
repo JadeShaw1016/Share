@@ -24,10 +24,6 @@ import java.util.List;
 
 import okhttp3.Call;
 
-/**
- * Created by djzhao on 17/05/04.
- */
-
 public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAdapter.ViewHolder> {
 
     private Context mContext;

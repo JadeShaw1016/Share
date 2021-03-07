@@ -23,10 +23,6 @@ import java.util.List;
 
 import okhttp3.Call;
 
-/**
- * Created by djzhao on 17/05/02.
- */
-
 public class CircleDetailCommnetsAdapter extends RecyclerView.Adapter<CircleDetailCommnetsAdapter.ViewHolder> {
 
     private Context mContext;

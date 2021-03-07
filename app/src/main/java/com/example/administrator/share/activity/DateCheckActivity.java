@@ -25,10 +25,6 @@ import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 import okhttp3.Call;
 
-/**
- * Created by djzhao on 17/05/01.
- */
-
 public class DateCheckActivity extends BaseActivity implements View.OnClickListener {
 
     private View title_back;

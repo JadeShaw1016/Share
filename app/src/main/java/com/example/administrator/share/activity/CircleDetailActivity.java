@@ -44,10 +44,6 @@ import okhttp3.Call;
 
 import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD;
 
-/**
- * Created by djzhao on 17/05/02.
- */
-
 public class CircleDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private CircleDetailCommnetsAdapter adapter;

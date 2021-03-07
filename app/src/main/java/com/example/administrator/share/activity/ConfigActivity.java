@@ -15,10 +15,6 @@ import com.example.administrator.share.util.SharedPreferencesUtils;
 
 import java.util.Map;
 
-/**
- * Created by djzhao on 17/05/01.
- */
-
 public class ConfigActivity extends BaseActivity implements View.OnClickListener {
 
     private String TITLE_NAME = "配置";

@@ -1,9 +1,5 @@
 package com.example.administrator.share.entity;
 
-/**
- * Created by djzhao on 17/05/05.
- */
-
 public class NewsListItem {
 
     private String title;
