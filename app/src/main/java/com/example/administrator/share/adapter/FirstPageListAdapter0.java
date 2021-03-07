@@ -71,7 +71,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
         }
         final RecyclerView.ViewHolder holder;
         if (viewType == normalType) {
-            View view = mInflater.inflate(R.layout.item_circle, parent, false);
+            View view = mInflater.inflate(R.layout.item_firstpage_image, parent, false);
             holder = new ViewHolder(view);
             ((ViewHolder)holder).bgIv.setOnClickListener(new View.OnClickListener() {
                 @Override
