@@ -117,7 +117,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 .post()
                 .url(url)
                 .addParams("authorName",Constants.USER.getUsername())
-                .addParams("userId",Constants.USER.getUserId()+"")
+                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new StringCallback(){
                     @Override
@@ -135,7 +135,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("authorId",Constants.USER.getUserId()+"")
+                .addParams("authorId",String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new StringCallback(){
                     @Override
@@ -153,7 +153,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("userId",Constants.USER.getUserId()+"")
+                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new StringCallback(){
                     @Override
@@ -171,7 +171,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("userId",Constants.USER.getUserId()+"")
+                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new StringCallback(){
                     @Override

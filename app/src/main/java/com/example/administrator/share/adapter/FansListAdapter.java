@@ -95,8 +95,8 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
                 OkHttpUtils
                         .post()
                         .url(url)
-                        .addParams("userId", Constants.USER.getUserId() + "")
-                        .addParams("fansId",fansId+"")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                        .addParams("fansId",String.valueOf(fansId))
                         .build()
                         .execute(new StringCallback() {
                             @Override

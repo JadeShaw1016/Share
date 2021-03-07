@@ -127,7 +127,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
                         .post()
                         .url(url)
                         .addParams("authorName",Constants.USER.getUsername())
-                        .addParams("authorId",Constants.USER.getUserId()+"")
+                        .addParams("authorId",String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new StringCallback(){
                             @Override
