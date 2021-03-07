@@ -1,9 +1,5 @@
 package com.example.administrator.share.entity;
 
-/**
- * Created by djzhao on 17/05/02.
- */
-
 public class Comment {
 
     private String username;
@@ -19,6 +15,8 @@ public class Comment {
     private String commentTime;
 
     public String getFace(){return face;}
+
+    public void setFace(String face){this.face = face;}
 
     public String getUsername() {
         return username;
