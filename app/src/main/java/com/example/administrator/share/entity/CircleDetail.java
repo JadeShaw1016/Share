@@ -2,10 +2,6 @@ package com.example.administrator.share.entity;
 
 import java.util.List;
 
-/**
- * Created by djzhao on 17/05/02.
- */
-
 public class CircleDetail {
 
     private String username;
@@ -21,6 +17,12 @@ public class CircleDetail {
     private String content;
 
     private List<Comment> comments;
+
+    private int clickTimes;
+
+    private int collectTimes;
+
+    private int commentTimes;
 
     public String getFace(){return face;}
 
@@ -64,4 +66,9 @@ public class CircleDetail {
         return comments;
     }
 
+    public int getClickTimes(){return clickTimes;}
+
+    public int getCollectTimes(){return collectTimes;}
+
+    public int getCommentTimes(){return commentTimes;}
 }

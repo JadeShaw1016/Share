@@ -83,6 +83,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView faceIv;
     private RecyclerView commentsRv;
     private LinearLayoutManager layoutManager;
+    private TextView clickTimes;
+    private TextView collectTimes;
+    private TextView commentTimes;
+    private int CURRENT_COLLECTTIMES;
+    private int CURRENT_COMMENTTIMES;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -118,6 +123,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
         faceIv = $(R.id.iv_circle_detail_face);
+        clickTimes = $(R.id.tv_circle_detail_click_times);
+        collectTimes = $(R.id.tv_circle_detail_collect_times);
+        commentTimes = $(R.id.tv_circle_detail_comment_times);
     }
 
     @Override
@@ -235,25 +243,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }.execute();
     }
 
-    private void addClickTimes(){
-        if(be_focused_personId != Constants.USER.getUserId()){
-            new AsyncTask<Void, Void, Integer>() {
-                @Override
-                protected Integer doInBackground(Void... voids) {
-                    String url = Constants.BASE_URL + "News?method=addClickTimes";
-                    OkHttpUtils
-                            .post()
-                            .url(url)
-                            .id(9)
-                            .addParams("newsId", newsId + "")
-                            .build()
-                            .execute(new MyStringCallback());
-                    return 0;
-                }
-            }.execute();
-        }
-    }
-
     //添加新收藏
     private void addNewCollection() {
         String url = Constants.BASE_URL + "GetCircleList?method=addNewCollection";
@@ -264,21 +253,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .addParams("newsId", newsId + "")
                 .addParams("userId", Constants.USER.getUserId() + "")
                 .addParams("collectionTime",DateUtils.getCurrentDatetime())
-                .build()
-                .execute(new MyStringCallback());
-    }
-
-    //添加新点赞
-    private void addNewFavor() {
-        String url = Constants.BASE_URL + "GetCircleList?method=addNewFavor";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(7)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("be_focused_personId",be_focused_personId + "")
-                .addParams("favorTime",DateUtils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -322,23 +296,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }).start();
     }
 
-    private void isFavored(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String url = Constants.BASE_URL + "GetCircleList?method=isFavored";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(8)
-                        .addParams("newsId", newsId + "")
-                        .addParams("userId", Constants.USER.getUserId() + "")
-                        .build()
-                        .execute(new MyStringCallback());
-            }
-        }).start();
-    }
-
     private void addFocus(){
         new Thread(new Runnable() {
             @Override
@@ -349,7 +306,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .url(url)
                         .id(5)
                         .addParams("fansId", Constants.USER.getUserId() + "")
-                        .addParams("userId",be_focused_personId+"")
+                        .addParams("userId",String.valueOf(be_focused_personId))
                         .addParams("followTime",DateUtils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
@@ -367,11 +324,113 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .url(url)
                         .id(6)
                         .addParams("fansId", Constants.USER.getUserId() + "")
-                        .addParams("userId",be_focused_personId+"")
+                        .addParams("userId",String.valueOf(be_focused_personId))
                         .build()
                         .execute(new MyStringCallback());
             }
         }).start();
+    }
+
+    //添加新点赞
+    private void addNewFavor() {
+        String url = Constants.BASE_URL + "GetCircleList?method=addNewFavor";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(7)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("be_focused_personId",be_focused_personId + "")
+                .addParams("favorTime",DateUtils.getCurrentDatetime())
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void isFavored(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "GetCircleList?method=isFavored";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(8)
+                        .addParams("newsId", newsId + "")
+                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
+    }
+
+    private void addClickTimes(){
+        if(be_focused_personId != Constants.USER.getUserId()){
+            new AsyncTask<Void, Void, Integer>() {
+                @Override
+                protected Integer doInBackground(Void... voids) {
+                    String url = Constants.BASE_URL + "News?method=addClickTimes";
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .id(9)
+                            .addParams("newsId", newsId + "")
+                            .build()
+                            .execute(new MyStringCallback());
+                    return 0;
+                }
+            }.execute();
+        }
+    }
+
+    private void addCollectTimes(){
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=addCollectTimes";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(9)
+                        .addParams("newsId", newsId + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                return 0;
+            }
+        }.execute();
+    }
+
+    private void reduceCollectTimes(){
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=reduceCollectTimes";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(9)
+                        .addParams("newsId", newsId + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                return 0;
+            }
+        }.execute();
+    }
+
+    private void addCommentTimes(){
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=addCommentTimes";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(9)
+                        .addParams("newsId", newsId + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                return 0;
+            }
+        }.execute();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -384,14 +443,18 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     try {
                         CircleDetail circleDetail = gson.fromJson(response, CircleDetail.class);
                         if (circleDetail != null) {
+                            CURRENT_COLLECTTIMES = circleDetail.getCollectTimes();
+                            CURRENT_COMMENTTIMES = circleDetail.getCommentTimes();
                             usernameTV.setText(circleDetail.getUsername());
                             releaseTimeTV.setText(circleDetail.getReleaseTime());
                             titleTV.setText(circleDetail.getTitle());
                             contentTV.setText(circleDetail.getContent());
+                            clickTimes.setText(String.valueOf(circleDetail.getClickTimes()));
+                            collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
+                            commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
                             // 加载图片
                             if (!TextUtils.isEmpty(circleDetail.getImage())) {
                                 imageIV.setVisibility(View.VISIBLE);
-                                imageIV.setImageResource(R.drawable.default_image);
                                 getNewsImage(circleDetail.getImage());
                                 getFaceImage(circleDetail.getFace());
                             } else {
@@ -400,7 +463,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         }
                         mList = circleDetail.getComments();
                     } catch (Exception e) {
-                        Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "错误："+e.getMessage(), Toast.LENGTH_SHORT).show();
                         mList = null;
                     }
                     if (mList != null && mList.size() > 0) {
@@ -420,14 +483,28 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 2:
                     isCollected();
-                    DisplayToast(response);
+                    if(response.equals("收藏成功")){
+                        addCollectTimes();
+                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES+1));
+                        CURRENT_COLLECTTIMES++;
+                    }
+                    else if(response.equals("取消收藏")){
+                        reduceCollectTimes();
+                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES-1));
+                        CURRENT_COLLECTTIMES--;
+                    }
                     break;
                 case 3:
                     if (response.contains("error")) {
                         DisplayToast("请稍后再试..");
                     } else {
                         DisplayToast(response);
+                        addCommentTimes();
+                        hideKeyboard();
+                        CURRENT_COMMENTTIMES++;
+                        commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
                         Comment comment = new Comment();
+                        comment.setFace(Constants.USER.getFace());
                         comment.setCommentTime(DateUtils.getCurrentDatetime());
                         comment.setComment(addCommentET.getText().toString());
                         comment.setReplyUser(replyUsername);
@@ -439,13 +516,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         mList.add(0, comment);
                         if (adapter == null) {
                             adapter = new CircleDetailCommnetsAdapter(mContext, mList);
+                            commentsRv.setLayoutManager(layoutManager);
                             commentsRv.setAdapter(adapter);
                         }
                         adapter.notifyDataSetChanged();
                         replyUsername = "";
                         addCommentET.setText("");
                         commentPane.setVisibility(View.GONE);
-                        refreshData();
                     }
                     break;
                 case 4:
@@ -470,7 +547,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 7:
                     isFavored();
-                    DisplayToast(response);
                     break;
                 case 8:
                     if(response.equals("已点赞")){
@@ -579,4 +655,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }
 //        return false;
     }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm.isActive()) {
+            if (this.getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
 }

@@ -36,26 +36,27 @@
                     android:id="@id/news_detail_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/iv_circle_detail_face"
-                    android:layout_marginStart="20dp"
-                    android:text="@string/app_name"
                     android:layout_centerVertical="true"
-                    android:textSize="16sp"/>
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@+id/iv_circle_detail_face"
+                    android:text="@string/app_name"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btn_focus"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
-                    android:text="关注"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/fuxk_base_color_black"
-                    android:background="@drawable/selector_orange_2"/>
+                    android:background="@drawable/selector_orange_2"
+                    android:text="关注"
+                    android:textColor="@color/fuxk_base_color_black" />
             </RelativeLayout>
 
-            <View style="@style/bg_line"
+            <View
+                style="@style/bg_line"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -70,14 +71,14 @@
                     android:layout_gravity="center"
                     android:text="Title"
                     android:textSize="24sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@id/news_detail_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time"
                     android:layout_below="@+id/detail_title"
+                    android:text="Time"
                     android:textColor="@color/darkgrey"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -86,8 +87,8 @@
                 android:id="@id/news_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/app_name" />
 
@@ -96,21 +97,81 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:layout_margin="10dp"
-                android:src="@drawable/start1" />
+                android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/aliceblue" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#续命咖啡#"
+                    android:textColor="#cccccc"/>
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="20dp"
+                    android:layout_toStartOf="@+id/tv_circle_detail_click_times"
+                    android:src="@drawable/icon_circle_detail_eye" />
+
+                <TextView
+                    android:id="@+id/tv_circle_detail_click_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toStartOf="@+id/iv_circle_detail_collection"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textColor="#cccccc"/>
+
+                <ImageView
+                    android:id="@+id/iv_circle_detail_collection"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toStartOf="@+id/tv_circle_detail_collect_times"
+                    android:src="@drawable/icon_circle_detail_collection" />
+
+                <TextView
+                    android:id="@+id/tv_circle_detail_collect_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toStartOf="@+id/iv_circle_detail_comment"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textColor="#cccccc"/>
+
+                <ImageView
+                    android:id="@+id/iv_circle_detail_comment"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toStartOf="@+id/tv_circle_detail_comment_times"
+                    android:src="@drawable/icon_circle_detail_comment" />
+
+                <TextView
+                    android:id="@+id/tv_circle_detail_comment_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="2dp"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textColor="#cccccc"/>
+            </RelativeLayout>
+
+            <View style="@style/bg_line"
+                android:layout_marginBottom="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
                 android:text="@string/new_detail_comment" />
 
             <TextView
