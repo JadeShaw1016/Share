@@ -39,7 +39,7 @@
                     android:src="@drawable/circle_meiridaka" />
             </LinearLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
-        <include layout="@layout/circle_toolbar" />
+        <include layout="@layout/toolbar_circle" />
     </android.support.design.widget.AppBarLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
