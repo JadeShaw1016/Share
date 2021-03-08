@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
@@ -31,13 +30,9 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bgIv;
-        TextView titleTv;
-        TextView usernameTv;
         public ViewHolder(View view) {
             super(view);
             bgIv = view.findViewById(R.id.found_list_icon);
-            titleTv = view.findViewById(R.id.found_list_item_title);
-            usernameTv = view.findViewById(R.id.found_list_item_username);
         }
     }
 
@@ -53,7 +48,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = mInflater.inflate(R.layout.item_circle, parent, false);
+        View view = mInflater.inflate(R.layout.item_circle_image, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.bgIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +67,6 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         CircleListForFound news = mList.get(position);
         final String imageName = news.getImage();
-        holder.titleTv.setText(news.getTitle());
-        holder.usernameTv.setText(news.getUsername());
-
        new AsyncTask<Void, Void, Integer>(){
 
            @Override
