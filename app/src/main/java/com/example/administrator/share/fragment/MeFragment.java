@@ -105,7 +105,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
-                final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_float_center);
+                final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_fullScreen_black);
                 ImageView imageView = new ImageView(MainMenuActivity.mContext);
                 imageView.setImageBitmap(Constants.FACEIMAGE);
                 dialog.setContentView(imageView);
