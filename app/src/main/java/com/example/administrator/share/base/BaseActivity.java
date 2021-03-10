@@ -165,6 +165,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 		startActivity(localIntent);
 	}
 
+	protected void showKeyboard(final EditText et) {
+		et.requestFocus();
+		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+	}
+
+	protected void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if(imm.isActive()) {
+			if (this.getCurrentFocus().getWindowToken() != null) {
+				imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+		}
+	}
     
 	/**
 	 * Find the view by id in this activity
