@@ -220,7 +220,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAlbum();
                 } else {
-                    Toast.makeText(this, "you denied the permission", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "你拒绝了请求", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

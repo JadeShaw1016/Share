@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -128,11 +127,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                 //"点击了照相";
                 //  6.0之后动态申请权限 摄像头调取权限,SD卡写入权限
                 //判断是否拥有权限，true则动态申请
-                if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(RegisterActivity.this,
-                            new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_ADD_CASE_CALL_PHONE);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_ADD_CASE_CALL_PHONE);
                 } else {
                     try {
                         //有权限,去打开摄像头
@@ -146,7 +142,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             case R.id.photo:
                 //"点击了相册";
                 //  6.0之后动态申请权限 SD卡写入权限
-                if (ContextCompat.checkSelfPermission(RegisterActivity.this,
+                if (ActivityCompat.checkSelfPermission(RegisterActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(RegisterActivity.this,
@@ -324,14 +320,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this,"拒绝了你的请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == MY_ADD_CASE_CALL_PHONE2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 choosePhoto();
             } else {
-                Toast.makeText(this,"拒绝了你的请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

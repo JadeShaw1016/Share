@@ -144,12 +144,10 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                 //"点击了照相";
                 //  6.0之后动态申请权限 摄像头调取权限,SD卡写入权限
                 //判断是否拥有权限，true则动态申请
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_ADD_CASE_CALL_PHONE);
-                } else {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_ADD_CASE_CALL_PHONE);
+                }
+                else {
                     try {
                         //有权限,去打开摄像头
                         takePhoto();
@@ -328,14 +326,14 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this,"拒绝了你的请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == MY_ADD_CASE_CALL_PHONE2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 choosePhoto();
             } else {
-                Toast.makeText(this,"拒绝了你的请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

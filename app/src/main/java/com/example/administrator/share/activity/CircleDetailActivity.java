@@ -649,7 +649,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        return false;
     }
 
     public void showKeyboard(final EditText et) {
