@@ -111,7 +111,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final NewsListItem detail = mList.get(position);
-        final String imageName = detail.getImage();
         holder.usernameTv.setText(detail.getUsername()+"评论了你");
         holder.commentTv.setText(detail.getComment());
         String time = detail.getCommentTime();
@@ -154,7 +153,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 OkHttpUtils
                         .get()//
                         .url(url)//
-                        .addParams("imageName", imageName)
+                        .addParams("imageName", detail.getImage())
                         .build()//
                         .execute(new BitmapCallback() {
                             @Override

@@ -38,6 +38,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTv;
         TextView badgeTv;
+        ImageView faceIv;
         ImageView imageIv;
         TextView favorTimeTv;
         BadgeView badge;
@@ -46,6 +47,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
             super(view);
             usernameTv = view.findViewById(R.id.tv_msg_username);
             badgeTv = view.findViewById(R.id.tv_badge);
+            faceIv = view.findViewById(R.id.iv_favor_face);
             imageIv = view.findViewById(R.id.iv_image);
             favorTimeTv = view.findViewById(R.id.tv_favor_time);
             messageLl = view.findViewById(R.id.ll_message);
@@ -106,8 +108,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        NewsListItem detail = mList.get(position);
-        final String imageName = detail.getImage();
+        final NewsListItem detail = mList.get(position);
         holder.usernameTv.setText(detail.getUsername()+"赞了你");
         String time = detail.getFavorTime();
         try {
@@ -124,11 +125,32 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         new AsyncTask<Void, Void, Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", detail.getFace())
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                holder.faceIv.setImageBitmap(bitmap);
+                            }
+                        });
+                return 0;
+            }
+        }.execute();
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Download?method=getNewsImage";
                 OkHttpUtils
                         .get()//
                         .url(url)//
-                        .addParams("imageName", imageName)
+                        .addParams("imageName", detail.getImage())
                         .build()//
                         .execute(new BitmapCallback() {
                             @Override

@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:paddingTop="10dp"
     android:id="@+id/ll_message">
 
     <com.example.administrator.share.util.OvalImageView
-        android:id="@+id/iv_image"
+        android:id="@+id/iv_favor_face"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
@@ -20,27 +20,35 @@
         android:text="@string/app_name"
         android:lines="1"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/iv_image" />
+        android:layout_toEndOf="@+id/iv_favor_face" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_favor_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentEnd="true">
-        <TextView
-            android:id="@+id/tv_favor_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp" />
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/iv_favor_face"
+        android:layout_below="@+id/tv_msg_username"
+        android:text="time"/>
 
-        <TextView
-            android:id="@+id/tv_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_gravity="end"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/tv_favor_time"
+        android:layout_below="@+id/tv_msg_username"/>
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_image"
+        android:layout_alignParentEnd="true"/>
 
     <View style="@style/bg_line"
         android:layout_marginTop="10dp"
