@@ -6,15 +6,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CommentListAdapter;
 import com.example.administrator.share.base.BaseActivity;
+import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
+import com.example.administrator.share.util.DateUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -48,6 +55,12 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private List<NewsListItem> mList;
     private CommentListAdapter adapter;
     private final int PAGE_COUNT = 10;
+    private LinearLayout commentPane;
+    private EditText addCommentET;
+    private ImageView addCommentIV;
+    private int newsId;
+    private String replyUsername;
+    private boolean isShowCommentPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +75,13 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     protected void findViewById(){
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
-        mListView = findViewById(R.id.normal_list_lv);
-        refreshLayout = findViewById(R.id.refreshLayout);
-        msgRemindTv = findViewById(R.id.tv_msg_remind);
-        messageLl = findViewById(R.id.layout_message);
+        mListView = $(R.id.normal_list_lv);
+        refreshLayout = $(R.id.refreshLayout);
+        msgRemindTv = $(R.id.tv_msg_remind);
+        messageLl = $(R.id.layout_message);
+        commentPane = $(R.id.ll_commment_pane);
+        addCommentET = $(R.id.ll_add_commment_text);
+        addCommentIV = $(R.id.iv_add_commment_btn);
     }
 
     @Override
@@ -73,6 +89,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         mContext = this;
         titleText.setText("评论");
         title_back.setOnClickListener(this);
+        addCommentIV.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         messageLl.setVisibility(View.VISIBLE);
     }
@@ -112,6 +129,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             case R.id.title_back:
                 finish();
                 break;
+            case R.id.iv_add_commment_btn:
+                addNewComment();
+                break;
         }
     }
 
@@ -136,6 +156,44 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         }.execute();
     }
 
+    // 添加新评论
+    private void addNewComment() {
+        String commentText = addCommentET.getText().toString().trim();
+        if (TextUtils.isEmpty(commentText)) {
+            DisplayToast("请先输入内容");
+            return;
+        }
+        String url = Constants.BASE_URL + "Message?method=addNewComment";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(2)
+                .addParams("newsId", newsId + "")
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .addParams("authorName",Constants.USER.getUsername())
+                .addParams("comment", commentText)
+                .addParams("replyUser", replyUsername)
+                .addParams("commentTime", DateUtils.getCurrentDatetime())
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void addCommentTimes(){
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "News?method=addCommentTimes";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(3)
+                        .addParams("newsId", newsId + "")
+                        .build()
+                        .execute(new MyStringCallback());
+                return 0;
+            }
+        }.execute();
+    }
 
     public class MyStringCallback extends StringCallback {
         @Override
@@ -155,8 +213,32 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         adapter = new CommentListAdapter(mContext, getDatas(0, PAGE_COUNT));
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
-                        refreshLayout.finishRefresh();
+                        adapter.setOnCommentButtonClickListner(new CommentListAdapter.OnCommentButtonClickListner() {
+                            @Override
+                            public void OnCommentButtonClicked(NewsListItem newsListItem) {
+                                showCommemtPane(newsListItem);
+                            }
+                        });
                     }
+                    break;
+                case 2:
+                    if (response.contains("error")) {
+                        DisplayToast("请稍后再试..");
+                    } else {
+                        DisplayToast(response);
+                        addCommentTimes();
+                        hideKeyboard();
+                        Comment comment = new Comment();
+                        comment.setFace(Constants.USER.getFace());
+                        comment.setCommentTime(DateUtils.getCurrentDatetime());
+                        comment.setComment(addCommentET.getText().toString());
+                        comment.setReplyUser(replyUsername);
+                        comment.setUsername(Constants.USER.getUsername());
+                        comment.setAuthorname(Constants.USER.getUsername());
+                        commentPane.setVisibility(View.GONE);
+                    }
+                    break;
+                case 3:
                     break;
                 default:
                     DisplayToast("what?");
@@ -195,4 +277,20 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             refreshLayout.finishLoadmoreWithNoMoreData();
         }
     }
+
+    private void showCommemtPane(NewsListItem newsListItem) {
+        isShowCommentPane = !isShowCommentPane;
+        if (isShowCommentPane) {
+            newsId = newsListItem.getNewsId();
+            replyUsername = newsListItem.getUsername();
+            commentPane.setVisibility(View.VISIBLE);
+            addCommentET.setHint("回复 " + replyUsername + " 的评论");
+            showKeyboard(addCommentET);
+        } else {
+            commentPane.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(addCommentET.getWindowToken(), 0);
+        }
+    }
+
 }

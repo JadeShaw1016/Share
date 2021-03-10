@@ -34,6 +34,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     private Context mContext;
     private LayoutInflater inflater;
     private List<NewsListItem> mList;
+    private OnCommentButtonClickListner onCommentButtonClickListner;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTv;
@@ -74,12 +75,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
+                doButtonClickAction(mList.get(position));
                 NewsListItem newsListItem = mList.get(position);
                 final int commentId = newsListItem.getCommentId();
-                Intent intent = new Intent(mContext, CircleDetailActivity.class);
-                intent.putExtra("newsId", newsListItem.getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
-                mContext.startActivity(intent);
                 if(newsListItem.getStatus() == 0){
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
@@ -103,6 +101,17 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                         }
                     }.execute();
                 }
+            }
+        });
+        holder.imageIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                NewsListItem newsListItem = mList.get(position);
+                Intent intent = new Intent(mContext, CircleDetailActivity.class);
+                intent.putExtra("newsId", newsListItem.getNewsId());
+                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                mContext.startActivity(intent);
             }
         });
         return holder;
@@ -193,5 +202,19 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             mList.addAll(newDatas);
         }
         notifyDataSetChanged();
+    }
+
+    public interface OnCommentButtonClickListner {
+        void OnCommentButtonClicked(NewsListItem newsListItem);
+    }
+
+    public void setOnCommentButtonClickListner(OnCommentButtonClickListner onCommentButtonClickListner) {
+        this.onCommentButtonClickListner = onCommentButtonClickListner;
+    }
+
+    public void doButtonClickAction(NewsListItem newsListItem) {
+        if (onCommentButtonClickListner != null) {
+            onCommentButtonClickListner.OnCommentButtonClicked(newsListItem);
+        }
     }
 }
