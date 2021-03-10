@@ -10,6 +10,8 @@ public class NewsListItem {
 
     private String username;
 
+    private String face;
+
     private String image;
 
     private String comment;
@@ -53,6 +55,8 @@ public class NewsListItem {
     public int getUserId(){
         return userId;
     }
+
+    public String getFace(){ return face; }
 
     public String getImage(){ return image; }
 

@@ -9,25 +9,21 @@
     android:id="@+id/ll_message">
 
     <com.example.administrator.share.util.OvalImageView
-        android:id="@+id/iv_image"
+        android:id="@+id/iv_comment_face"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
         android:src="@drawable/default_image" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical"
-        android:layout_toEndOf="@+id/iv_image">
         <TextView
             android:id="@+id/tv_msg_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:text="@string/app_name"
-            android:lines="1" />
+            android:lines="1"
+            android:layout_toEndOf="@+id/iv_comment_face"
+            android:layout_marginStart="10dp"/>
         <TextView
             android:id="@+id/tv_msg_comment"
             android:layout_width="wrap_content"
@@ -35,30 +31,40 @@
             android:text="@string/app_name"
             android:textColor="@color/darkgrey"
             android:textSize="12sp"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
+            android:layout_toEndOf="@+id/iv_comment_face"
+            android:layout_below="@+id/tv_msg_username"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentEnd="true">
         <TextView
             android:id="@+id/tv_comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp" />
+            android:layout_toEndOf="@+id/iv_comment_face"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/tv_msg_comment"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:text="time"/>
 
         <TextView
             android:id="@+id/tv_badge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_gravity="end"/>
-    </LinearLayout>
+            android:layout_below="@+id/tv_msg_comment"
+            android:layout_toEndOf="@+id/tv_comment_time"/>
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_image"
+        android:layout_alignParentEnd="true"/>
 
     <View style="@style/bg_line"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/iv_image"/>
+        android:layout_below="@+id/tv_comment_time"/>
 </RelativeLayout>

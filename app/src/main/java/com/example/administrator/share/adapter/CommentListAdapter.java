@@ -39,6 +39,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         TextView usernameTv;
         TextView commentTv;
         TextView badgeTv;
+        ImageView faceIv;
         ImageView imageIv;
         TextView commentTimeTv;
         BadgeView badge;
@@ -48,6 +49,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             usernameTv = view.findViewById(R.id.tv_msg_username);
             commentTv = view.findViewById(R.id.tv_msg_comment);
             badgeTv = view.findViewById(R.id.tv_badge);
+            faceIv = view.findViewById(R.id.iv_comment_face);
             imageIv = view.findViewById(R.id.iv_image);
             commentTimeTv = view.findViewById(R.id.tv_comment_time);
             messageLl = view.findViewById(R.id.ll_message);
@@ -108,7 +110,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        NewsListItem detail = mList.get(position);
+        final NewsListItem detail = mList.get(position);
         final String imageName = detail.getImage();
         holder.usernameTv.setText(detail.getUsername()+"评论了你");
         holder.commentTv.setText(detail.getComment());
@@ -124,6 +126,27 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        new AsyncTask<Void, Void, Integer>(){
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                OkHttpUtils
+                        .get()//
+                        .url(url)//
+                        .addParams("face", detail.getFace())
+                        .build()//
+                        .execute(new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i) {
+                            }
+                            @Override
+                            public void onResponse(Bitmap bitmap, int i) {
+                                holder.faceIv.setImageBitmap(bitmap);
+                            }
+                        });
+                return 0;
+            }
+        }.execute();
         new AsyncTask<Void, Void, Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
