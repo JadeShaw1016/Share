@@ -26,7 +26,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginWithPwdActivity extends BaseActivity implements View.OnClickListener {
     private EditText et_username;
     private EditText et_password;
 
@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_with_pwd);
         mContext = this;
         findViewById();
         initView();

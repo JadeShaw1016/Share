@@ -51,7 +51,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 SystemClock.sleep(500);
                 AppManager.getInstance().killAllActivity();
                 SharedPreferencesUtils.clear(this);
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, LoginWithPwdActivity.class));
                 break;
             case R.id.ll_myinfo:
                 startActivity(new Intent(this, MyInformationActivity.class));

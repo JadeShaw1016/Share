@@ -245,7 +245,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                             Toast.makeText(mContext, "用户名密码保存失败", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    openActivity(LoginActivity.class);
+                    openActivity(LoginWithPwdActivity.class);
                     AppManager.getInstance().killAllActivity();
                     break;
                 default:

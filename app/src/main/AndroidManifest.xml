@@ -43,7 +43,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginWithPwdActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ResPwdActivity" />
         <activity android:name=".activity.AddnewsActivity" />

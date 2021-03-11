@@ -79,7 +79,7 @@ public class WelcomeActivity extends BaseActivity {
                                 Gson gson = new Gson();
                                 User user = gson.fromJson(response, User.class);
                                 if (user.getUserId() == 0) {
-                                    openActivity(LoginActivity.class);
+                                    openActivity(LoginWithPwdActivity.class);
                                     Log.d("WelcomeActivity","找不到用户ID");
                                 } else {
                                     // 存储用户
