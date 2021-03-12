@@ -130,11 +130,11 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                     if (user == null) {
                         new AlertDialog.Builder(mContext)
                                 .setTitle("提示")
-                                .setMessage("该用户不存在，请到注册界面进行注册！")
+                                .setMessage("该用户不存在，请用手机号注册登录！")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         setResult(RESULT_OK);
-                                        Intent intent=new Intent(ResPwdActivity.this, RegisterActivity.class);
+                                        Intent intent=new Intent(ResPwdActivity.this, LoginActivity.class);
                                         ResPwdActivity.this.startActivity(intent);
                                         finish();
                                     }

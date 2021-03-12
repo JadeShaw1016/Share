@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginWithPhoneActivity">
+
+    <ImageView
+        android:id="@+id/iv_login_with_phone_back"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:src="@drawable/title_back_press"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_login_with_vercode_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="手机号登录"
+        android:textColor="#ff404040"
+        android:textSize="24sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_login_with_phone_back"/>
+
+    <TextView
+        android:id="@+id/tv_login_with_vercode_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="为注册手机号登录后将自动创建账号"
+        android:textColor="#ff9c9c9c"
+        android:textSize="12sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_with_vercode_1"/>
+
+    <TextView
+        android:id="@+id/tv_login_with_vercode_86"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+86"
+        android:textColor="#ff404040"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_with_vercode_2"/>
+
+    <EditText
+        android:id="@+id/editTextPhoneNum"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:maxLength="11"
+        android:hint="输入手机号码"
+        android:inputType="phone"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_login_with_vercode_86"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_with_vercode_2"/>
+
+    <ImageView
+        android:id="@+id/tv_login_with_vercode_close"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_with_vercode_2"
+        android:visibility="gone"/>
+
+    <View style="@style/bg_line"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNum"/>
+
+    <Button
+        android:id="@+id/buttonCode"
+        android:background="@drawable/selector_orange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNum"
+        android:text="下一步"
+        android:textSize="18sp"/>
+
+</android.support.constraint.ConstraintLayout>

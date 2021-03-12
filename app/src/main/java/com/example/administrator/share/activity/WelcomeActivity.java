@@ -65,7 +65,7 @@ public class WelcomeActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "User?method=login";
+                String url = Constants.BASE_URL + "User?method=loginWithPwd";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -79,7 +79,7 @@ public class WelcomeActivity extends BaseActivity {
                                 Gson gson = new Gson();
                                 User user = gson.fromJson(response, User.class);
                                 if (user.getUserId() == 0) {
-                                    openActivity(LoginWithPwdActivity.class);
+                                    openActivity(LoginActivity.class);
                                     Log.d("WelcomeActivity","找不到用户ID");
                                 } else {
                                     // 存储用户

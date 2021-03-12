@@ -10,21 +10,19 @@
     <!--个人信息-->
     <string name="face">头像</string>
     <string name="username">用户名</string>
+    <string name="nickname">昵称</string>
     <string name="login_txt">登录</string>
     <string name="register_txt">注册</string>
     <string name="sex">性别</string>
     <string name="male">男</string>
     <string name="female">女</string>
-    <string name="height">身高</string>
-    <string name="weight">体重</string>
     <string name="signature">个性签名</string>
     <string name="password">密码</string>
     <string name="repassword">确认密码</string>
-    <string name="hint_username">请输入用户名</string>
     <string name="hint_password">请输入密码</string>
     <string name="hint_repassword">请再次输入密码</string>
-    <string name="hint_height">你的身高</string>
-    <string name="hint_weight">你的体重</string>
+    <string name="hint_username">请输入手机号</string>
+    <string name="hint_nickname">请输入昵称</string>
     <string name="content_signature">这个人很懒，什么都没有留下</string>
     <!--个人信息-->
 

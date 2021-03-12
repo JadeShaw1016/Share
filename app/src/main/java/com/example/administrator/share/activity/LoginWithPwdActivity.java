@@ -8,12 +8,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.User;
+import com.example.administrator.share.util.ActivityManager;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.util.SharedPreferencesUtils;
@@ -27,23 +29,20 @@ import okhttp3.Call;
 
 
 public class LoginWithPwdActivity extends BaseActivity implements View.OnClickListener {
+
     private EditText et_username;
     private EditText et_password;
-
     private Button bt_login;
     private TextView repwdTv;
-    private TextView registerTv;
     private Button bt_config;
     private Context mContext;
     private int flag = 0;
-
-    private MyDialogHandler uiFlusHandler;
+    private ImageView backIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_with_pwd);
-        mContext = this;
         findViewById();
         initView();
     }
@@ -52,19 +51,19 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
     protected void findViewById() {
         et_username = $(R.id.login_et_username);
         et_password = $(R.id.login_et_password);
-
         bt_login = $(R.id.login_btn_login);
-        registerTv = $(R.id.login_tv_register);
         repwdTv = $(R.id.txtForgetPwd);
         bt_config = $(R.id.login_bt_config);
+        backIv = $(R.id.iv_login_with_pwd_back);
     }
 
     @Override
     protected void initView() {
+        mContext = this;
         bt_login.setOnClickListener(this);
-        registerTv.setOnClickListener(this);
         repwdTv.setOnClickListener(this);
         bt_config.setOnClickListener(this);
+        backIv.setOnClickListener(this);
         echo();
         uiFlusHandler = new MyDialogHandler(mContext, "登录中...");
         if(!TextUtils.isEmpty(et_username.getText().toString())){
@@ -92,14 +91,14 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
             case R.id.login_btn_login:
                 login();
                 break;
-            case R.id.login_tv_register:
-                openActivity(RegisterActivity.class);
-                break;
             case R.id.txtForgetPwd:
                 openActivity(ResPwdActivity.class);
                 break;
             case R.id.login_bt_config:
                 openActivity(ConfigActivity.class);
+                break;
+            case R.id.iv_login_with_pwd_back:
+                finish();
                 break;
             default:
                 break;
@@ -114,7 +113,6 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
     /**
      * 回显
@@ -134,7 +132,7 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "User?method=login";
+                String url = Constants.BASE_URL + "User?method=loginWithPwd";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -163,17 +161,16 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
                             if(flag == 0){
-                                DisplayToast("登录成功");
-                                Log.d("LoginActivity","登录成功");                        }
+                                Log.d("LoginActivity","登录成功");
+                            }
                         } else {
                             DisplayToast("用户存储失败");
                         }
                     }
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     openActivity(MainMenuActivity.class);
-                    finish();
+                    ActivityManager.getInstance().killAllActivity();
                     break;
-
                 default:
                     DisplayToast("what?");
                     break;
