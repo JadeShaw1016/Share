@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -37,45 +38,13 @@
                     android:gravity="center_vertical"
                     android:text="@string/face"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-                <com.example.administrator.share.util.OvalImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/register_face"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/default_image"
-                    android:background="@color/transparent"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fuxk_base_color_white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dd_dimen_30px"
-                android:paddingRight="@dimen/dd_dimen_30px">
-
-                <TextView
-                    android:layout_width="@dimen/dd_dimen_200px"
-                    android:layout_height="fill_parent"
-                    android:background="@color/fuxk_base_color_white"
-                    android:gravity="center_vertical"
-                    android:text="@string/username"
-                    android:textColor="@color/fuxk_base_color_gray_black" />
-
-                <EditText
-                    android:id="@+id/reg_et_username"
-                    style="@style/Fuxk_Base_Content_28_Style"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dd_dimen_90px"
-                    android:layout_margin="@dimen/dd_dimen_6px"
-                    android:background="@drawable/bg_edit_text_manage"
-                    android:hint="@string/hint_username"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/dd_dimen_6px"
-                    android:paddingRight="@dimen/dd_dimen_6px"
-                    android:maxLines="1" />
+                    app:riv_oval="true"
+                    android:src="@drawable/default_image" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,7 +56,37 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
+                <TextView
+                    android:layout_width="@dimen/dd_dimen_200px"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/nickname"
+                    android:textColor="@color/fuxk_base_color_gray_black" />
+                <EditText
+                    android:id="@+id/reg_et_nickname"
+                    style="@style/Fuxk_Base_Content_28_Style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/dd_dimen_90px"
+                    android:layout_margin="@dimen/dd_dimen_6px"
+                    android:background="@drawable/bg_edit_text_manage"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:hint="@string/hint_nickname"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="@dimen/dd_dimen_6px"
+                    android:paddingRight="@dimen/dd_dimen_6px"
+                    android:maxLines="1"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fuxk_base_color_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dd_dimen_30px"
+                android:paddingRight="@dimen/dd_dimen_30px"
+                android:paddingTop="20dp">
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -95,7 +94,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/password"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/reg_et_password"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -111,6 +109,7 @@
                     android:paddingRight="@dimen/dd_dimen_6px"
                     android:maxLines="1" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +119,6 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -128,7 +126,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/repassword"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <EditText
                     android:id="@+id/reg_et_repassword"
                     style="@style/Fuxk_Base_Content_28_Style"
@@ -154,7 +151,6 @@
                 android:paddingLeft="@dimen/dd_dimen_30px"
                 android:paddingRight="@dimen/dd_dimen_30px"
                 android:paddingTop="20dp">
-
                 <TextView
                     android:layout_width="@dimen/dd_dimen_200px"
                     android:layout_height="fill_parent"
@@ -162,13 +158,11 @@
                     android:gravity="center_vertical"
                     android:text="@string/sex"
                     android:textColor="@color/fuxk_base_color_gray_black" />
-
                 <RadioGroup
                     android:id="@+id/radio_sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <RadioButton
                         android:id="@+id/reg_rd_male"
                         android:layout_width="wrap_content"
@@ -179,7 +173,6 @@
                         android:paddingLeft="@dimen/dd_dimen_6px"
                         android:paddingRight="@dimen/dd_dimen_6px"
                         android:text="@string/male" />
-
                     <RadioButton
                         android:id="@+id/reg_rd_female"
                         android:layout_width="wrap_content"
@@ -191,72 +184,6 @@
                         android:text="@string/female"/>
                 </RadioGroup>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fuxk_base_color_white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dd_dimen_30px"
-                android:paddingRight="@dimen/dd_dimen_30px"
-                android:paddingTop="20dp">
-
-                <TextView
-                    android:layout_width="@dimen/dd_dimen_200px"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/height"
-                    android:textColor="@color/fuxk_base_color_gray_black" />
-
-                <EditText
-                    android:id="@+id/reg_et_height"
-                    style="@style/Fuxk_Base_Content_28_Style"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dd_dimen_90px"
-                    android:layout_margin="@dimen/dd_dimen_6px"
-                    android:background="@drawable/bg_edit_text_manage"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:hint="@string/hint_height"
-                    android:inputType="number"
-                    android:paddingLeft="@dimen/dd_dimen_6px"
-                    android:paddingRight="@dimen/dd_dimen_6px"
-                    android:maxLines="1"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fuxk_base_color_white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dd_dimen_30px"
-                android:paddingRight="@dimen/dd_dimen_30px"
-                android:paddingTop="20dp">
-
-                <TextView
-                    android:layout_width="@dimen/dd_dimen_200px"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/weight"
-                    android:textColor="@color/fuxk_base_color_gray_black" />
-
-                <EditText
-                    android:id="@+id/reg_et_weight"
-                    style="@style/Fuxk_Base_Content_28_Style"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dd_dimen_90px"
-                    android:layout_margin="@dimen/dd_dimen_6px"
-                    android:background="@drawable/bg_edit_text_manage"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:hint="@string/hint_weight"
-                    android:inputType="number"
-                    android:paddingLeft="@dimen/dd_dimen_6px"
-                    android:paddingRight="@dimen/dd_dimen_6px" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

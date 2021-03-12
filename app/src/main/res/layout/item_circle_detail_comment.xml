@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <com.example.administrator.share.util.OvalImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_comment_face"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
+        app:riv_oval="true"
         android:src="@drawable/default_image" />
 
     <TextView
-        android:id="@id/news_detail_comment_username"
+        android:id="@id/news_detail_comment_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -32,7 +34,7 @@
         android:textSize="12sp"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/iv_comment_face"
-        android:layout_below="@+id/news_detail_comment_username"/>
+        android:layout_below="@+id/news_detail_comment_nickname"/>
 
     <LinearLayout
         android:id="@id/news_detail_reply_info"
