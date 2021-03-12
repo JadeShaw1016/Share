@@ -208,8 +208,6 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                 }
             }
         });
-
-
     }
 
     @Override
