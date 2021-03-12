@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administrator.share.image.ImageLoaderConfig;
-import com.example.administrator.share.util.AppManager;
+import com.example.administrator.share.util.ActivityManager;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -89,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 		getWindow().setStatusBarColor(Color.TRANSPARENT);
 		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-		AppManager.getInstance().addActivity(this);
+		ActivityManager.getInstance().addActivity(this);
 		if (!ImageLoader.getInstance().isInited())
 			ImageLoaderConfig.initImageLoader(this, Constants.BASE_IMAGE_CACHE);
 		this.tManager = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE));

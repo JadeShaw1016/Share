@@ -1,31 +1,29 @@
 package com.example.administrator.share.util;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 
 import java.util.Iterator;
 import java.util.Stack;
 
-public class AppManager {
+public class ActivityManager {
 	private static Stack<Activity> mActivityStack;
-	private static AppManager mAppManager;
+	private static ActivityManager mActivityManager;
 
-	public static AppManager getInstance() {
-		if (mAppManager == null)
-			mAppManager = new AppManager();
-		return mAppManager;
+	public static ActivityManager getInstance() {
+		if (mActivityManager == null)
+			mActivityManager = new ActivityManager();
+		return mActivityManager;
 	}
 
 	@SuppressWarnings("deprecation")
 	public void AppExit(Context paramContext) {
 		try {
 			killAllActivity();
-			((ActivityManager) paramContext.getSystemService("activity"))
+			((android.app.ActivityManager) paramContext.getSystemService(Context.ACTIVITY_SERVICE))
 					.restartPackage(paramContext.getPackageName());
 			System.exit(0);
-			return;
-		} catch (Exception localException) {
+		} catch (Exception ignored) {
 		}
 	}
 

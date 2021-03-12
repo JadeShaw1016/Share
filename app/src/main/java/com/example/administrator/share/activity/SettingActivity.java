@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.util.AppManager;
+import com.example.administrator.share.util.ActivityManager;
 import com.example.administrator.share.util.SharedPreferencesUtils;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
@@ -49,9 +49,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.btn_exit:
                 SystemClock.sleep(500);
-                AppManager.getInstance().killAllActivity();
+                ActivityManager.getInstance().killAllActivity();
                 SharedPreferencesUtils.clear(this);
-                startActivity(new Intent(this, LoginWithPwdActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.ll_myinfo:
                 startActivity(new Intent(this, MyInformationActivity.class));
