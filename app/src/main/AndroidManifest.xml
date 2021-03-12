@@ -43,7 +43,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginWithPwdActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ResPwdActivity" />
         <activity android:name=".activity.AddnewsActivity" />
@@ -55,12 +54,17 @@
         <activity android:name=".activity.CircleDetailActivity" />
         <activity android:name=".activity.BadgeViewTwo" />
         <activity android:name=".activity.FruitActivity" />
-        <activity android:name=".activity.FavorFansActivity"/>
-        <activity android:name=".activity.CommentActivity"/>
-        <activity android:name=".activity.MyInformationActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".activity.FavorFansActivity" />
+        <activity android:name=".activity.CommentActivity" />
+        <activity
+            android:name=".activity.MyInformationActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.FocusActivity" />
         <activity android:name=".activity.FansActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginWithPwdActivity" />
+        <activity android:name=".activity.LoginWithPhoneActivity" />
+        <activity android:name=".activity.LoginWithVercodeActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
