@@ -119,7 +119,7 @@ public class MyWorkFragment extends Fragment {
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;

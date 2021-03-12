@@ -54,7 +54,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
                 return null;
@@ -70,7 +70,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
                 OkHttpUtils
                         .post()
                         .url(url)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .id(2)
                         .build()
                         .execute(new MyStringCallback());

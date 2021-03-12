@@ -62,7 +62,7 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
                 .post()
                 .url(url)
                 .id(2)
-                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -108,7 +108,7 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
                 .post()
                 .url(url)
                 .id(1)
-                .addParams("userId", Constants.USER.getUserId() + "")
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new MyStringCallback());
     }
