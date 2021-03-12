@@ -31,8 +31,8 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.Constants;
-import com.example.administrator.share.util.DateUtils;
 import com.example.administrator.share.util.MyDialogHandler;
+import com.example.administrator.share.util.Utils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -142,8 +142,8 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
                 .addParams("title", titleStr)
                 .addParams("content", contentStr)
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("releaseTime", DateUtils.getCurrentDatetime())
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .addParams("releaseTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
