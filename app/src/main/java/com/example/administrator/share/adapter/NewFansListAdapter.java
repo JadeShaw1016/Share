@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.entity.FansListItem;
+import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -28,22 +28,22 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<FansListItem> mList;
+    private List<FollowsListItem> mList;
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameTv;
+        TextView nicknameTv;
         TextView followTimeTv;
         ImageView faceIv;
         public ViewHolder(View view) {
             super(view);
-            usernameTv = view.findViewById(R.id.tv_msg_newfans_username);
+            nicknameTv = view.findViewById(R.id.tv_msg_newfans_nickname);
             followTimeTv = view.findViewById(R.id.tv_msg_newfans_time);
             faceIv = view.findViewById(R.id.iv_msg_newfans_image);
         }
     }
 
-    public NewFansListAdapter(Context mContext, List<FansListItem> mList) {
+    public NewFansListAdapter(Context mContext, List<FollowsListItem> mList) {
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -60,8 +60,8 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FansListItem detail = mList.get(position);
-        holder.usernameTv.setText(detail.getUserName()+"关注了你");
+        FollowsListItem detail = mList.get(position);
+        holder.nicknameTv.setText(detail.getNickName()+"关注了你");
         String time = detail.getFollowTime();
         try {
             if(isOldTime(time)){
@@ -107,7 +107,7 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
         }.execute();
     }
 
-    public void updateList(List<FansListItem> newDatas) {
+    public void updateList(List<FollowsListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

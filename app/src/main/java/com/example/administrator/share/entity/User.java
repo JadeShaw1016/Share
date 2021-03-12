@@ -7,13 +7,11 @@ public class User {
 
     private String username;
 
+    private String nickname;
+
     private String password;
 
     private String sex;
-
-    private double height;
-
-    private double weight;
 
     private String signature;
 
@@ -41,6 +39,14 @@ public class User {
         this.username = username;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -51,22 +57,6 @@ public class User {
 
     public String getSex() {
         return sex;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
     }
 
     public String getSignature() {

@@ -24,7 +24,7 @@ import com.example.administrator.share.activity.FocusActivity;
 import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
-import com.example.administrator.share.entity.FansListItem;
+import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,14 +47,14 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private String [] title={"我的作品","我的点赞","我的收藏"};
 
     private ImageView settingIv;
-    private TextView usernameTv;
+    private TextView nicknameTv;
     private TextView fansTv;
     private TextView focusTv;
     private TextView popularityTv;
     private ImageView faceIv;
     private TextView signatureTv;
-    private List<FansListItem> mFocusList;
-    private List<FansListItem> mFansList;
+    private List<FollowsListItem> mFocusList;
+    private List<FollowsListItem> mFansList;
     private LinearLayout fansLl;
     private LinearLayout focusLl;
 
@@ -71,7 +71,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         pager= view.findViewById(R.id.page);
         tabLayout= view.findViewById(R.id.tab_layout);
         settingIv = view.findViewById(R.id.iv1);
-        usernameTv = view.findViewById(R.id.me_homepage_username);
+        nicknameTv = view.findViewById(R.id.me_homepage_nickname);
         fansTv = view.findViewById(R.id.me_fans);
         fansLl = view.findViewById(R.id.ll_fans);
         focusLl = view.findViewById(R.id.ll_focus);
@@ -139,7 +139,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void echo(){
-        usernameTv.setText(Constants.USER.getUsername());
+        nicknameTv.setText(Constants.USER.getNickname());
         getUserFace();
     }
 
@@ -181,7 +181,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MeFragment.MyStringCallback());
             }
@@ -200,7 +200,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                         .post()
                         .url(url)
                         .id(2)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MeFragment.MyStringCallback());
             }
@@ -219,7 +219,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                         .post()
                         .url(url)
                         .id(3)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MeFragment.MyStringCallback());
             }
@@ -231,7 +231,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<FansListItem>>() {
+            Type type = new TypeToken<ArrayList<FollowsListItem>>() {
             }.getType();
             switch (id) {
                 case 1:
@@ -243,7 +243,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                     focusTv.setText(String.valueOf(mFocusList.size()));
                     break;
                 case 3:
-                    popularityTv.setText(String.valueOf(response));
+                    popularityTv.setText(response);
                     break;
                 default:
                     Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();

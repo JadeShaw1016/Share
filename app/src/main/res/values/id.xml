@@ -21,28 +21,19 @@
     <item name="fragment_container" type="id" />
     <!--首页-->
 
-    <!--锻炼-->
-    <item name="train_base" type="id" />
-    <item name="train_enhance" type="id" />
-    <item name="train_acme" type="id" />
-    <item name="train_hand" type="id" />
-    <item name="train_foot" type="id" />
-    <item name="train_waist" type="id" />
-    <!--锻炼-->
-
-    <!--发现-->
+    <!--圈子-->
     <item name="found_list" type="id" />
     <item name="found_list_item" type="id" />
     <item name="found_list_item_title" type="id" />
-    <item name="found_list_item_username" type="id" />
+    <item name="found_list_item_nickname" type="id" />
     <item name="found_top_bg" type="id" />
     <item name="found_list_icon" type="id" />
     <item name="found_new_add" type="id" />
     <item name="up_btn_check" type="id" />
-    <!--发现-->
+    <!--圈子-->
 
     <!--我的-->
-    <item name="me_homepage_username" type="id" />
+    <item name="me_homepage_nickname" type="id" />
     <item name="me_homepage" type="id"/>
     <item name="me_popularity" type="id"/>
     <item name="me_fans" type="id"/>
@@ -80,7 +71,7 @@
 
     <!--新鲜事详细-->
     <item name="news_detail_title" type="id" />
-    <item name="news_detail_username" type="id" />
+    <item name="news_detail_nickname" type="id" />
     <item name="news_detail_time" type="id" />
     <item name="news_detail_content" type="id" />
     <item name="news_detail_image" type="id" />
@@ -90,7 +81,7 @@
     <item name="news_detail_add_favor" type="id" />
     <item name="news_detail_reply_info" type="id" />
     <item name="news_detail_comment_reply_user" type="id" />
-    <item name="news_detail_comment_username" type="id" />
+    <item name="news_detail_comment_nickname" type="id" />
     <item name="news_detail_comment_add_reply" type="id" />
     <item name="news_detail_comment_time" type="id" />
     <item name="news_detail_commment_content" type="id" />
@@ -101,11 +92,9 @@
 
     <!--通用项-->
     <item name="item_normal_title" type="id" />
-    <item name="item_normal_username" type="id" />
+    <item name="item_normal_nickname" type="id" />
     <item name="normal_list_lv" type="id" />
     <!--通用项-->
-
-
 
     <item name="gridview" type="id" />
     <item name="webview" type="id" />

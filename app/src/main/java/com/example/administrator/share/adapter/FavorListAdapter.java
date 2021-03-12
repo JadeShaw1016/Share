@@ -36,7 +36,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
     private List<NewsListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameTv;
+        TextView nicknameTv;
         TextView badgeTv;
         ImageView faceIv;
         ImageView imageIv;
@@ -45,7 +45,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         RelativeLayout messageLl;
         public ViewHolder(View view) {
             super(view);
-            usernameTv = view.findViewById(R.id.tv_msg_username);
+            nicknameTv = view.findViewById(R.id.tv_favor_nickname);
             badgeTv = view.findViewById(R.id.tv_badge);
             faceIv = view.findViewById(R.id.iv_favor_face);
             imageIv = view.findViewById(R.id.iv_image);
@@ -109,7 +109,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final NewsListItem detail = mList.get(position);
-        holder.usernameTv.setText(detail.getUsername()+"赞了你");
+        holder.nicknameTv.setText(detail.getNickname()+"赞了你");
         String time = detail.getFavorTime();
         try {
             if(isOldTime(time)){

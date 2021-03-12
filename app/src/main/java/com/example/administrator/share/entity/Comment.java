@@ -2,7 +2,7 @@ package com.example.administrator.share.entity;
 
 public class Comment {
 
-    private String username;
+    private String nickname;
 
     private String face;
 
@@ -18,12 +18,12 @@ public class Comment {
 
     public void setFace(String face){this.face = face;}
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setAuthorname(String authorname) {

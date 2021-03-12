@@ -4,7 +4,7 @@ public class CircleListForFound {
     private int userId;
     private int newsId;
     private String title;
-    private String username;
+    private String nickname;
     private String image;
 
     public int getUserId() {
@@ -27,12 +27,12 @@ public class CircleListForFound {
         this.title = title;
     }
 
-    public String getUsername() {
-        return username;
+    public String geNickName() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getImage() {

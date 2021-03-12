@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.entity.FansListItem;
+import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -22,22 +22,22 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHolder> {
+public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.ViewHolder> {
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<FansListItem> mList;
+    private List<FollowsListItem> mList;
     private int flag;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameTv;
+        TextView nicknameTv;
         TextView signatureTv;
         TextView stateTv;
         ImageView stateIv;
         ImageView faceIv;
         public ViewHolder(View view) {
             super(view);
-            usernameTv = view.findViewById(R.id.tv_username);
+            nicknameTv = view.findViewById(R.id.tv_fans_focus_nickname);
             signatureTv = view.findViewById(R.id.tv_signature);
             stateTv =view.findViewById(R.id.tv_state);
             stateIv = view.findViewById(R.id.iv_state);
@@ -45,7 +45,7 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
         }
     }
 
-    public FansListAdapter(Context mContext, List<FansListItem> mList,int flag) {
+    public FollowsListAdapter(Context mContext, List<FollowsListItem> mList, int flag) {
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
         this.flag = flag;
@@ -64,8 +64,8 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FansListItem detail = mList.get(position);
-        holder.usernameTv.setText(detail.getUserName());
+        FollowsListItem detail = mList.get(position);
+        holder.nicknameTv.setText(detail.getNickName());
         if(detail.getSignature() != null){
             holder.signatureTv.setText(detail.getSignature());
         }
@@ -139,7 +139,7 @@ public class FansListAdapter extends RecyclerView.Adapter<FansListAdapter.ViewHo
         }.execute();
     }
 
-    public void updateList(List<FansListItem> newDatas) {
+    public void updateList(List<FollowsListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

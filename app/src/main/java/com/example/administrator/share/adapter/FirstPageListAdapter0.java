@@ -39,12 +39,12 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bgIv;
         TextView titleTv;
-        TextView usernameTv;
+        TextView nicknameTv;
         public ViewHolder(View view) {
             super(view);
             bgIv = view.findViewById(R.id.found_list_icon);
             titleTv = view.findViewById(R.id.found_list_item_title);
-            usernameTv = view.findViewById(R.id.found_list_item_username);
+            nicknameTv = view.findViewById(R.id.found_list_item_nickname);
         }
     }
 
@@ -96,7 +96,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
             CircleListForFound news = mList.get(position);
             final String imageName = news.getImage();
             ((ViewHolder)holder).titleTv.setText(news.getTitle());
-            ((ViewHolder)holder).usernameTv.setText(news.getUsername());
+            ((ViewHolder)holder).nicknameTv.setText(news.geNickName());
             new AsyncTask<Void, Void, Integer>(){
 
                 @Override

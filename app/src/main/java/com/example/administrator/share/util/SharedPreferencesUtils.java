@@ -29,10 +29,9 @@ public class SharedPreferencesUtils {
             editor.putInt("userId", user.getUserId());
             editor.putString("face",user.getFace());
             editor.putString("username", user.getUsername());
+            editor.putString("nickname", user.getNickname());
             editor.putString("password", user.getPassword());
             editor.putString("sex", user.getSex());
-            editor.putString("height", user.getHeight() + "");
-            editor.putString("weight", user.getWeight() + "");
             //4.提交Editor对象
             editor.apply();
             return true;
@@ -58,17 +57,15 @@ public class SharedPreferencesUtils {
             int userId = sharedPreferences.getInt("userId", 0);
             String password = sharedPreferences.getString("password", "");
             String username = sharedPreferences.getString("username", "");
+            String nickname = sharedPreferences.getString("nickname","");
             String sex = sharedPreferences.getString("sex", "男");
-            String height = sharedPreferences.getString("height", "");
-            String weight = sharedPreferences.getString("weight", "");
 
-            hashMap = new HashMap<String, String>();
-            hashMap.put("userId", userId + "");
+            hashMap = new HashMap<>();
+            hashMap.put("userId", String.valueOf(userId));
             hashMap.put("password", password);
             hashMap.put("username", username);
+            hashMap.put("nickname", nickname);
             hashMap.put("sex", sex);
-            hashMap.put("height", height);
-            hashMap.put("weight", weight);
             return hashMap;
 
         } catch (Exception e) {

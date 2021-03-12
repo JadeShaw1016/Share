@@ -37,7 +37,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     private OnCommentButtonClickListner onCommentButtonClickListner;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameTv;
+        TextView nicknameTv;
         TextView commentTv;
         TextView badgeTv;
         ImageView faceIv;
@@ -47,8 +47,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         RelativeLayout messageLl;
         public ViewHolder(View view) {
             super(view);
-            usernameTv = view.findViewById(R.id.tv_msg_username);
-            commentTv = view.findViewById(R.id.tv_msg_comment);
+            nicknameTv = view.findViewById(R.id.tv_comment_nickname);
+            commentTv = view.findViewById(R.id.tv_comment_content);
             badgeTv = view.findViewById(R.id.tv_badge);
             faceIv = view.findViewById(R.id.iv_comment_face);
             imageIv = view.findViewById(R.id.iv_image);
@@ -120,7 +120,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final NewsListItem detail = mList.get(position);
-        holder.usernameTv.setText(detail.getUsername()+"评论了你");
+        holder.nicknameTv.setText(detail.getNickname()+"评论了你");
         holder.commentTv.setText(detail.getComment());
         String time = detail.getCommentTime();
         try {

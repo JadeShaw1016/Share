@@ -28,8 +28,8 @@ import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.CircleDetail;
 import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.util.Constants;
-import com.example.administrator.share.util.DateUtils;
 import com.example.administrator.share.util.MyDialogHandler;
+import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -52,7 +52,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private String TITLE_NAME = "圈子详情";
     private View title_back;
     private TextView titleText;
-    private TextView usernameTV;
+    private TextView nicknameTV;
     private TextView titleTV;
     private TextView releaseTimeTV;
     private ImageView imageIV;
@@ -61,7 +61,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView collectionTv;
     private ImageView favorIv;
     private TextView favorTv;
-    private TextView authornameTv;
     private Button focusBtn;
     private LinearLayout commentPane;
     private EditText addCommentET;
@@ -100,7 +99,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void findViewById() {
         this.title_back = $(R.id.title_back);
         this.titleText = $(R.id.titleText);
-        usernameTV = $(R.id.news_detail_username);
+        nicknameTV = $(R.id.news_detail_nickname);
         releaseTimeTV = $(R.id.news_detail_time);
         imageIV = $(R.id.news_detail_image);
         contentTV = $(R.id.news_detail_content);
@@ -116,7 +115,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         collectionTv = $(R.id.tv_collection);
         favorIv = $(R.id.iv_favo);
         favorTv = $(R.id.tv_favo);
-        authornameTv = $(R.id.news_detail_username);
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
         faceIv = $(R.id.iv_circle_detail_face);
@@ -231,7 +229,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("newsId", newsId + "")
+                        .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;
@@ -246,9 +244,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .post()
                 .url(url)
                 .id(2)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("collectionTime",DateUtils.getCurrentDatetime())
+                .addParams("newsId", String.valueOf(newsId))
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .addParams("collectionTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -265,12 +263,12 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .post()
                 .url(url)
                 .id(3)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("authorName",authornameTv.getText().toString())
+                .addParams("newsId", String.valueOf(newsId))
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .addParams("authorName",nicknameTV.getText().toString())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
-                .addParams("commentTime",DateUtils.getCurrentDatetime())
+                .addParams("commentTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -284,8 +282,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(4)
-                        .addParams("newsId", newsId + "")
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("newsId", String.valueOf(newsId))
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -301,9 +299,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(5)
-                        .addParams("fansId", Constants.USER.getUserId() + "")
+                        .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
                         .addParams("userId",String.valueOf(be_focused_personId))
-                        .addParams("followTime",DateUtils.getCurrentDatetime())
+                        .addParams("followTime", Utils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -319,7 +317,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(6)
-                        .addParams("fansId", Constants.USER.getUserId() + "")
+                        .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
                         .addParams("userId",String.valueOf(be_focused_personId))
                         .build()
                         .execute(new MyStringCallback());
@@ -334,10 +332,10 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .post()
                 .url(url)
                 .id(7)
-                .addParams("newsId", newsId + "")
-                .addParams("userId", Constants.USER.getUserId() + "")
-                .addParams("be_focused_personId",be_focused_personId + "")
-                .addParams("favorTime",DateUtils.getCurrentDatetime())
+                .addParams("newsId", String.valueOf(newsId))
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .addParams("be_focused_personId",String.valueOf(be_focused_personId))
+                .addParams("favorTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -351,8 +349,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(8)
-                        .addParams("newsId", newsId + "")
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("newsId", String.valueOf(newsId))
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -369,7 +367,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                             .post()
                             .url(url)
                             .id(9)
-                            .addParams("newsId", newsId + "")
+                            .addParams("newsId", String.valueOf(newsId))
                             .build()
                             .execute(new MyStringCallback());
                     return 0;
@@ -387,7 +385,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(9)
-                        .addParams("newsId", newsId + "")
+                        .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;
@@ -404,7 +402,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(9)
-                        .addParams("newsId", newsId + "")
+                        .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;
@@ -421,7 +419,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .post()
                         .url(url)
                         .id(9)
-                        .addParams("newsId", newsId + "")
+                        .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;
@@ -441,7 +439,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         if (circleDetail != null) {
                             CURRENT_COLLECTTIMES = circleDetail.getCollectTimes();
                             CURRENT_COMMENTTIMES = circleDetail.getCommentTimes();
-                            usernameTV.setText(circleDetail.getUsername());
+                            nicknameTV.setText(circleDetail.getNickname());
                             releaseTimeTV.setText(circleDetail.getReleaseTime());
                             titleTV.setText(circleDetail.getTitle());
                             contentTV.setText(circleDetail.getContent());
@@ -501,11 +499,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
                         Comment comment = new Comment();
                         comment.setFace(Constants.USER.getFace());
-                        comment.setCommentTime(DateUtils.getCurrentDatetime());
+                        comment.setCommentTime(Utils.getCurrentDatetime());
                         comment.setComment(addCommentET.getText().toString());
                         comment.setReplyUser(replyUsername);
-                        comment.setUsername(Constants.USER.getUsername());
-                        comment.setAuthorname(authornameTv.getText().toString());
+                        comment.setNickname(Constants.USER.getUsername());
+                        comment.setAuthorname(nicknameTV.getText().toString());
                         if (mList == null) {
                             mList = new ArrayList<>();
                         }

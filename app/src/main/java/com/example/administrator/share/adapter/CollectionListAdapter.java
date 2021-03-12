@@ -32,13 +32,13 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView username;
+        TextView nicknameTv;
         ImageView imageView;
         RelativeLayout mycollectionLl;
         public ViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.item_normal_title);
-            username = view.findViewById(R.id.item_normal_username);
+            nicknameTv = view.findViewById(R.id.item_normal_nickname);
             imageView = view.findViewById(R.id.iv_mycollection);
             mycollectionLl = view.findViewById(R.id.ll_mycollection);
         }
@@ -75,7 +75,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NewsListItem detail = mList.get(position);
         holder.title.setText(detail.getTitle());
-        holder.username.setText("作者："+detail.getUsername());
+        holder.nicknameTv.setText("作者："+detail.getNickname());
         getImage(detail.getImage(),holder);
     }
 

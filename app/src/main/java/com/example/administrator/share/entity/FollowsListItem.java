@@ -3,36 +3,36 @@ package com.example.administrator.share.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class FansListItem implements Parcelable {
-    private String username;
+public class FollowsListItem implements Parcelable {
+    private String nickname;
     private int fansId;
     private int userId;
     private String face;
     private String signature;
     private String followTime;
 
-    protected FansListItem(Parcel in) {
-        username = in.readString();
+    protected FollowsListItem(Parcel in) {
+        nickname = in.readString();
         fansId = in.readInt();
         userId = in.readInt();
         face = in.readString();
         signature = in.readString();
     }
 
-    public static final Creator<FansListItem> CREATOR = new Creator<FansListItem>() {
+    public static final Creator<FollowsListItem> CREATOR = new Creator<FollowsListItem>() {
         @Override
-        public FansListItem createFromParcel(Parcel in) {
-            return new FansListItem(in);
+        public FollowsListItem createFromParcel(Parcel in) {
+            return new FollowsListItem(in);
         }
 
         @Override
-        public FansListItem[] newArray(int size) {
-            return new FansListItem[size];
+        public FollowsListItem[] newArray(int size) {
+            return new FollowsListItem[size];
         }
     };
 
-    public String getUserName() {
-        return username;
+    public String getNickName() {
+        return nickname;
     }
 
     public int getFansId() {
@@ -56,7 +56,7 @@ public class FansListItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(username);
+        parcel.writeString(nickname);
         parcel.writeInt(fansId);
         parcel.writeInt(userId);
         parcel.writeString(face);

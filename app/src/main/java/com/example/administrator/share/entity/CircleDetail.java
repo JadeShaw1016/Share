@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CircleDetail {
 
-    private String username;
+    private String nickname;
 
     private String releaseTime;
 
@@ -26,12 +26,8 @@ public class CircleDetail {
 
     public String getFace(){return face;}
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getReleaseTime() {

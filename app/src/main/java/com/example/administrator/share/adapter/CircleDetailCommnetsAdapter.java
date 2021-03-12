@@ -31,7 +31,7 @@ public class CircleDetailCommnetsAdapter extends RecyclerView.Adapter<CircleDeta
     OnCommentButtonClickListner onCommentButtonClickListner;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView username;
+        TextView nickname;
         TextView commentTime;
         TextView replyUser;
         TextView content;
@@ -40,7 +40,7 @@ public class CircleDetailCommnetsAdapter extends RecyclerView.Adapter<CircleDeta
         ImageView faceIv;
         ViewHolder(View view) {
             super(view);
-            username = view.findViewById(R.id.news_detail_comment_username);
+            nickname = view.findViewById(R.id.news_detail_comment_nickname);
             commentTime = view.findViewById(R.id.news_detail_comment_time);
             replyUser = view.findViewById(R.id.news_detail_comment_reply_user);
             replyContainer = view.findViewById(R.id.news_detail_reply_info);
@@ -68,7 +68,7 @@ public class CircleDetailCommnetsAdapter extends RecyclerView.Adapter<CircleDeta
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                doButtonClickAction(mList.get(position).getUsername());
+                doButtonClickAction(mList.get(position).getNickname());
             }
         });
         return holder;
@@ -77,7 +77,7 @@ public class CircleDetailCommnetsAdapter extends RecyclerView.Adapter<CircleDeta
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = mList.get(position);
-        holder.username.setText(comment.getUsername());
+        holder.nickname.setText(comment.getNickname());
         if (TextUtils.isEmpty(comment.getReplyUser())) {
             holder.replyContainer.setVisibility(View.INVISIBLE);
         } else {

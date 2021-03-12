@@ -21,7 +21,7 @@ import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
-import com.example.administrator.share.util.DateUtils;
+import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -148,7 +148,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("authorName", Constants.USER.getUsername())
+                        .addParams("authorName", Constants.USER.getNickname())
                         .build()
                         .execute(new MyStringCallback());
                 return null;
@@ -168,12 +168,12 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                 .post()
                 .url(url)
                 .id(2)
-                .addParams("newsId", newsId + "")
+                .addParams("newsId", String.valueOf(newsId))
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .addParams("authorName",Constants.USER.getUsername())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
-                .addParams("commentTime", DateUtils.getCurrentDatetime())
+                .addParams("commentTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -187,7 +187,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         .post()
                         .url(url)
                         .id(3)
-                        .addParams("newsId", newsId + "")
+                        .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
                 return 0;
@@ -230,11 +230,11 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         hideKeyboard();
                         Comment comment = new Comment();
                         comment.setFace(Constants.USER.getFace());
-                        comment.setCommentTime(DateUtils.getCurrentDatetime());
+                        comment.setCommentTime(Utils.getCurrentDatetime());
                         comment.setComment(addCommentET.getText().toString());
                         comment.setReplyUser(replyUsername);
-                        comment.setUsername(Constants.USER.getUsername());
-                        comment.setAuthorname(Constants.USER.getUsername());
+                        comment.setNickname(Constants.USER.getNickname());
+                        comment.setAuthorname(Constants.USER.getNickname());
                         commentPane.setVisibility(View.GONE);
                     }
                     break;
@@ -282,7 +282,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         isShowCommentPane = !isShowCommentPane;
         if (isShowCommentPane) {
             newsId = newsListItem.getNewsId();
-            replyUsername = newsListItem.getUsername();
+            replyUsername = newsListItem.getNickname();
             commentPane.setVisibility(View.VISIBLE);
             addCommentET.setHint("回复 " + replyUsername + " 的评论");
             showKeyboard(addCommentET);

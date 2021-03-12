@@ -15,6 +15,7 @@ import com.example.administrator.share.fragment.CircleFragment;
 import com.example.administrator.share.fragment.FirstPageFragment;
 import com.example.administrator.share.fragment.MeFragment;
 import com.example.administrator.share.fragment.MessageFragment;
+import com.example.administrator.share.util.ActivityManager;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.startsmake.mainnavigatetabbar.widget.MainNavigateTabBar;
@@ -107,7 +108,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(MainMenuActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                ActivityManager.getInstance().AppExit(this);
             }
             return true;
         }
@@ -126,7 +127,7 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
                 OkHttpUtils
                         .post()
                         .url(url)
-                        .addParams("authorName",Constants.USER.getUsername())
+                        .addParams("authorName",Constants.USER.getNickname())
                         .addParams("authorId",String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new StringCallback(){

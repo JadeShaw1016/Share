@@ -48,39 +48,28 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     private TextView titleText;
     private View title_back;
     private Context mContext;
-
     private ImageView faceIv;
     private TextView usernameTv;
+    private TextView nicknameTv;
     private EditText passwordEt;
     private EditText confirmPwEt;
-    private EditText heightEt;
-    private EditText weightEt;
     private EditText signatureEt;
     private TextView sexTv;
     private Button confrimBtn;
     private File imageFile;
     private Bitmap faceBitmap;
     private LinearLayout myinfoLl;
-
-    private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    private LayoutInflater inflater;
-    private View layout;
-    private TextView takePhotoTV;
-    private TextView choosePhotoTV;
-    private TextView cancelTV;
 
     //调取系统摄像头的请求码
     private static final int MY_ADD_CASE_CALL_PHONE = 6;
     //打开相册的请求码
     private static final int MY_ADD_CASE_CALL_PHONE2 = 7;
 
-    private MyDialogHandler uiFlusHandler;
-
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
-        setContentView(R.layout.activity_me_information);
+        setContentView(R.layout.activity_my_information);
         findViewById();
         initView();
     }
@@ -90,10 +79,9 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         faceIv = $(R.id.myinfo_face);
         confrimBtn = $(R.id.myinfo_btn_confirm);
         usernameTv = $(R.id.myinfo_tv_username);
+        nicknameTv = $(R.id.myinfo_tv_nickname);
         passwordEt = $(R.id.myinfo_et_password);
         confirmPwEt = $(R.id.myinfo_et_repassword);
-        heightEt = $(R.id.myinfo_et_height);
-        weightEt = $(R.id.myinfo_et_weight);
         signatureEt = $(R.id.myinfo_et_signature);
         sexTv = $(R.id.myinfo_tv_sex);
         titleText = $(R.id.titleText);
@@ -118,11 +106,10 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     private void echo() {
         faceIv.setImageBitmap(Constants.FACEIMAGE);
         usernameTv.setText(Constants.USER.getUsername());
+        nicknameTv.setText(Constants.USER.getNickname());
         passwordEt.setText(Constants.USER.getPassword());
         confirmPwEt.setText(Constants.USER.getPassword());
         sexTv.setText(Constants.USER.getSex());
-        heightEt.setText(String.valueOf(Constants.USER.getHeight()));
-        weightEt.setText(String.valueOf(Constants.USER.getWeight()));
         if(Constants.USER.getSignature() != null){
             signatureEt.setText(Constants.USER.getSignature());
         }
@@ -180,16 +167,16 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     }
 
     public void viewInit() {
-        builder = new AlertDialog.Builder(this);//创建对话框
-        inflater = getLayoutInflater();
-        layout = inflater.inflate(R.layout.dialog_select_photo, null);//获取自定义布局
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);//创建对话框
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_select_photo, null);//获取自定义布局
         builder.setView(layout);//设置对话框的布局
         dialog = builder.create();//生成最终的对话框
         dialog.show();//显示对话框
 
-        takePhotoTV = layout.findViewById(R.id.photograph);
-        choosePhotoTV = layout.findViewById(R.id.photo);
-        cancelTV = layout.findViewById(R.id.cancel);
+        TextView takePhotoTV = layout.findViewById(R.id.photograph);
+        TextView choosePhotoTV = layout.findViewById(R.id.photo);
+        TextView cancelTV = layout.findViewById(R.id.cancel);
         //设置监听
         takePhotoTV.setOnClickListener(this);
         choosePhotoTV.setOnClickListener(this);
@@ -207,22 +194,39 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
             DisplayToast("重复输入密码不正确！");
             return;
         }
-        update();
-
+        if(imageFile == null){
+            updateNoFace();
+        }
+        else{
+            updateWithFace();
+        }
     }
 
-    private void update() {
+    private void updateNoFace() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "User?method=updateAllInfo";
+        String url = Constants.BASE_URL + "User?method=updateNoFace";
         OkHttpUtils
                 .post()
                 .url(url)
                 .id(1)
+                .addParams("username",Constants.USER.getUsername())
+                .addParams("password", passwordEt.getText().toString().trim())
+                .addParams("signature",signatureEt.getText().toString().trim())
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void updateWithFace() {
+        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+        String url = Constants.BASE_URL + "User?method=updateWithFace";
+        OkHttpUtils
+                .post()
+                .addFile("face", imageFile.getName(), imageFile)
+                .url(url)
+                .id(2)
                 .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
                 .addParams("username",Constants.USER.getUsername())
                 .addParams("password", passwordEt.getText().toString().trim())
-                .addParams("height", heightEt.getText().toString().trim())
-                .addParams("weight", weightEt.getText().toString().trim())
                 .addParams("signature",signatureEt.getText().toString().trim())
                 .build()
                 .execute(new MyStringCallback());
@@ -233,30 +237,34 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
+            User user = null;
             switch (id) {
                 case 1:
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-                    User user = gson.fromJson(response, User.class);
+                    user = gson.fromJson(response, User.class);
                     // 存储用户
                     Constants.USER.setPassword(user.getPassword());
-                    Constants.USER.setHeight(user.getHeight());
-                    Constants.USER.setWeight(user.getWeight());
                     Constants.USER.setSignature(user.getSignature());
-                    boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
-                    if (result) {
-                        myinfoLl.clearFocus();
-                        Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mContext, "用户信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
                     break;
                 case 2:
+                    uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
+                    user = gson.fromJson(response, User.class);
+                    // 存储用户
+                    Constants.USER.setPassword(user.getPassword());
+                    Constants.USER.setSignature(user.getSignature());
                     Constants.USER.setFace(imageFile.getName());
                     Constants.FACEIMAGE = faceBitmap;
-                    break;
+                    break;    
                 default:
                     DisplayToast("what?");
                     break;
+            }
+            boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
+            if (result) {
+                myinfoLl.clearFocus();
+                Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "用户信息存储失败", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -387,15 +395,5 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         imageFile= new File(outfile);
         faceBitmap = bitmap;
         faceIv.setImageBitmap(bitmap);
-        String url = Constants.BASE_URL + "User?method=updateUserFace";
-        OkHttpUtils
-                .post()
-                .addFile("face", imageFile.getName(), imageFile)
-                .url(url)
-                .id(2)
-                .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
-                .addParams("username",Constants.USER.getUsername())
-                .build()
-                .execute(new MyStringCallback());
     }
 }

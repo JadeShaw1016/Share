@@ -116,7 +116,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("authorName",Constants.USER.getUsername())
+                .addParams("authorName",Constants.USER.getNickname())
                 .addParams("userId",String.valueOf(Constants.USER.getUserId()))
                 .build()
                 .execute(new StringCallback(){
