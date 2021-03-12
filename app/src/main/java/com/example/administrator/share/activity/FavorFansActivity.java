@@ -13,7 +13,7 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FavorListAdapter;
 import com.example.administrator.share.adapter.NewFansListAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.FansListItem;
+import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
@@ -50,7 +50,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     private FavorListAdapter favorListAdapter;
     private NewFansListAdapter fansListAdapter;
     private List<NewsListItem> mNewsList;
-    private List<FansListItem> mFansList;
+    private List<FollowsListItem> mFansList;
     private final int PAGE_COUNT = 10;
     private int INDEX;
 
@@ -161,7 +161,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                         .post()
                         .url(url)
                         .id(2)
-                        .addParams("userId", Constants.USER.getUserId() + "")
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -191,7 +191,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                     }
                     break;
                 case 2:
-                    type = new TypeToken<ArrayList<FansListItem>>() {}.getType();
+                    type = new TypeToken<ArrayList<FollowsListItem>>() {}.getType();
                     mFansList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mFansList.size() == 0) {
@@ -241,8 +241,8 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         return resList;
     }
 
-    private List<FansListItem> getFansDatas(final int firstIndex, final int lastIndex) {
-        List<FansListItem> resList = new ArrayList<>();
+    private List<FollowsListItem> getFansDatas(final int firstIndex, final int lastIndex) {
+        List<FollowsListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mFansList.size()) {
                 resList.add(mFansList.get(i));
@@ -263,7 +263,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case 1:
-                List<FansListItem> newFansDatas = getFansDatas(fromIndex, toIndex);
+                List<FollowsListItem> newFansDatas = getFansDatas(fromIndex, toIndex);
                 if (newFansDatas.size() > 0) {
                     fansListAdapter.updateList(newFansDatas);
                     refreshLayout.finishLoadmore();

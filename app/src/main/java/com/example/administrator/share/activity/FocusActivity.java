@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.adapter.FansListAdapter;
+import com.example.administrator.share.adapter.FollowsListAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.FansListItem;
+import com.example.administrator.share.entity.FollowsListItem;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
@@ -33,9 +33,9 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
     private View title_back;
     private Context mContext;
     private LinearLayoutManager layoutManager;
-    private List<FansListItem> mFocusList;
+    private List<FollowsListItem> mFocusList;
     private RefreshLayout refreshLayout;
-    private FansListAdapter adapter;
+    private FollowsListAdapter adapter;
     private final int PAGE_COUNT = 10;
 
     @Override
@@ -114,13 +114,13 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
             focusRemindTv.setVisibility(View.INVISIBLE);
         }
         //存储用户
-        adapter = new FansListAdapter(mContext, mFocusList,0);
+        adapter = new FollowsListAdapter(mContext, mFocusList,0);
         mListView.setAdapter(adapter);
         mListView.setLayoutManager(layoutManager);
     }
 
-    private List<FansListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<FansListItem> resList = new ArrayList<>();
+    private List<FollowsListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<FollowsListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mFocusList.size()) {
                 resList.add(mFocusList.get(i));
@@ -130,7 +130,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<FansListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<FollowsListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();
