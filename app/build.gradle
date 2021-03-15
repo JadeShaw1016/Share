@@ -7,6 +7,24 @@ MobSDK {
     appKey "m328e466904112"
     appSecret "490587774db4880556cfb681f27d3dbd"
     SMSSDK {}
+    ShareSDK {
+        loopShare true
+        devInfo {
+            QQ {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+            SinaWeibo {
+                appKey "2573049460"
+                appSecret "7dd93924bd1574af43edfb4855011def"
+                callbackUri "http://www.sharesdk.cn"
+            }
+            QZone {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+        }
+    }
 }
 
 android {

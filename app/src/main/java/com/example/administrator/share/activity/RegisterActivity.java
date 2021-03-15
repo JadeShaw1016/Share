@@ -193,6 +193,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             DisplayToast("两次密码输入不一致");
             return;
         }
+        if(imageFile == null){
+            DisplayToast("请上传头像图片");
+            return;
+        }
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         // 服务端验证
         String url = Constants.BASE_URL + "User?method=register";
