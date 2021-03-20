@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.adapter.CircleDetailCommnetsAdapter;
+import com.example.administrator.share.adapter.CircleDetailCommentsAdapter;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.CircleDetail;
 import com.example.administrator.share.entity.Comment;
@@ -47,7 +47,7 @@ import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD
 
 public class CircleDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    private CircleDetailCommnetsAdapter adapter;
+    private CircleDetailCommentsAdapter adapter;
     private List<Comment> mList;
     private String TITLE_NAME = "圈子详情";
     private View title_back;
@@ -209,6 +209,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private void showCommemtPane() {
         isShowCommentPane = !isShowCommentPane;
         if (isShowCommentPane) {
+            addCommentET.setHint(R.string.new_detail_add_comment_hint);
             commentPane.setVisibility(View.VISIBLE);
             replyUsername = "";
             showKeyboard(addCommentET);
@@ -376,57 +377,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void addCollectTimes(){
-        new AsyncTask<Void, Void, Integer>() {
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=addCollectTimes";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(9)
-                        .addParams("newsId", String.valueOf(newsId))
-                        .build()
-                        .execute(new MyStringCallback());
-                return 0;
-            }
-        }.execute();
-    }
-
-    private void reduceCollectTimes(){
-        new AsyncTask<Void, Void, Integer>() {
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=reduceCollectTimes";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(9)
-                        .addParams("newsId", String.valueOf(newsId))
-                        .build()
-                        .execute(new MyStringCallback());
-                return 0;
-            }
-        }.execute();
-    }
-
-    private void addCommentTimes(){
-        new AsyncTask<Void, Void, Integer>() {
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=addCommentTimes";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(9)
-                        .addParams("newsId", String.valueOf(newsId))
-                        .build()
-                        .execute(new MyStringCallback());
-                return 0;
-            }
-        }.execute();
-    }
-
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -461,13 +411,19 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         mList = null;
                     }
                     if (mList != null && mList.size() > 0) {
-                        adapter = new CircleDetailCommnetsAdapter(mContext, mList);
-                        adapter.setOnCommentButtonClickListner(new CircleDetailCommnetsAdapter.OnCommentButtonClickListner() {
+                        adapter = new CircleDetailCommentsAdapter(mContext, mList);
+                        adapter.setOnCommentButtonClickListner(new CircleDetailCommentsAdapter.OnCommentButtonClickListner() {
                             @Override
                             public void OnCommentButtonClicked(String replyUser) {
                                 commentPane.setVisibility(View.VISIBLE);
                                 addCommentET.setHint("回复 " + replyUser + " 的评论");
                                 replyUsername = replyUser;
+                            }
+                        });
+                        adapter.setOnCommentDeleteClickListner(new CircleDetailCommentsAdapter.OnCommentDeleteClickListner() {
+                            @Override
+                            public void OnCommentDeleteClicked() {
+                                refreshData();
                             }
                         });
                         commentsRv.setLayoutManager(layoutManager);
@@ -478,12 +434,10 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 case 2:
                     isCollected();
                     if(response.equals("收藏成功")){
-                        addCollectTimes();
                         collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES+1));
                         CURRENT_COLLECTTIMES++;
                     }
                     else if(response.equals("取消收藏")){
-                        reduceCollectTimes();
                         collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES-1));
                         CURRENT_COLLECTTIMES--;
                     }
@@ -493,7 +447,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         DisplayToast("请稍后再试..");
                     } else {
                         DisplayToast(response);
-                        addCommentTimes();
                         hideKeyboard();
                         CURRENT_COMMENTTIMES++;
                         commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
@@ -502,14 +455,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         comment.setCommentTime(Utils.getCurrentDatetime());
                         comment.setComment(addCommentET.getText().toString());
                         comment.setReplyUser(replyUsername);
-                        comment.setNickname(Constants.USER.getUsername());
+                        comment.setNickname(Constants.USER.getNickname());
                         comment.setAuthorname(nicknameTV.getText().toString());
                         if (mList == null) {
                             mList = new ArrayList<>();
                         }
                         mList.add(0, comment);
                         if (adapter == null) {
-                            adapter = new CircleDetailCommnetsAdapter(mContext, mList);
+                            adapter = new CircleDetailCommentsAdapter(mContext, mList);
                             commentsRv.setLayoutManager(layoutManager);
                             commentsRv.setAdapter(adapter);
                         }
