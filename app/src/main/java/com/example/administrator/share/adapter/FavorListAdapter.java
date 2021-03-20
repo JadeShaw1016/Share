@@ -78,7 +78,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
                 intent.putExtra("newsId", newsListItem.getNewsId());
                 intent.putExtra("be_focused_personId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
-                if(newsListItem.getStatus() == 0){
+                if(newsListItem.getIsVisited() == 0){
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
                         protected Integer doInBackground(Void... voids) {
@@ -164,7 +164,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
                 return 0;
             }
         }.execute();
-        if(detail.getStatus()==0){
+        if(detail.getIsVisited()==0){
             holder.badge = new BadgeView(mContext);
             holder.badge.setTargetView(holder.badgeTv);
             holder.badge.setBadgeCount(1);
