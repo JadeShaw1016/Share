@@ -136,7 +136,11 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
                             }
                             @Override
                             public void onResponse(String response, int id) {
-                                mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
+                                if(response.equals("error")){
+                                    mNavigateTabBar.disPlayBadgeCount(2, 0);
+                                }else{
+                                    mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
+                                }
                             }
                         });
                 return null;
