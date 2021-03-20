@@ -180,23 +180,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                 .execute(new MyStringCallback());
     }
 
-    private void addCommentTimes(){
-        new AsyncTask<Void, Void, Integer>() {
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=addCommentTimes";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(3)
-                        .addParams("newsId", String.valueOf(newsId))
-                        .build()
-                        .execute(new MyStringCallback());
-                return 0;
-            }
-        }.execute();
-    }
-
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -230,7 +213,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         DisplayToast("请稍后再试..");
                     } else {
                         DisplayToast(response);
-                        addCommentTimes();
                         hideKeyboard();
                         Comment comment = new Comment();
                         comment.setFace(Constants.USER.getFace());
@@ -241,8 +223,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         comment.setAuthorname(Constants.USER.getNickname());
                         commentPane.setVisibility(View.GONE);
                     }
-                    break;
-                case 3:
                     break;
                 default:
                     DisplayToast("what?");
