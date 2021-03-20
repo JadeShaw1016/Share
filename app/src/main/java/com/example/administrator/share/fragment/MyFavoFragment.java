@@ -10,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.CollectionListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -42,6 +44,7 @@ public class MyFavoFragment extends Fragment{
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
+    private ImageView favRemindIv;
     private TextView favRemindTv;
     private RecyclerView mListView;
     private LinearLayoutManager layoutManager;
@@ -69,6 +72,7 @@ public class MyFavoFragment extends Fragment{
     private void findViewById(View view){
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
+        favRemindIv = view.findViewById(R.id.iv_normal_list_remind_collect);
         favRemindTv = view.findViewById(R.id.tv_fav_remind);
     }
 
@@ -131,23 +135,27 @@ public class MyFavoFragment extends Fragment{
             switch (id) {
                 case 1:
                     Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
-                    mList = gson.fromJson(response, type);
-                    if(getActivity() != null){
-                        if (mList == null || mList.size() == 0) {
-                            favRemindTv.setVisibility(View.VISIBLE);
-                        } else {
-                            favRemindTv.setVisibility(View.INVISIBLE);
+                    if(!response.equals("error")){
+                        mList = gson.fromJson(response, type);
+                        if(getActivity() != null){
+                            if (mList == null || mList.size() == 0) {
+                                favRemindIv.setVisibility(View.VISIBLE);
+                                favRemindTv.setVisibility(View.VISIBLE);
+                            } else {
+                                favRemindIv.setVisibility(View.INVISIBLE);
+                                favRemindTv.setVisibility(View.INVISIBLE);
+                            }
+                            // 存储用户
+                            adapter = new CollectionListAdapter(getActivity(), mList);
+                            mListView.setLayoutManager(layoutManager);
+                            mListView.setAdapter(adapter);
+                            refreshLayout.finishRefresh();
                         }
-                        // 存储用户
-                        adapter = new CollectionListAdapter(getActivity(), mList);
-                        mListView.setLayoutManager(layoutManager);
-                        mListView.setAdapter(adapter);
-                        refreshLayout.finishRefresh();
                     }
                     break;
 
                 default:
-                    Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainMenuActivity.mContext, "What?", Toast.LENGTH_SHORT).show();
                     break;
             }
 

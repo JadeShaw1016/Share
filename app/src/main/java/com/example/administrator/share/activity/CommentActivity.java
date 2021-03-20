@@ -47,6 +47,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private TextView titleText;
     private RefreshLayout refreshLayout;
     private RecyclerView mListView;
+    private ImageView commentRemindIv;
     private TextView msgRemindTv;
     private Context mContext;
     private LinearLayoutManager layoutManager;
@@ -77,6 +78,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         title_back = $(R.id.title_back);
         mListView = $(R.id.normal_list_lv);
         refreshLayout = $(R.id.refreshLayout);
+        commentRemindIv = $(R.id.iv_normal_list_remind);
         msgRemindTv = $(R.id.tv_msg_remind);
         messageLl = $(R.id.layout_message);
         commentPane = $(R.id.ll_commment_pane);
@@ -205,8 +207,10 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                     mList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mList.size() == 0) {
+                            commentRemindIv.setVisibility(View.VISIBLE);
                             msgRemindTv.setVisibility(View.VISIBLE);
                         } else {
+                            commentRemindIv.setVisibility(View.INVISIBLE);
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户

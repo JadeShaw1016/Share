@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -28,6 +29,7 @@ import java.util.List;
 public class FocusActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView titleText;
+    private ImageView focusRemindIv;
     private TextView focusRemindTv;
     private RecyclerView mListView;
     private View title_back;
@@ -54,6 +56,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
         mListView = $(R.id.normal_list_lv);
+        focusRemindIv = $(R.id.iv_fans_focus_remind);
         focusRemindTv = $(R.id.tv_focus_remind);
         refreshLayout = $(R.id.refreshLayout);
     }
@@ -108,15 +111,17 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
      * 获取关注者
      */
     private void getFocus() {
-        if (mFocusList.size() == 0) {
+        if (mFocusList == null || mFocusList.size() == 0) {
+            focusRemindIv.setVisibility(View.VISIBLE);
             focusRemindTv.setVisibility(View.VISIBLE);
         } else {
+            focusRemindIv.setVisibility(View.INVISIBLE);
             focusRemindTv.setVisibility(View.INVISIBLE);
+            //存储用户
+            adapter = new FollowsListAdapter(mContext, mFocusList,0);
+            mListView.setAdapter(adapter);
+            mListView.setLayoutManager(layoutManager);
         }
-        //存储用户
-        adapter = new FollowsListAdapter(mContext, mFocusList,0);
-        mListView.setAdapter(adapter);
-        mListView.setLayoutManager(layoutManager);
     }
 
     private List<FollowsListItem> getDatas(final int firstIndex, final int lastIndex) {

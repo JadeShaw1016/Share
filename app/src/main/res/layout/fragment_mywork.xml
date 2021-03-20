@@ -19,13 +19,20 @@
                 android:layout_marginEnd="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/iv_mywork_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/default_remind_mywork"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_mywork_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="还没有作品哦，快去发布一个吧！"
+                android:text="@string/mywork_remind"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/iv_mywork_remind"
                 android:gravity="center"
                 android:visibility="gone"/>
         </RelativeLayout>

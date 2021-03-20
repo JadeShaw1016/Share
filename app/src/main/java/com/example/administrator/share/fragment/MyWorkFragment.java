@@ -12,10 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.MyWorkAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -46,6 +48,7 @@ public class MyWorkFragment extends Fragment {
     private RecyclerView recyclerView;
     private RefreshLayout refreshLayout;
     private GridLayoutManager layoutManager;
+    private ImageView myworkRemindIv;
     private TextView myworkRemindTv;
     private MyWorkAdapter adapter;
     private final int PAGE_COUNT = 10;
@@ -71,6 +74,7 @@ public class MyWorkFragment extends Fragment {
     private void findViewById(View view){
         recyclerView = view.findViewById(R.id.rv_mywork);
         refreshLayout = view.findViewById(R.id.swipe_refresh_mywork);
+        myworkRemindIv = view.findViewById(R.id.iv_mywork_remind);
         myworkRemindTv = view.findViewById(R.id.tv_mywork_remind);
     }
 
@@ -137,8 +141,10 @@ public class MyWorkFragment extends Fragment {
                     mList = gson.fromJson(response, type);
                     if(getActivity() != null){
                         if (mList == null || mList.size() == 0) {
+                            myworkRemindIv.setVisibility(View.VISIBLE);
                             myworkRemindTv.setVisibility(View.VISIBLE);
                         } else {
+                            myworkRemindIv.setVisibility(View.INVISIBLE);
                             myworkRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
@@ -151,14 +157,14 @@ public class MyWorkFragment extends Fragment {
                     break;
 
                 default:
-                    Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainMenuActivity.mContext,"What?",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            Toast.makeText(getActivity(),"网络链接出错!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainMenuActivity.mContext,"网络链接出错!",Toast.LENGTH_SHORT).show();
         }
     }
 

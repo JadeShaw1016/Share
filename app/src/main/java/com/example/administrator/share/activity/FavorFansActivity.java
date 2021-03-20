@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -41,6 +42,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     private TextView titleText;
     private RefreshLayout refreshLayout;
     private RecyclerView mListView;
+    private ImageView msgRemindIv;
     private TextView msgRemindTv;
     private TextView fansRemindTv;
     private Context mContext;
@@ -70,7 +72,8 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         title_back = $(R.id.title_back);
         mListView = $(R.id.normal_list_lv);
         refreshLayout = $(R.id.refreshLayout);
-        msgRemindTv = $(R.id.tv_fav_remind);
+        msgRemindIv = $(R.id.iv_normal_list_remind);
+        msgRemindTv = $(R.id.tv_new_fans_remind);
         fansRemindTv = $(R.id.tv_fans_remind);
         messageLl = $(R.id.layout_message);
     }
@@ -179,8 +182,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                     mNewsList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mNewsList.size() == 0) {
+                            msgRemindIv.setVisibility(View.VISIBLE);
                             msgRemindTv.setVisibility(View.VISIBLE);
                         } else {
+                            msgRemindIv.setVisibility(View.INVISIBLE);
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
@@ -195,8 +200,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                     mFansList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mFansList.size() == 0) {
+                            msgRemindIv.setVisibility(View.VISIBLE);
                             fansRemindTv.setVisibility(View.VISIBLE);
                         } else {
+                            msgRemindIv.setVisibility(View.INVISIBLE);
                             fansRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户

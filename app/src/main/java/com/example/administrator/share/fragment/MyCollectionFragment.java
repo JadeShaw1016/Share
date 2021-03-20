@@ -10,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
+import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.CollectionListAdapter;
 import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
@@ -42,6 +44,7 @@ public class MyCollectionFragment extends Fragment{
 
     private List<NewsListItem> mList;
     private RefreshLayout refreshLayout;
+    private ImageView collectRemindIv;
     private TextView collectRemindTv;
     private RecyclerView mListView;
     private LinearLayoutManager layoutManager;
@@ -69,6 +72,7 @@ public class MyCollectionFragment extends Fragment{
     private void findViewById(View view){
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
+        collectRemindIv = view.findViewById(R.id.iv_normal_list_remind_collect);
         collectRemindTv = view.findViewById(R.id.tv_collect_remind);
     }
 
@@ -133,8 +137,10 @@ public class MyCollectionFragment extends Fragment{
                     mList = gson.fromJson(response, type);
                     if(getActivity() != null){
                         if (mList == null || mList.size() == 0) {
+                            collectRemindIv.setVisibility(View.VISIBLE);
                             collectRemindTv.setVisibility(View.VISIBLE);
                         } else {
+                            collectRemindIv.setVisibility(View.INVISIBLE);
                             collectRemindTv.setVisibility(View.INVISIBLE);
                         }
                         // 存储用户
@@ -146,7 +152,7 @@ public class MyCollectionFragment extends Fragment{
                     break;
 
                 default:
-                    Toast.makeText(getActivity(),"What?",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainMenuActivity.mContext,"What?",Toast.LENGTH_SHORT).show();
                     break;
             }
         }

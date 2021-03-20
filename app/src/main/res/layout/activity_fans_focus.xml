@@ -19,13 +19,21 @@
                 android:id="@+id/normal_list_lv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/iv_fans_focus_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:src="@drawable/default_remind_nosignal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_fans_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="还没有粉丝哦，快去发布一个圈子吧！"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/iv_fans_focus_remind"
                 android:gravity="center"
                 android:visibility="gone"/>
             <TextView
@@ -34,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="还没有关注哦，快去圈子关注你喜欢的人吧！"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/iv_fans_focus_remind"
                 android:gravity="center"
                 android:visibility="gone"/>
         </RelativeLayout>

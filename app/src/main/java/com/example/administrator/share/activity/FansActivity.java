@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.share.R;
@@ -28,6 +29,7 @@ import java.util.List;
 public class FansActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView titleText;
+    private ImageView fansRemindIv;
     private TextView fansRemindTv;
     private RecyclerView mListView;
     private View title_back;
@@ -54,6 +56,7 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
         mListView = $(R.id.normal_list_lv);
+        fansRemindIv = $(R.id.iv_fans_focus_remind);
         fansRemindTv = $(R.id.tv_fans_remind);
         refreshLayout = $(R.id.refreshLayout);
     }
@@ -108,15 +111,17 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
      * 获取粉丝数
      */
     private void getFans() {
-        if (mFansList.size() == 0) {
+        if (mFansList == null || mFansList.size() == 0) {
+            fansRemindIv.setVisibility(View.VISIBLE);
             fansRemindTv.setVisibility(View.VISIBLE);
         } else {
+            fansRemindIv.setVisibility(View.INVISIBLE);
             fansRemindTv.setVisibility(View.INVISIBLE);
+            // 存储用户
+            adapter = new FollowsListAdapter(mContext, mFansList,1);
+            mListView.setLayoutManager(layoutManager);
+            mListView.setAdapter(adapter);
         }
-        // 存储用户
-        adapter = new FollowsListAdapter(mContext, mFansList,1);
-        mListView.setLayoutManager(layoutManager);
-        mListView.setAdapter(adapter);
     }
 
     private List<FollowsListItem> getDatas(final int firstIndex, final int lastIndex) {
