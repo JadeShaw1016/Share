@@ -2,6 +2,8 @@ package com.example.administrator.share.entity;
 
 public class Comment {
 
+    private int commentId;
+
     private String nickname;
 
     private String face;
@@ -13,6 +15,8 @@ public class Comment {
     private String comment;
 
     private String commentTime;
+
+    public int getCommentId(){return commentId;}
 
     public String getFace(){return face;}
 

@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">欢迎来到 Share</string>
     <string name="save_picture">保存图片</string>
+    <string name="delete_comment">删除评论</string>
     <string name="send_works">发布作品</string>
     <string name="collect_remind">收藏家的宝箱怎么能是空的呢？\n快来寻宝吧！</string>
     <string name="comment_remind">还没有评论哦，快去发布一个圈子吧！</string>

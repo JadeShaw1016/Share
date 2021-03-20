@@ -78,7 +78,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 doButtonClickAction(mList.get(position));
                 NewsListItem newsListItem = mList.get(position);
                 final int commentId = newsListItem.getCommentId();
-                if(newsListItem.getStatus() == 0){
+                if(newsListItem.getIsVisited() == 0){
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
                         protected Integer doInBackground(Void... voids) {
@@ -176,7 +176,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 return 0;
             }
         }.execute();
-        if(detail.getStatus()==0){
+        if(detail.getIsVisited()==0){
             holder.badge = new BadgeView(mContext);
             holder.badge.setTargetView(holder.badgeTv);
             holder.badge.setBadgeCount(1);

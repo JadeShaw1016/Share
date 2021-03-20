@@ -16,7 +16,7 @@ public class NewsListItem {
 
     private String comment;
 
-    private int status;
+    private int isVisited;
 
     private int commentId;
 
@@ -40,7 +40,7 @@ public class NewsListItem {
 
     public int getFavorId(){return favorId;}
 
-    public int getStatus(){return status;}
+    public int getIsVisited(){return isVisited;}
 
     public String getTitle() {
         return title;
