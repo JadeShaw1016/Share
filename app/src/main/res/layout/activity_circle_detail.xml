@@ -96,13 +96,13 @@
 
             <ImageView
                 android:id="@id/news_detail_image"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:visibility="gone"/>
+                android:src="@drawable/default_image"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"

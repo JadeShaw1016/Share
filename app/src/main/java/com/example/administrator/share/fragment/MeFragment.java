@@ -231,8 +231,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<FollowsListItem>>() {
-            }.getType();
+            Type type = new TypeToken<ArrayList<FollowsListItem>>() {}.getType();
             switch (id) {
                 case 1:
                     mFansList = gson.fromJson(response, type);
