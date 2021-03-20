@@ -151,11 +151,12 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    User user = gson.fromJson(response, User.class);
-                    if (user.getUserId() == 0) {
+                    User user;
+                    if(response.equals("error")){
                         DisplayToast("用户名或者密码错误");
                         return;
-                    } else {
+                    }else{
+                        user = gson.fromJson(response, User.class);
                         // 存储用户
                         Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);

@@ -143,7 +143,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                     }
                     @Override
                     public void onResponse(String response, int id) {
-                        favorBadge.setBadgeCount(Integer.parseInt(response));
+                        if(!response.equals("error")){
+                            favorBadge.setBadgeCount(Integer.parseInt(response));
+                        }
                     }
                 });
     }
