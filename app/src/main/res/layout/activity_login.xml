@@ -8,7 +8,7 @@
         android:id="@+id/icon_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_share"
+        android:src="@drawable/ic_share"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="10dp"
@@ -18,7 +18,7 @@
         android:id="@+id/tv_login_welcome"
         android:layout_width="180dp"
         android:layout_height="84dp"
-        android:text="欢迎             来到晒的世界"
+        android:text="欢迎\n来到晒的世界"
         android:textColor="#ff404040"
         android:textSize="30sp"
         android:layout_marginStart="20dp"
@@ -30,8 +30,7 @@
         android:id="@+id/tv_login_content"
         android:layout_width="96dp"
         android:layout_height="32dp"
-        android:text="体验真实的生活感
-和美的感染力"
+        android:text="体验真实的生活感\n和美的感染力"
         android:textColor="#ff404040"
         android:textSize="12sp"
         android:layout_marginStart="22dp"
@@ -65,5 +64,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_phone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_pwd"
+        android:layout_marginTop="30dp">
+        <CheckBox
+            android:id="@+id/cb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox"/>
+        <TextView
+            android:id="@+id/tv_login_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff9c9c9c"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/cb_login"/>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

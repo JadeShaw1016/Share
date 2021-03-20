@@ -176,7 +176,6 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
                     break;
             }
         }
-
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             DisplayToast("网络链接出错！");
