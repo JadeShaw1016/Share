@@ -3,12 +3,6 @@
 
     <color name="border_clo">#ccc</color>
     <color name="comui_tab_text_color">#ff333333</color>
-
-    <!--main-->
-    <color name="bottom_tab_pressed">#DC4B38</color>
-    <color name="bottom_tab_normal">#B4B4B4</color>
-    <!--main-->
-
     <color name="before_date_check">#EFBE72</color>
 
     <color name="fuxk_base_color_red_add_cart">#ffff6060</color>
@@ -197,7 +191,5 @@
     <color name="title_bg_blue">#ff4cbbca</color>
     <color name="title_bg_red">#ffde434e</color>
     <color name="font_gray">#ff888888</color>
-    <color name="my_personal_bg">#fff3f4f6</color>
-    <color name="layout_bg_color">@color/my_personal_bg</color>
 
 </resources>

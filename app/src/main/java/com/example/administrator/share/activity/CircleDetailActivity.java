@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import com.example.administrator.share.entity.CircleDetail;
 import com.example.administrator.share.entity.Comment;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
+import com.example.administrator.share.util.ObservableScrollView;
 import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -57,18 +59,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView releaseTimeTV;
     private ImageView imageIV;
     private TextView contentTV;
-    private ImageView collectionIv;
-    private TextView collectionTv;
-    private ImageView favorIv;
-    private TextView favorTv;
+    private FloatingActionButton commentFab;
+    private FloatingActionButton collectFab;
+    private FloatingActionButton favorFab;
     private Button focusBtn;
     private LinearLayout commentPane;
     private EditText addCommentET;
     private ImageView addCommentIV;
-    private boolean isShowCommentPane;
-    private LinearLayout commentLL;
-    private LinearLayout collectionLL;
-    private LinearLayout favorLL;
     private Context mContext;
     private int newsId;
     private int be_focused_personId;
@@ -84,6 +81,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private TextView commentTimes;
     private int CURRENT_COLLECTTIMES;
     private int CURRENT_COMMENTTIMES;
+    private ObservableScrollView observableScrollView;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -104,23 +102,20 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         imageIV = $(R.id.news_detail_image);
         contentTV = $(R.id.news_detail_content);
         titleTV = $(R.id.detail_title);
-        commentLL = $(R.id.news_detail_add_comment);
-        collectionLL = $(R.id.news_detail_add_collection);
-        favorLL = $(R.id.news_detail_add_favor);
+        commentFab = $(R.id.fab_cirlce_detail_comment);
+        collectFab = $(R.id.fab_cirlce_detail_collection);
+        favorFab = $(R.id.fab_cirlce_detail_favor);
         commentPane = $(R.id.news_detail_add_commment_pane);
         addCommentET = $(R.id.news_detail_add_commment_text);
         addCommentIV = $(R.id.news_detail_add_commment_btn);
         commentsRv = $(R.id.news_detail_comment);
-        collectionIv = $(R.id.iv_collection);
-        collectionTv = $(R.id.tv_collection);
-        favorIv = $(R.id.iv_favo);
-        favorTv = $(R.id.tv_favo);
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
         faceIv = $(R.id.iv_circle_detail_face);
         clickTimes = $(R.id.tv_circle_detail_click_times);
         collectTimes = $(R.id.tv_circle_detail_collect_times);
         commentTimes = $(R.id.tv_circle_detail_comment_times);
+        observableScrollView = $(R.id.osv_circle_detail);
     }
 
     @Override
@@ -128,15 +123,16 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         mContext = this;
         this.titleText.setText(TITLE_NAME);
         this.title_back.setOnClickListener(this);
-        commentLL.setOnClickListener(this);
-        collectionLL.setOnClickListener(this);
-        favorLL.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
         focusBtn.setOnClickListener(this);
         imageIV.setOnClickListener(this);
         dialogIv.setOnClickListener(this);
+        commentFab.setOnClickListener(this);
+        collectFab.setOnClickListener(this);
+        favorFab.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
+        observableScrollViewListener();
         refreshData();
         addClickTimes();
         isCollected();
@@ -153,13 +149,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             case R.id.title_back:
                 finish();
                 break;
-            case R.id.news_detail_add_comment:
+            case R.id.fab_cirlce_detail_comment:
                 showCommemtPane();
                 break;
-            case R.id.news_detail_add_collection:
+            case R.id.fab_cirlce_detail_collection:
                 addNewCollection();
                 break;
-            case R.id.news_detail_add_favor:
+            case R.id.fab_cirlce_detail_favor:
                 addNewFavor();
                 break;
             case R.id.news_detail_add_commment_btn:
@@ -179,6 +175,24 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    private void observableScrollViewListener(){
+        observableScrollView.setOnScrollStatusListener(new ObservableScrollView.OnScrollStatusListener() {
+            @Override
+            public void onScrollStop() {
+                commentFab.setVisibility(View.VISIBLE);
+                collectFab.setVisibility(View.VISIBLE);
+                favorFab.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onScrolling() {
+                commentFab.setVisibility(View.INVISIBLE);
+                collectFab.setVisibility(View.INVISIBLE);
+                favorFab.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
     private void dialogListener(){
         //大图的点击事件（点击让他消失）
         dialogIv.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +201,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 dialog.dismiss();
             }
         });
-
         //大图的长按监听
         dialogIv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -207,17 +220,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showCommemtPane() {
-        isShowCommentPane = !isShowCommentPane;
-        if (isShowCommentPane) {
-            addCommentET.setHint(R.string.new_detail_add_comment_hint);
-            commentPane.setVisibility(View.VISIBLE);
-            replyUsername = "";
-            showKeyboard(addCommentET);
-        } else {
-            commentPane.setVisibility(View.GONE);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(addCommentET.getWindowToken(), 0);
-        }
+        commentFab.setVisibility(View.INVISIBLE);
+        collectFab.setVisibility(View.INVISIBLE);
+        favorFab.setVisibility(View.INVISIBLE);
+        addCommentET.setHint(R.string.new_detail_add_comment_hint);
+        commentPane.setVisibility(View.VISIBLE);
+        replyUsername = "";
+        showKeyboard(addCommentET);
     }
 
     private void refreshData() {
@@ -415,9 +424,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         adapter.setOnCommentButtonClickListner(new CircleDetailCommentsAdapter.OnCommentButtonClickListner() {
                             @Override
                             public void OnCommentButtonClicked(String replyUser) {
+                                commentFab.setVisibility(View.INVISIBLE);
+                                collectFab.setVisibility(View.INVISIBLE);
+                                favorFab.setVisibility(View.INVISIBLE);
                                 commentPane.setVisibility(View.VISIBLE);
                                 addCommentET.setHint("回复 " + replyUser + " 的评论");
                                 replyUsername = replyUser;
+                                showKeyboard(addCommentET);
                             }
                         });
                         adapter.setOnCommentDeleteClickListner(new CircleDetailCommentsAdapter.OnCommentDeleteClickListner() {
@@ -474,11 +487,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 4:
                     if(response.equals("已收藏")){
-                        collectionIv.setImageResource(R.drawable.ic_is_colleted);
-                        collectionTv.setText("已收藏");
+                        collectFab.setImageResource(R.drawable.ic_is_collected);
                     } else{
-                        collectionIv.setImageResource(R.drawable.ic_is_not_collected);
-                        collectionTv.setText("收藏");
+                        collectFab.setImageResource(R.drawable.ic_is_not_collected);
                     }
                     break;
                 case 5:
@@ -497,11 +508,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 8:
                     if(response.equals("已点赞")){
-                        favorIv.setImageResource(R.drawable.ic_is_favor);
-                        favorTv.setText("已点赞");
+                        favorFab.setImageResource(R.drawable.ic_is_favored);
                     } else{
-                        favorIv.setImageResource(R.drawable.ic_is_not_favor);
-                        favorTv.setText("点赞");
+                        favorFab.setImageResource(R.drawable.ic_is_not_favored);
                     }
                     break;
                 case 9:
@@ -613,12 +622,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             View v = getCurrentFocus();
             //当isShouldHideInput(v, ev)为true时，表示的是点击输入框区域，则需要显示键盘，同时显示光标，反之，需要隐藏键盘、光标
             if (isShouldHideInput(v, ev)) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    //处理Editext的光标隐藏、显示逻辑
-//                    mEdtFind.clearFocus();
+                    commentPane.setVisibility(View.GONE);
+                    commentFab.setVisibility(View.VISIBLE);
+                    collectFab.setVisibility(View.VISIBLE);
+                    favorFab.setVisibility(View.VISIBLE);
                 }
             }
             return super.dispatchTouchEvent(ev);
