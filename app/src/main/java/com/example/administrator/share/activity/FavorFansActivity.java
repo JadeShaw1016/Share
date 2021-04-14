@@ -14,8 +14,8 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FavorListAdapter;
 import com.example.administrator.share.adapter.NewFansListAdapter;
 import com.example.administrator.share.base.BaseActivity;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.entity.FollowsListItem;
-import com.example.administrator.share.entity.NewsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,7 +51,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     private View title_back;
     private FavorListAdapter favorListAdapter;
     private NewFansListAdapter fansListAdapter;
-    private List<NewsListItem> mNewsList;
+    private List<CommonListItem> mNewsList;
     private List<FollowsListItem> mFansList;
     private final int PAGE_COUNT = 10;
     private int INDEX;
@@ -178,7 +178,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
             Type type;
             switch (id) {
                 case 1:
-                    type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
+                    type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
                     mNewsList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mNewsList.size() == 0) {
@@ -238,8 +238,8 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private List<NewsListItem> getNewsDatas(final int firstIndex, final int lastIndex) {
-        List<NewsListItem> resList = new ArrayList<>();
+    private List<CommonListItem> getNewsDatas(final int firstIndex, final int lastIndex) {
+        List<CommonListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mNewsList.size()) {
                 resList.add(mNewsList.get(i));
@@ -261,7 +261,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     private void updateRecyclerView(int fromIndex, int toIndex,int index) {
         switch (index){
             case 0:
-                List<NewsListItem> newNewsDatas = getNewsDatas(fromIndex, toIndex);
+                List<CommonListItem> newNewsDatas = getNewsDatas(fromIndex, toIndex);
                 if (newNewsDatas.size() > 0) {
                     favorListAdapter.updateList(newNewsDatas);
                     refreshLayout.finishLoadmore();

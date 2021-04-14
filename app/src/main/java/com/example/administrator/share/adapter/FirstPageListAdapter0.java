@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CircleListForFound;
+import com.example.administrator.share.entity.CircleList;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -29,7 +29,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
     private static final String TAG = "FirstPageListAdapter0";
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<CircleListForFound> mList;
+    private List<CircleList> mList;
     private int normalType = 0;
     private int footType = 1;
     private boolean hasMore;
@@ -57,7 +57,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public FirstPageListAdapter0(Context mContext, List<CircleListForFound> mList, boolean hasMore) {
+    public FirstPageListAdapter0(Context mContext, List<CircleList> mList, boolean hasMore) {
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mList = mList;
@@ -93,10 +93,10 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            CircleListForFound news = mList.get(position);
-            final String imageName = news.getImage();
-            ((ViewHolder)holder).titleTv.setText(news.getTitle());
-            ((ViewHolder)holder).nicknameTv.setText(news.geNickName());
+            CircleList circleList = mList.get(position);
+            final String imageName = circleList.getImage();
+            ((ViewHolder)holder).titleTv.setText(circleList.getTitle());
+            ((ViewHolder)holder).nicknameTv.setText(circleList.geNickName());
             new AsyncTask<Void, Void, Integer>(){
 
                 @Override
@@ -148,7 +148,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
         return mList.size()+1;
     }
 
-    public void updateList(List<CircleListForFound> newDatas,boolean hasMore) {
+    public void updateList(List<CircleList> newDatas, boolean hasMore) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

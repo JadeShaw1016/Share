@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.BeforeDateCheckActivity;
 import com.example.administrator.share.adapter.FoundCircleAdapter;
-import com.example.administrator.share.entity.CircleListForFound;
+import com.example.administrator.share.entity.CircleList;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,7 +57,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
     private TextView indexTv;
     private FoundCircleAdapter adapter;
-    private List<CircleListForFound> mList;
+    private List<CircleList> mList;
     private final int PAGE_COUNT = 5;
     private Toolbar toolbar;
 
@@ -94,7 +94,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         chouxiangTv.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         circleList.setLayoutManager(layoutManager);
-        getNewsList();
+        getCircleList();
     }
 
     private void refreshListener(){
@@ -108,9 +108,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.resetNoMoreData();
                 if(indexTv != null){
-                    getNewsListWithLabel(indexTv.getText().toString());
+                    getCircleListWithLabel(indexTv.getText().toString());
                 }else {
-                    getNewsList();
+                    getCircleList();
                 }
             }
 
@@ -167,74 +167,74 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == bianpingTv){
                         indexTv = null;
-                        getNewsList();
+                        getCircleList();
                         break;
                     }
                 }
                 bianpingTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = bianpingTv;
-                getNewsListWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_oumei:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == oumeiTv){
                         indexTv = null;
-                        getNewsList();
+                        getCircleList();
                         break;
                     }
                 }
                 oumeiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = oumeiTv;
-                getNewsListWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_ercha:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == erchaTv){
                         indexTv = null;
-                        getNewsList();
+                        getCircleList();
                         break;
                     }
                 }
                 erchaTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = erchaTv;
-                getNewsListWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_xieshi:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == xieshiTv){
                         indexTv = null;
-                        getNewsList();
+                        getCircleList();
                         break;
                     }
                 }
                 xieshiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = xieshiTv;
-                getNewsListWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_chouxiang:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == chouxiangTv){
                         indexTv = null;
-                        getNewsList();
+                        getCircleList();
                         break;
                     }
                 }
                 chouxiangTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = chouxiangTv;
-                getNewsListWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
         }
     }
 
-    private void getNewsList() {
+    private void getCircleList() {
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getNewsList";
+                String url = Constants.BASE_URL + "Circle?method=getCircleList";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -246,11 +246,11 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         }.execute();
     }
 
-    private void getNewsListWithLabel(final String label){
+    private void getCircleListWithLabel(final String label){
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getNewsListWithLabel";
+                String url = Constants.BASE_URL + "Circle?method=getCircleListWithLabel";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -268,7 +268,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
             try {
-                Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
+                Type type = new TypeToken<ArrayList<CircleList>>() {}.getType();
                 mList = gson.fromJson(response, type);
             } catch (Exception e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -281,7 +281,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.INVISIBLE);
                     }else{
-                        adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleListForFound>());
+                        adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleList>());
                         circleList.setAdapter(adapter);
                         circleRemindTv.setVisibility(View.VISIBLE);
                     }
@@ -299,8 +299,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private List<CircleListForFound> getDatas(final int firstIndex, final int lastIndex) {
-        List<CircleListForFound> resList = new ArrayList<>();
+    private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {
+        List<CircleList> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -310,7 +310,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<CircleListForFound> newDatas = getDatas(fromIndex, toIndex);
+        List<CircleList> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();

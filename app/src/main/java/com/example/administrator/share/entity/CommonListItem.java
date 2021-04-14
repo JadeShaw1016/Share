@@ -1,6 +1,6 @@
 package com.example.administrator.share.entity;
 
-public class NewsListItem {
+public class CommonListItem {
 
     private String title;
 

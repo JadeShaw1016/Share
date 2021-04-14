@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.CollectionListAdapter;
-import com.example.administrator.share.entity.NewsListItem;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,7 +42,7 @@ import okhttp3.Call;
 
 public class MyCollectionFragment extends Fragment{
 
-    private List<NewsListItem> mList;
+    private List<CommonListItem> mList;
     private RefreshLayout refreshLayout;
     private ImageView collectRemindIv;
     private TextView collectRemindTv;
@@ -133,7 +133,7 @@ public class MyCollectionFragment extends Fragment{
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
+                    Type type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
                     mList = gson.fromJson(response, type);
                     if(getActivity() != null){
                         if (mList == null || mList.size() == 0) {
@@ -169,8 +169,8 @@ public class MyCollectionFragment extends Fragment{
         getCollections();
     }
 
-    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<NewsListItem> resList = new ArrayList<>();
+    private List<CommonListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<CommonListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -180,7 +180,7 @@ public class MyCollectionFragment extends Fragment{
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<CommonListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CircleListForFound;
+import com.example.administrator.share.entity.CircleList;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -26,7 +26,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<CircleListForFound> mList;
+    private List<CircleList> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bgIv;
@@ -36,7 +36,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         }
     }
 
-    public FoundCircleAdapter(Context mContext, List<CircleListForFound> mList) {
+    public FoundCircleAdapter(Context mContext, List<CircleList> mList) {
         this.mContext=mContext;
         mInflater=LayoutInflater.from(mContext);
         this.mList = mList;
@@ -65,8 +65,8 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        CircleListForFound news = mList.get(position);
-        final String imageName = news.getImage();
+        CircleList circleList = mList.get(position);
+        final String imageName = circleList.getImage();
        new AsyncTask<Void, Void, Integer>(){
 
            @Override
@@ -97,7 +97,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         return mList.size();
     }
 
-    public void updateList(List<CircleListForFound> newDatas) {
+    public void updateList(List<CircleList> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

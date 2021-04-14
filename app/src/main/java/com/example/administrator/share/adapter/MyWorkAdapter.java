@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.NewsListItem;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -27,7 +27,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
     private static final String TAG = "MyWorkAdapter";
     private Context mContext;
     private LayoutInflater inflater;
-    private List<NewsListItem> mList;
+    private List<CommonListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -44,7 +44,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         }
     }
 
-    public MyWorkAdapter(Context mContext, List<NewsListItem> mList) {
+    public MyWorkAdapter(Context mContext, List<CommonListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -72,7 +72,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NewsListItem detail = mList.get(position);
+        CommonListItem detail = mList.get(position);
         holder.myworkName.setText(detail.getTitle());
         holder.clickTimes.setText(String.valueOf(detail.getClickTimes()));
         getImage(detail.getImage(),holder);
@@ -107,7 +107,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         return mList.size();
     }
 
-    public void updateList(List<NewsListItem> newDatas) {
+    public void updateList(List<CommonListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

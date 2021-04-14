@@ -26,8 +26,8 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CircleDetailCommentsAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.CircleDetail;
-import com.example.administrator.share.entity.Comment;
+import com.example.administrator.share.entity.CircleListItem;
+import com.example.administrator.share.entity.CommentListItem;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.util.ObservableScrollView;
@@ -50,7 +50,7 @@ import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD
 public class CircleDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private CircleDetailCommentsAdapter adapter;
-    private List<Comment> mList;
+    private List<CommentListItem> mList;
     private String TITLE_NAME = "圈子详情";
     private View title_back;
     private TextView titleText;
@@ -234,7 +234,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getNewsDetail";
+                String url = Constants.BASE_URL + "Circle?method=getCircleDetail";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -372,7 +372,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             new AsyncTask<Void, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... voids) {
-                    String url = Constants.BASE_URL + "News?method=addClickTimes";
+                    String url = Constants.BASE_URL + "Circle?method=addClickTimes";
                     OkHttpUtils
                             .post()
                             .url(url)
@@ -394,27 +394,27 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 case 1:
                     Gson gson = new Gson();
                     try {
-                        CircleDetail circleDetail = gson.fromJson(response, CircleDetail.class);
-                        if (circleDetail != null) {
-                            CURRENT_COLLECTTIMES = circleDetail.getCollectTimes();
-                            CURRENT_COMMENTTIMES = circleDetail.getCommentTimes();
-                            nicknameTV.setText(circleDetail.getNickname());
-                            releaseTimeTV.setText(circleDetail.getReleaseTime());
-                            titleTV.setText(circleDetail.getTitle());
-                            contentTV.setText(circleDetail.getContent());
-                            clickTimes.setText(String.valueOf(circleDetail.getClickTimes()));
+                        CircleListItem circleListItem = gson.fromJson(response, CircleListItem.class);
+                        if (circleListItem != null) {
+                            CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
+                            CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();
+                            nicknameTV.setText(circleListItem.getNickname());
+                            releaseTimeTV.setText(circleListItem.getReleaseTime());
+                            titleTV.setText(circleListItem.getTitle());
+                            contentTV.setText(circleListItem.getContent());
+                            clickTimes.setText(String.valueOf(circleListItem.getClickTimes()));
                             collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
                             commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
                             // 加载图片
-                            if (!TextUtils.isEmpty(circleDetail.getImage())) {
+                            if (!TextUtils.isEmpty(circleListItem.getImage())) {
                                 imageIV.setVisibility(View.VISIBLE);
-                                getNewsImage(circleDetail.getImage());
-                                getFaceImage(circleDetail.getFace());
+                                getNewsImage(circleListItem.getImage());
+                                getFaceImage(circleListItem.getFace());
                             } else {
                                 imageIV.setVisibility(View.GONE);
                             }
                         }
-                        mList = circleDetail.getComments();
+                        mList = circleListItem.getCommentListItems();
                     } catch (Exception e) {
                         Toast.makeText(mContext, "错误："+e.getMessage(), Toast.LENGTH_SHORT).show();
                         mList = null;
@@ -463,17 +463,17 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         hideKeyboard();
                         CURRENT_COMMENTTIMES++;
                         commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
-                        Comment comment = new Comment();
-                        comment.setFace(Constants.USER.getFace());
-                        comment.setCommentTime(Utils.getCurrentDatetime());
-                        comment.setComment(addCommentET.getText().toString());
-                        comment.setReplyUser(replyUsername);
-                        comment.setNickname(Constants.USER.getNickname());
-                        comment.setAuthorname(nicknameTV.getText().toString());
+                        CommentListItem commentListItem = new CommentListItem();
+                        commentListItem.setFace(Constants.USER.getFace());
+                        commentListItem.setCommentTime(Utils.getCurrentDatetime());
+                        commentListItem.setComment(addCommentET.getText().toString());
+                        commentListItem.setReplyUser(replyUsername);
+                        commentListItem.setNickname(Constants.USER.getNickname());
+                        commentListItem.setAuthorname(nicknameTV.getText().toString());
                         if (mList == null) {
                             mList = new ArrayList<>();
                         }
-                        mList.add(0, comment);
+                        mList.add(0, commentListItem);
                         if (adapter == null) {
                             adapter = new CircleDetailCommentsAdapter(mContext, mList);
                             commentsRv.setLayoutManager(layoutManager);

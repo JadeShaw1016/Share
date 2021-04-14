@@ -1,6 +1,6 @@
 package com.example.administrator.share.entity;
 
-public class Comment {
+public class CommentListItem {
 
     private int commentId;
 

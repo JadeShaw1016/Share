@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.NewsListItem;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -28,7 +28,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<NewsListItem> mList;
+    private List<CommonListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -44,7 +44,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         }
     }
 
-    public CollectionListAdapter(Context mContext, List<NewsListItem> mList) {
+    public CollectionListAdapter(Context mContext, List<CommonListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -73,7 +73,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NewsListItem detail = mList.get(position);
+        CommonListItem detail = mList.get(position);
         holder.title.setText(detail.getTitle());
         holder.nicknameTv.setText("作者："+detail.getNickname());
         getImage(detail.getImage(),holder);
@@ -108,7 +108,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         }.execute();
     }
 
-    public void updateList(List<NewsListItem> newDatas) {
+    public void updateList(List<CommonListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.entity.Comment;
+import com.example.administrator.share.entity.CommentListItem;
 import com.example.administrator.share.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -31,7 +31,7 @@ import okhttp3.Call;
 public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDetailCommentsAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Comment> mList;
+    private List<CommentListItem> mList;
     private LayoutInflater inflater;
     OnCommentButtonClickListner onCommentButtonClickListner;
     OnCommentDeleteClickListner onCommentDeleteClickListner;
@@ -58,7 +58,7 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
         }
     }
 
-    public CircleDetailCommentsAdapter(Context mContext, List<Comment> mList) {
+    public CircleDetailCommentsAdapter(Context mContext, List<CommentListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -102,17 +102,17 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Comment comment = mList.get(position);
-        holder.nickname.setText(comment.getNickname());
-        if (TextUtils.isEmpty(comment.getReplyUser())) {
+        CommentListItem commentListItem = mList.get(position);
+        holder.nickname.setText(commentListItem.getNickname());
+        if (TextUtils.isEmpty(commentListItem.getReplyUser())) {
             holder.replyContainer.setVisibility(View.INVISIBLE);
         } else {
             holder.replyContainer.setVisibility(View.VISIBLE);
-            holder.replyUser.setText(comment.getReplyUser());
+            holder.replyUser.setText(commentListItem.getReplyUser());
         }
-        holder.commentTime.setText(comment.getCommentTime());
-        holder.content.setText(comment.getComment());
-        getFaceImage(comment.getFace(),holder);
+        holder.commentTime.setText(commentListItem.getCommentTime());
+        holder.content.setText(commentListItem.getComment());
+        getFaceImage(commentListItem.getFace(),holder);
     }
 
     @Override

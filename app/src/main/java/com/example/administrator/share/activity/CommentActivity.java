@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CommentListAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.Comment;
-import com.example.administrator.share.entity.NewsListItem;
+import com.example.administrator.share.entity.CommentListItem;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
@@ -53,7 +53,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private LinearLayoutManager layoutManager;
     private FrameLayout messageLl;
     private View title_back;
-    private List<NewsListItem> mList;
+    private List<CommonListItem> mList;
     private CommentListAdapter adapter;
     private final int PAGE_COUNT = 10;
     private LinearLayout commentPane;
@@ -186,7 +186,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<NewsListItem>>() {}.getType();
+                    Type type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
                     mList = gson.fromJson(response, type);
                     if(mContext != null){
                         if (mList.size() == 0) {
@@ -202,8 +202,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                         mListView.setAdapter(adapter);
                         adapter.setOnCommentButtonClickListner(new CommentListAdapter.OnCommentButtonClickListner() {
                             @Override
-                            public void OnCommentButtonClicked(NewsListItem newsListItem) {
-                                showCommemtPane(newsListItem);
+                            public void OnCommentButtonClicked(CommonListItem commonListItem) {
+                                showCommemtPane(commonListItem);
                             }
                         });
                     }
@@ -214,13 +214,13 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                     } else {
                         DisplayToast(response);
                         hideKeyboard();
-                        Comment comment = new Comment();
-                        comment.setFace(Constants.USER.getFace());
-                        comment.setCommentTime(Utils.getCurrentDatetime());
-                        comment.setComment(addCommentET.getText().toString());
-                        comment.setReplyUser(replyUsername);
-                        comment.setNickname(Constants.USER.getNickname());
-                        comment.setAuthorname(Constants.USER.getNickname());
+                        CommentListItem commentListItem = new CommentListItem();
+                        commentListItem.setFace(Constants.USER.getFace());
+                        commentListItem.setCommentTime(Utils.getCurrentDatetime());
+                        commentListItem.setComment(addCommentET.getText().toString());
+                        commentListItem.setReplyUser(replyUsername);
+                        commentListItem.setNickname(Constants.USER.getNickname());
+                        commentListItem.setAuthorname(Constants.USER.getNickname());
                         commentPane.setVisibility(View.GONE);
                     }
                     break;
@@ -242,8 +242,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         getComments();
     }
 
-    private List<NewsListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<NewsListItem> resList = new ArrayList<>();
+    private List<CommonListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<CommonListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -253,7 +253,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<NewsListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<CommonListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();
@@ -262,11 +262,11 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void showCommemtPane(NewsListItem newsListItem) {
+    private void showCommemtPane(CommonListItem commonListItem) {
         isShowCommentPane = !isShowCommentPane;
         if (isShowCommentPane) {
-            newsId = newsListItem.getNewsId();
-            replyUsername = newsListItem.getNickname();
+            newsId = commonListItem.getNewsId();
+            replyUsername = commonListItem.getNickname();
             commentPane.setVisibility(View.VISIBLE);
             addCommentET.setHint("回复 " + replyUsername + " 的评论");
             showKeyboard(addCommentET);

@@ -129,11 +129,11 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
-    private void releaseNews() {
+    private void releaseNewCircle() {
         String titleStr = titleEt.getText().toString();
         String contentStr = contentEt.getText().toString();
         uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "News?method=releaseNewsWithImage";
+        String url = Constants.BASE_URL + "Circle?method=releaseNewCircleWithImage";
         OkHttpUtils
                 .post()
                 .addFile("image", imageFile.getName(), imageFile)
@@ -202,7 +202,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             DisplayToast("请上传你的作品图片");
             return;
         }
-        releaseNews();
+        releaseNewCircle();
     }
 
 

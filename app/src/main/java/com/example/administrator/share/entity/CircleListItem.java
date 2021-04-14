@@ -2,7 +2,7 @@ package com.example.administrator.share.entity;
 
 import java.util.List;
 
-public class CircleDetail {
+public class CircleListItem {
 
     private String nickname;
 
@@ -16,7 +16,7 @@ public class CircleDetail {
 
     private String content;
 
-    private List<Comment> comments;
+    private List<CommentListItem> commentListItems;
 
     private int clickTimes;
 
@@ -58,8 +58,8 @@ public class CircleDetail {
         this.content = content;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public List<CommentListItem> getCommentListItems() {
+        return commentListItems;
     }
 
     public int getClickTimes(){return clickTimes;}

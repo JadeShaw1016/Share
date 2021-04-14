@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FirstPageListAdapter0;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
-import com.example.administrator.share.entity.CircleListForFound;
+import com.example.administrator.share.entity.CircleList;
 import com.example.administrator.share.util.AppBarStateChangeListener;
 import com.example.administrator.share.util.BingPic;
 import com.example.administrator.share.util.Constants;
@@ -61,7 +61,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private SwipeRefreshLayout swipeRefresh;
     private LinearLayoutManager layoutManager;
     private int POSITION = 0;
-    private List<CircleListForFound> mCircleList;
+    private List<CircleList> mCircleList;
     private final int PAGE_COUNT = 5;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastVisibleItem = 0;
@@ -319,7 +319,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getNewsListWithLabel";
+                String url = Constants.BASE_URL + "Circle?method=getCircleListWithLabel";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -336,7 +336,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getMyFocusNewsList";
+                String url = Constants.BASE_URL + "Circle?method=getMyFocusCircleList";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -353,7 +353,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "News?method=getSearchNewsList";
+                String url = Constants.BASE_URL + "Circle?method=getSearchCircleList";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -371,7 +371,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
             try {
-                Type type = new TypeToken<ArrayList<CircleListForFound>>() {}.getType();
+                Type type = new TypeToken<ArrayList<CircleList>>() {}.getType();
                 mCircleList = gson.fromJson(response, type);
             } catch (Exception e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -408,8 +408,8 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         }
     }
 
-    private List<CircleListForFound> getDatas(final int firstIndex, final int lastIndex) {
-        List<CircleListForFound> resList = new ArrayList<>();
+    private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {
+        List<CircleList> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mCircleList.size()) {
                 resList.add(mCircleList.get(i));
@@ -419,7 +419,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<CircleListForFound> newDatas = getDatas(fromIndex, toIndex);
+        List<CircleList> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter0.updateList(newDatas,true);
         } else {

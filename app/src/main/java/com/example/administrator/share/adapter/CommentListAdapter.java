@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.NewsListItem;
+import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,7 +33,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<NewsListItem> mList;
+    private List<CommonListItem> mList;
     private OnCommentButtonClickListner onCommentButtonClickListner;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,7 +57,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
     }
 
-    public CommentListAdapter(Context mContext, List<NewsListItem> mList) {
+    public CommentListAdapter(Context mContext, List<CommonListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -76,9 +76,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 doButtonClickAction(mList.get(position));
-                NewsListItem newsListItem = mList.get(position);
-                final int commentId = newsListItem.getCommentId();
-                if(newsListItem.getIsVisited() == 0){
+                CommonListItem commonListItem = mList.get(position);
+                final int commentId = commonListItem.getCommentId();
+                if(commonListItem.getIsVisited() == 0){
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
                         protected Integer doInBackground(Void... voids) {
@@ -107,9 +107,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                NewsListItem newsListItem = mList.get(position);
+                CommonListItem commonListItem = mList.get(position);
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
-                intent.putExtra("newsId", newsListItem.getNewsId());
+                intent.putExtra("newsId", commonListItem.getNewsId());
                 intent.putExtra("be_focused_personId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
@@ -119,7 +119,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final NewsListItem detail = mList.get(position);
+        final CommonListItem detail = mList.get(position);
         holder.nicknameTv.setText(detail.getNickname()+"评论了你");
         holder.commentTv.setText(detail.getComment());
         String time = detail.getCommentTime();
@@ -197,7 +197,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         return date1.getTime() > date2.getTime();
     }
 
-    public void updateList(List<NewsListItem> newDatas) {
+    public void updateList(List<CommonListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }
@@ -205,16 +205,16 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     public interface OnCommentButtonClickListner {
-        void OnCommentButtonClicked(NewsListItem newsListItem);
+        void OnCommentButtonClicked(CommonListItem commonListItem);
     }
 
     public void setOnCommentButtonClickListner(OnCommentButtonClickListner onCommentButtonClickListner) {
         this.onCommentButtonClickListner = onCommentButtonClickListner;
     }
 
-    public void doButtonClickAction(NewsListItem newsListItem) {
+    public void doButtonClickAction(CommonListItem commonListItem) {
         if (onCommentButtonClickListner != null) {
-            onCommentButtonClickListner.OnCommentButtonClicked(newsListItem);
+            onCommentButtonClickListner.OnCommentButtonClicked(commonListItem);
         }
     }
 }

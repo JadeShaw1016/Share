@@ -1,6 +1,6 @@
 package com.example.administrator.share.entity;
 
-public class CircleListForFound {
+public class CircleList {
     private int userId;
     private int newsId;
     private String title;
