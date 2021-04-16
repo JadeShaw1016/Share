@@ -124,25 +124,29 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
             @Override
             protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Message?method=findMessageStatus";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .addParams("authorName",Constants.USER.getNickname())
-                        .addParams("authorId",String.valueOf(Constants.USER.getUserId()))
-                        .build()
-                        .execute(new StringCallback(){
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                            }
-                            @Override
-                            public void onResponse(String response, int id) {
-                                if(response.equals("error")){
-                                    mNavigateTabBar.disPlayBadgeCount(2, 0);
-                                }else{
-                                    mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
+                String authorname = Constants.USER.getNickname();
+                String authorId = String.valueOf(Constants.USER.getUserId());
+                if(authorname != null && authorname != null){
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .addParams("authorName",authorname)
+                            .addParams("authorId",authorId)
+                            .build()
+                            .execute(new StringCallback(){
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
                                 }
-                            }
-                        });
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    if(response.equals("error")){
+                                        mNavigateTabBar.disPlayBadgeCount(2, 0);
+                                    }else{
+                                        mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
+                                    }
+                                }
+                            });
+                }
                 return null;
             }
         }.execute();
