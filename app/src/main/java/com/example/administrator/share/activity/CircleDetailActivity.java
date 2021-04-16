@@ -186,6 +186,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onScrolling() {
+                commentPane.setVisibility(View.GONE);
                 commentFab.setVisibility(View.INVISIBLE);
                 collectFab.setVisibility(View.INVISIBLE);
                 favorFab.setVisibility(View.INVISIBLE);
@@ -625,10 +626,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    commentPane.setVisibility(View.GONE);
-                    commentFab.setVisibility(View.VISIBLE);
-                    collectFab.setVisibility(View.VISIBLE);
-                    favorFab.setVisibility(View.VISIBLE);
                 }
             }
             return super.dispatchTouchEvent(ev);
