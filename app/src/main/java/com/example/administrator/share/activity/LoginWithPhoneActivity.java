@@ -223,8 +223,7 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
                 case 1:
                     if(response.equals("true")){
                         loginWithPhone();
-                    }
-                    else{
+                    } else{
                         Intent intent = new Intent(mContext,RegisterActivity.class);
                         intent.putExtra("username", phoneNum);
                         LoginWithVercodeActivity.uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
