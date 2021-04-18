@@ -44,6 +44,23 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            <ImageView
+                android:id="@+id/iv_fristpage_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:src="@drawable/default_remind_mywork"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_fristpage_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/focus_remind"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/iv_fristpage_remind"
+                android:gravity="center"
+                android:visibility="gone"/>
         </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

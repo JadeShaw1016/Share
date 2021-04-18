@@ -19,7 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.share.R;
@@ -68,6 +70,8 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
     private SearchView searchView;
+    private ImageView firstPageRemindIv;
+    private TextView firstPageRemindTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +93,8 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         mList=new ArrayList<>();
         appBarLayout = view.findViewById(R.id.appbar_firstpage);
         searchView = view.findViewById(R.id.sv_firstpage);
+        firstPageRemindIv = view.findViewById(R.id.iv_fristpage_remind);
+        firstPageRemindTv = view.findViewById(R.id.tv_fristpage_remind);
     }
 
     private void initView(){
@@ -241,12 +247,16 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                 POSITION = 2;
                 if(mList.isEmpty()){
                     try {
+                        firstPageRemindIv.setVisibility(View.INVISIBLE);
+                        firstPageRemindTv.setVisibility(View.INVISIBLE);
                         initData();
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
                 else{
+                    firstPageRemindIv.setVisibility(View.INVISIBLE);
+                    firstPageRemindTv.setVisibility(View.INVISIBLE);
                     adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
                     adapter2.notifyDataSetChanged();
                 }
@@ -379,15 +389,22 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             }
             switch (id) {
                 case 1:
-                    if (mCircleList != null && mCircleList.size() > 0) {
-                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter0);
-                        swipeRefresh.setRefreshing(false);
+                    if (mCircleList == null || mCircleList.size() == 0) {
+                        firstPageRemindIv.setVisibility(View.VISIBLE);
+                        firstPageRemindTv.setVisibility(View.VISIBLE);
+                    } else {
+                        firstPageRemindIv.setVisibility(View.INVISIBLE);
+                        firstPageRemindTv.setVisibility(View.INVISIBLE);
                     }
+                    adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setAdapter(adapter0);
+                    swipeRefresh.setRefreshing(false);
                     break;
                 case 2:
                     if (mCircleList != null && mCircleList.size() > 0) {
+                        firstPageRemindIv.setVisibility(View.INVISIBLE);
+                        firstPageRemindTv.setVisibility(View.INVISIBLE);
                         adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
