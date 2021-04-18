@@ -147,7 +147,6 @@ public class MyWorkFragment extends Fragment {
                             myworkRemindIv.setVisibility(View.INVISIBLE);
                             myworkRemindTv.setVisibility(View.INVISIBLE);
                         }
-                        // 存储用户
                         adapter = new MyWorkAdapter(getActivity(), mList);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter);
