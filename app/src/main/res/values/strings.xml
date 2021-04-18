@@ -12,6 +12,8 @@
     <string name="favor_remind">还没有点赞哦，快去圈子看看吧！</string>
     <string name="mywork_remind">咦？别的小朋友都有作品了\n快来上传吧！</string>
     <string name="signal_remind">摊手？好像收不到信号了呢\n下拉刷新吧！</string>
+    <string name="focus_remind">还没有关注哦，快去圈子关注你喜欢的人吧！</string>
+    <string name="fans_remind">还没有粉丝哦，快去发布一个圈子吧！</string>
 
     <!--个人信息-->
     <string name="face">头像</string>
