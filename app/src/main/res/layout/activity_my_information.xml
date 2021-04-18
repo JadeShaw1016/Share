@@ -221,7 +221,7 @@
                     android:background="@drawable/bg_edit_text_manage"
                     android:focusable="true"
                     android:gravity="center_vertical"
-                    android:text="@string/content_signature"
+                    android:hint="@string/content_signature"
                     android:paddingLeft="@dimen/dd_dimen_6px"
                     android:paddingRight="@dimen/dd_dimen_6px" />
             </LinearLayout>

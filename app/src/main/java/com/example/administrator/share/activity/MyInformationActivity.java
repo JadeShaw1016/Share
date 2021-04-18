@@ -186,6 +186,10 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     private void checkInfo() {
         String password = passwordEt.getText().toString().trim();
         String repassword = confirmPwEt.getText().toString().trim();
+        String signature = signatureEt.getText().toString().trim();
+        if(signature.equals("")){
+            signature = "这个人很懒，什么都没有留下";
+        }
         if( TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)){
             DisplayToast("密码不能为空！");
             return;
@@ -195,14 +199,14 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
             return;
         }
         if(imageFile == null){
-            updateNoFace();
+            updateNoFace(signature);
         }
         else{
-            updateWithFace();
+            updateWithFace(signature);
         }
     }
 
-    private void updateNoFace() {
+    private void updateNoFace(String signature) {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         String url = Constants.BASE_URL + "User?method=updateNoFace";
         OkHttpUtils
@@ -211,12 +215,12 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                 .id(1)
                 .addParams("username",Constants.USER.getUsername())
                 .addParams("password", passwordEt.getText().toString().trim())
-                .addParams("signature",signatureEt.getText().toString().trim())
+                .addParams("signature",signature)
                 .build()
                 .execute(new MyStringCallback());
     }
 
-    private void updateWithFace() {
+    private void updateWithFace(String signature) {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         String url = Constants.BASE_URL + "User?method=updateWithFace";
         OkHttpUtils
@@ -227,7 +231,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                 .addHeader("content-Type", "multipart/form-data; boundary=" + UUID.randomUUID().toString())
                 .addParams("username",Constants.USER.getUsername())
                 .addParams("password", passwordEt.getText().toString().trim())
-                .addParams("signature",signatureEt.getText().toString().trim())
+                .addParams("signature",signature)
                 .build()
                 .execute(new MyStringCallback());
     }
