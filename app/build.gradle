@@ -6,6 +6,9 @@ apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey "m328e466904112"
     appSecret "490587774db4880556cfb681f27d3dbd"
+    permissions {
+        exclude "android.permission.READ_CONTACTS", "android.permission.READ_PHONE_STATE"
+    }
     SMSSDK {}
     ShareSDK {
         loopShare true
