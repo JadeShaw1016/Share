@@ -1,8 +1,7 @@
 package com.example.administrator.share.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,18 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import okhttp3.Call;
 
 public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.ViewHolder> {
 
@@ -84,27 +80,8 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
 
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        new AsyncTask<Void, Void, Integer>(){
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
-                OkHttpUtils
-                        .get()//
-                        .url(url)//
-                        .addParams("face", imageName)
-                        .build()//
-                        .execute(new BitmapCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int i) {
-                            }
-                            @Override
-                            public void onResponse(Bitmap bitmap, int i) {
-                                holder.faceIv.setImageBitmap(bitmap);
-                            }
-                        });
-                return 0;
-            }
-        }.execute();
+        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+imageName);
+        Glide.with(mContext).load(uri).into(holder.faceIv);
     }
 
     public void updateList(List<FollowsListItem> newDatas) {

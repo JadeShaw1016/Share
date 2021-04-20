@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CircleDetailCommentsAdapter;
 import com.example.administrator.share.base.BaseActivity;
@@ -34,7 +36,6 @@ import com.example.administrator.share.util.ObservableScrollView;
 import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
@@ -529,55 +530,15 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void getNewsImage(final String imageName) {
-        new AsyncTask<Void, Void, Integer>(){
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getNewsImage";
-                OkHttpUtils
-                        .get()//
-                        .url(url)//
-                        .addParams("imageName", imageName)
-                        .build()//
-                        .execute(new BitmapCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int i) {
-                                DisplayToast("无法获取图片");
-                            }
-
-                            @Override
-                            public void onResponse(Bitmap bitmap, int i) {
-                                imageIV.setImageBitmap(bitmap);
-                                dialogIv.setImageBitmap(bitmap);
-                                dialog.setContentView(dialogIv);
-                            }
-                        });
-                return 0;
-            }
-        }.execute();
+        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+        Glide.with(mContext).load(uri).into(imageIV);
+        Glide.with(mContext).load(uri).into(dialogIv);
+        dialog.setContentView(dialogIv);
     }
 
     private void getFaceImage(final String face) {
-        new AsyncTask<Void, Void, Integer>(){
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
-                OkHttpUtils
-                        .get()//
-                        .url(url)//
-                        .addParams("face", face)
-                        .build()//
-                        .execute(new BitmapCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int i) {
-                            }
-                            @Override
-                            public void onResponse(Bitmap bitmap, int i) {
-                                faceIv.setImageBitmap(bitmap);
-                            }
-                        });
-                return 0;
-            }
-        }.execute();
+        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+face);
+        Glide.with(mContext).load(uri).into(faceIv);
     }
 
     //保存文件到指定路径
@@ -598,10 +559,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             fos.close();
             //把文件插入到系统图库
             MediaStore.Images.Media.insertImage(this.getContentResolver(), file.getAbsolutePath(), fileName, null);
-
-            //保存图片后发送广播通知更新数据库
-//            Uri uri = Uri.fromFile(file);
-//            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
             if (isSuccess) {
                 DisplayToast("保存成功");
             } else {

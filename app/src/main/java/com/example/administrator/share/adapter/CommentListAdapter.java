@@ -2,7 +2,7 @@ package com.example.administrator.share.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,13 +13,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
 import com.example.administrator.share.entity.CommonListItem;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.text.ParseException;
@@ -134,48 +134,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        new AsyncTask<Void, Void, Integer>(){
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
-                OkHttpUtils
-                        .get()//
-                        .url(url)//
-                        .addParams("face", detail.getFace())
-                        .build()//
-                        .execute(new BitmapCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int i) {
-                            }
-                            @Override
-                            public void onResponse(Bitmap bitmap, int i) {
-                                holder.faceIv.setImageBitmap(bitmap);
-                            }
-                        });
-                return 0;
-            }
-        }.execute();
-        new AsyncTask<Void, Void, Integer>(){
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getNewsImage";
-                OkHttpUtils
-                        .get()//
-                        .url(url)//
-                        .addParams("imageName", detail.getImage())
-                        .build()//
-                        .execute(new BitmapCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int i) {
-                            }
-                            @Override
-                            public void onResponse(Bitmap bitmap, int i) {
-                                holder.imageIv.setImageBitmap(bitmap);
-                            }
-                        });
-                return 0;
-            }
-        }.execute();
+        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+detail.getFace());
+        Glide.with(mContext).load(uri).into(((ViewHolder)holder).faceIv);
+        uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+detail.getImage());
+        Glide.with(mContext).load(uri).into(((ViewHolder)holder).imageIv);
         if(detail.getIsVisited()==0){
             holder.badge = new BadgeView(mContext);
             holder.badge.setTargetView(holder.badgeTv);
