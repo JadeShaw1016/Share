@@ -18,7 +18,6 @@ public class SimpleImageDisplayer implements BitmapDisplayer {
 	@Override
 	public Bitmap display(Bitmap bitmap, ImageView imageView,
 			LoadedFrom loadedFrom) {
-		// TODO Auto-generated method stub
 		if (bitmap != null) {
 			bitmap = ImageUtils.resizeImageByWidth(bitmap, targetWidth);
 		}
