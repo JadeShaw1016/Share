@@ -63,7 +63,7 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initView() {
-        titleText.setText("我的关注");
+        titleText.setText("关注");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         getFocus();

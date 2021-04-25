@@ -63,7 +63,7 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void initView() {
-        titleText.setText("我的粉丝");
+        titleText.setText("粉丝");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         getFans();
