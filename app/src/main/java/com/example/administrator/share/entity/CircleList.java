@@ -6,6 +6,7 @@ public class CircleList {
     private String title;
     private String nickname;
     private String image;
+    private String topic;
 
     public int getUserId() {
         return userId;
@@ -31,15 +32,15 @@ public class CircleList {
         return nickname;
     }
 
-    public void setNickName(String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getTopic() {
+        return topic;
     }
 }

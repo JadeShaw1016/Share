@@ -83,6 +83,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private int CURRENT_COLLECTTIMES;
     private int CURRENT_COMMENTTIMES;
     private ObservableScrollView observableScrollView;
+    private TextView topicTv;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -117,6 +118,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         collectTimes = $(R.id.tv_circle_detail_collect_times);
         commentTimes = $(R.id.tv_circle_detail_comment_times);
         observableScrollView = $(R.id.osv_circle_detail);
+        topicTv = $(R.id.tv_circle_detail_topic);
     }
 
     @Override
@@ -407,6 +409,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                             clickTimes.setText(String.valueOf(circleListItem.getClickTimes()));
                             collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
                             commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
+                            topicTv.setText(circleListItem.getTopic());
                             // 加载图片
                             if (!TextUtils.isEmpty(circleListItem.getImage())) {
                                 imageIV.setVisibility(View.VISIBLE);

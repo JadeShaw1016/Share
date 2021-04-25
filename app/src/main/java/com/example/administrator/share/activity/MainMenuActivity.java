@@ -86,10 +86,12 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         {
             case R.id.dialog_release:
                 intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
+                intent.putExtra("index",0);
                 startActivity(intent);
                 break;
             case R.id.dialog_signin:
-                intent = new Intent(MainMenuActivity.this,BeforeDateCheckActivity.class);
+                intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
+                intent.putExtra("index",1);
                 startActivity(intent);
                 break;
             default:

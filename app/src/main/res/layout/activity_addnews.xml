@@ -77,6 +77,26 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_add_news_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/tv_add_news_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今日打卡话题："/>
+                <TextView
+                    android:id="@id/tv_add_news_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_add_news_1"
+                    android:text="#续命咖啡#"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp">
@@ -89,7 +109,6 @@
                     android:hint="@string/add_news_et_title_hint_text"
                     android:maxLength="12"
                     android:background="@drawable/rounded_4dp" />
-
                 <TextView
                     android:id="@+id/add_news_tv_title_length"
                     android:layout_width="wrap_content"
@@ -100,7 +119,7 @@
             </RelativeLayout>
 
             <EditText
-                android:id="@id/add_news_et_share_content"
+                android:id="@id/et_add_news_share_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"

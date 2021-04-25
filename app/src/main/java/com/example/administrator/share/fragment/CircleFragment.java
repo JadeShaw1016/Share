@@ -94,7 +94,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         chouxiangTv.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         circleList.setLayoutManager(layoutManager);
-        getCircleList();
+        getCircleListofDailyCheck();
     }
 
     private void refreshListener(){
@@ -108,9 +108,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.resetNoMoreData();
                 if(indexTv != null){
-                    getCircleListWithLabel(indexTv.getText().toString());
+                    getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 }else {
-                    getCircleList();
+                    getCircleListofDailyCheck();
                 }
             }
 
@@ -167,74 +167,74 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == bianpingTv){
                         indexTv = null;
-                        getCircleList();
+                        getCircleListofDailyCheck();
                         break;
                     }
                 }
                 bianpingTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = bianpingTv;
-                getCircleListWithLabel(indexTv.getText().toString());
+                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_oumei:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == oumeiTv){
                         indexTv = null;
-                        getCircleList();
+                        getCircleListofDailyCheck();
                         break;
                     }
                 }
                 oumeiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = oumeiTv;
-                getCircleListWithLabel(indexTv.getText().toString());
+                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_ercha:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == erchaTv){
                         indexTv = null;
-                        getCircleList();
+                        getCircleListofDailyCheck();
                         break;
                     }
                 }
                 erchaTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = erchaTv;
-                getCircleListWithLabel(indexTv.getText().toString());
+                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_xieshi:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == xieshiTv){
                         indexTv = null;
-                        getCircleList();
+                        getCircleListofDailyCheck();
                         break;
                     }
                 }
                 xieshiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = xieshiTv;
-                getCircleListWithLabel(indexTv.getText().toString());
+                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_chouxiang:
                 if(indexTv != null){
                     indexTv.setBackgroundResource(R.drawable.bg_username);
                     if(indexTv == chouxiangTv){
                         indexTv = null;
-                        getCircleList();
+                        getCircleListofDailyCheck();
                         break;
                     }
                 }
                 chouxiangTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = chouxiangTv;
-                getCircleListWithLabel(indexTv.getText().toString());
+                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
                 break;
         }
     }
 
-    private void getCircleList() {
+    private void getCircleListofDailyCheck() {
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Circle?method=getCircleList";
+                String url = Constants.BASE_URL + "Circle?method=getCircleListofDailyCheck";
                 OkHttpUtils
                         .post()
                         .url(url)
@@ -246,11 +246,11 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         }.execute();
     }
 
-    private void getCircleListWithLabel(final String label){
+    private void getCircleListofDailyCheckWithLabel(final String label){
         new AsyncTask<Void,Void,Integer>(){
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Circle?method=getCircleListWithLabel";
+                String url = Constants.BASE_URL + "Circle?method=getCircleListofDailyCheckWithLabel";
                 OkHttpUtils
                         .post()
                         .url(url)

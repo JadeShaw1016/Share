@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,10 +57,15 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private File imageFile;
     private LinearLayout remindBgLl;
     private TextView remindTv;
+    private int INDEX;
+    private RelativeLayout topicRl;
+    private TextView topicTv;
+    private int ISCHECKED = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        INDEX = getIntent().getIntExtra("index",0);
         setContentView(R.layout.activity_addnews);
         findViewById();
         initView();
@@ -68,16 +74,18 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void findViewById() {
-        titleEt = (EditText) findViewById(R.id.add_news_et_share_title);
-        contentEt = (EditText) findViewById(R.id.add_news_et_share_content);
-        titlelLenTv = (TextView) findViewById(R.id.add_news_tv_title_length);
-        mIv1 = (ImageView) findViewById(R.id.title_back);
-        mTakePhoto = (ImageView) findViewById(R.id.add_news_iv_photo);
-        mChoosePhoto = (ImageView) findViewById(R.id.choose_from_album);
-        picture = (ImageView) findViewById(R.id.iv_picture);
-        releaseBtn = (Button) findViewById(R.id.add_news_btn_release);
-        remindBgLl = (LinearLayout) findViewById(R.id.ll_remind_bg);
-        remindTv = (TextView) findViewById(R.id.tv_remind);
+        titleEt = findViewById(R.id.add_news_et_share_title);
+        contentEt = findViewById(R.id.et_add_news_share_content);
+        titlelLenTv = findViewById(R.id.add_news_tv_title_length);
+        mIv1 =  findViewById(R.id.title_back);
+        mTakePhoto = findViewById(R.id.add_news_iv_photo);
+        mChoosePhoto = findViewById(R.id.choose_from_album);
+        picture = findViewById(R.id.iv_picture);
+        releaseBtn = findViewById(R.id.add_news_btn_release);
+        remindBgLl = findViewById(R.id.ll_remind_bg);
+        remindTv = findViewById(R.id.tv_remind);
+        topicRl = findViewById(R.id.rl_add_news_1);
+        topicTv = findViewById(R.id.tv_add_news_topic);
     }
 
     @Override
@@ -86,6 +94,9 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         mTakePhoto.setOnClickListener(this);
         mChoosePhoto.setOnClickListener(this);
         releaseBtn.setOnClickListener(this);
+        if(INDEX == 1){
+            topicRl.setVisibility(View.VISIBLE);
+        }
         uiFlusHandler = new MyDialogHandler(this, "登录中...");
     }
 
@@ -129,7 +140,31 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
-    private void releaseNewCircle() {
+    private void checkInfo() {
+        String titleStr = titleEt.getText().toString();
+        String contentStr = contentEt.getText().toString();
+        if (TextUtils.isEmpty(titleStr)) {
+            DisplayToast("请输入一个标题");
+            titleEt.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(contentStr)) {
+            DisplayToast("请输入想说的话");
+            contentEt.requestFocus();
+            return;
+        }
+        if (imageFile == null || !imageFile.exists()) {
+            DisplayToast("请上传你的作品图片");
+            return;
+        }
+        if(INDEX == 1){
+            isChecked();
+            return;
+        }
+        releaseNewCircle(null);
+    }
+
+    private void releaseNewCircle(String topic) {
         String titleStr = titleEt.getText().toString();
         String contentStr = contentEt.getText().toString();
         uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
@@ -144,6 +179,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 .addParams("content", contentStr)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .addParams("releaseTime", Utils.getCurrentDatetime())
+                .addParams("topic", topic)
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -183,26 +219,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         }
         remindBgLl.setVisibility(View.INVISIBLE);
         remindTv.setVisibility(View.INVISIBLE);
-    }
-
-    private void checkInfo() {
-        String titleStr = titleEt.getText().toString();
-        String contentStr = contentEt.getText().toString();
-        if (TextUtils.isEmpty(titleStr)) {
-            DisplayToast("请输入一个标题");
-            titleEt.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(contentStr)) {
-            DisplayToast("请输入想说的话");
-            contentEt.requestFocus();
-            return;
-        }
-        if (imageFile == null || !imageFile.exists()) {
-            DisplayToast("请上传你的作品图片");
-            return;
-        }
-        releaseNewCircle();
     }
 
 
@@ -315,6 +331,31 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * 今日打卡
+     */
+    private void todayCheck() {
+        String url = Constants.BASE_URL + "DailyCheck?method=check";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(2)
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    private void isChecked() {
+        String url = Constants.BASE_URL + "DailyCheck?method=isChecked";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .id(3)
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                .build()
+                .execute(new MyStringCallback());
+    }
+
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
@@ -322,10 +363,28 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             switch (id) {
                 case 1:
                     if (response.contains("success")) {
-                        DisplayToast("圈子发布成功");
+                        if(INDEX == 0){
+                            DisplayToast("圈子发布成功");
+                        }else{
+                            todayCheck();
+                        }
                         finish();
                     } else {
                         DisplayToast("请稍后再试");
+                    }
+                    break;
+                case 2:
+                    if (response.contains("success")) {
+                        DisplayToast("今日打卡成功");
+                    } else {
+                        DisplayToast(response);
+                    }
+                    break;
+                case 3:
+                    if(response.equals("true")){
+                        DisplayToast("您今日已经打卡过了，不能重复打卡");
+                    }else{
+                        releaseNewCircle(topicTv.getText().toString());
                     }
                     break;
                 default:

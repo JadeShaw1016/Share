@@ -24,6 +24,8 @@ public class CircleListItem {
 
     private int commentTimes;
 
+    private String topic;
+
     public String getFace(){return face;}
 
     public String getNickname() {
@@ -67,4 +69,8 @@ public class CircleListItem {
     public int getCollectTimes(){return collectTimes;}
 
     public int getCommentTimes(){return commentTimes;}
+
+    public String getTopic() {
+        return topic;
+    }
 }

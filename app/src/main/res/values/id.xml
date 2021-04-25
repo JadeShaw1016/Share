@@ -52,16 +52,17 @@
     <item name="config_et_port" type="id" />
     <!--配置-->
 
-    <!--新鲜事-->
+    <!--发布作品-->
     <item name="add_news_btn_release" type="id" />
     <item name="homepage_tv_username" type="id" />
     <item name="homepage_et_height" type="id" />
     <item name="homepage_et_weight" type="id" />
     <item name="homepage_radio_sex" type="id" />
     <item name="add_news_et_share_title" type="id" />
-    <item name="add_news_et_share_content" type="id" />
+    <item name="et_add_news_share_content" type="id" />
     <item name="add_news_iv_photo" type="id" />
-    <!--新鲜事-->
+    <item name="tv_add_news_topic" type="id"/>
+    <!--发布作品-->
 
     <!--主页-->
     <item name="homepage_btn_update" type="id" />

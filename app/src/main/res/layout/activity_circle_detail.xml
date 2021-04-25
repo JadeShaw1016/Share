@@ -100,9 +100,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp">
                     <TextView
+                        android:id="@+id/tv_circle_detail_topic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="#续命咖啡#"
                         android:textColor="#cccccc"/>
                     <ImageView
                         android:layout_width="22dp"

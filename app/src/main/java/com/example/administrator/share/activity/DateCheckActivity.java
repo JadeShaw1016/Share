@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,8 +15,6 @@ import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Calendar;
 
@@ -23,7 +22,6 @@ import cn.aigestudio.datepicker.bizs.calendars.DPCManager;
 import cn.aigestudio.datepicker.bizs.decors.DPDecor;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
-import okhttp3.Call;
 
 public class DateCheckActivity extends BaseActivity implements View.OnClickListener {
 
@@ -48,23 +46,7 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        // getDailyCheck();
         echoChecked();
-    }
-
-    /**
-     * 获取签到记录
-     */
-    private void getDailyCheck() {
-        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(2)
-                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .build()
-                .execute(new MyStringCallback());
     }
 
     @Override
@@ -92,57 +74,10 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
                 this.finish();
                 break;
             case R.id.date_btn_check:
-                todayCheck();
+                Intent intent = new Intent(this,AddnewsActivity.class);
+                intent.putExtra("index",1);
+                startActivity(intent);
                 break;
-        }
-    }
-
-    /**
-     * 今日打卡
-     */
-    private void todayCheck() {
-        uiFlusHandler.setTip("正在打卡...");
-        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "DailyCheck?method=check";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(1)
-                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .build()
-                .execute(new MyStringCallback());
-    }
-
-    public class MyStringCallback extends StringCallback {
-        @Override
-        public void onResponse(String response, int id) {
-            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-            switch (id) {
-                case 1:
-                    if (response.contains("success")) {
-                        DisplayToast("今日打卡成功");
-                    } else {
-                        System.out.println("提示："+response);
-                        DisplayToast(response);
-                    }
-                    break;
-                case 2:
-                    if (response.contains("error")) {
-                        DisplayToast("暂时无法获取数据");
-                    } else {
-                        String[] dates = response.split(",");
-                        for (String s: dates) {
-//                            dailyCheckedList.add(s);
-                        }
-                    }
-                    break;
-            }
-        }
-
-        @Override
-        public void onError(Call arg0, Exception arg1, int arg2) {
-            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-            DisplayToast("网络链接出错！");
         }
     }
 
@@ -152,9 +87,7 @@ public class DateCheckActivity extends BaseActivity implements View.OnClickListe
     public void echoChecked() {
 
         DPCManager.getInstance().setDecorTR(Constants.DAILYCHECKEDLIST);
-
         Calendar today = Calendar.getInstance();
-
         picker.setDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1);
         picker.setFestivalDisplay(false);
         picker.setTodayDisplay(true);
