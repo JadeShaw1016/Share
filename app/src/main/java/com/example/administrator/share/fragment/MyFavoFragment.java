@@ -50,14 +50,11 @@ public class MyFavoFragment extends Fragment{
     private LinearLayoutManager layoutManager;
     private CollectionListAdapter adapter;
     private final int PAGE_COUNT = 10;
+    private static String USERID;
 
-    public static Fragment newInstance(String title){
-        MyFavoFragment fragmentOne = new MyFavoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("name", title);
-        //fragment保存参数，传入一个Bundle对象
-        fragmentOne.setArguments(bundle);
-        return fragmentOne;
+    public static Fragment newInstance(String userId){
+        USERID = userId;
+        return new MyFavoFragment();
     }
 
     @Override
@@ -121,7 +118,7 @@ public class MyFavoFragment extends Fragment{
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                        .addParams("userId", USERID)
                         .build()
                         .execute(new MyStringCallback());
             }

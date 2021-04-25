@@ -52,14 +52,11 @@ public class MyWorkFragment extends Fragment {
     private TextView myworkRemindTv;
     private MyWorkAdapter adapter;
     private final int PAGE_COUNT = 10;
+    private static String USERID;
 
-    public static Fragment newInstance(String title){
-        MyWorkFragment fragmentOne = new MyWorkFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("name", title);
-        //fragment保存参数，传入一个Bundle对象
-        fragmentOne.setArguments(bundle);
-        return fragmentOne;
+    public static Fragment newInstance(String userId){
+        USERID = userId;
+        return new MyWorkFragment();
     }
 
     @Override
@@ -123,7 +120,7 @@ public class MyWorkFragment extends Fragment {
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                        .addParams("userId", USERID)
                         .build()
                         .execute(new MyStringCallback());
                 return 0;

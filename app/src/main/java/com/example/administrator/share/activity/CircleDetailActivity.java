@@ -3,6 +3,7 @@ package com.example.administrator.share.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -84,6 +85,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private int CURRENT_COMMENTTIMES;
     private ObservableScrollView observableScrollView;
     private TextView topicTv;
+    private CircleListItem circleListItem;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -97,8 +99,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void findViewById() {
-        this.title_back = $(R.id.title_back);
-        this.titleText = $(R.id.titleText);
+        title_back = $(R.id.title_back);
+        titleText = $(R.id.titleText);
         nicknameTV = $(R.id.news_detail_nickname);
         releaseTimeTV = $(R.id.news_detail_time);
         imageIV = $(R.id.news_detail_image);
@@ -133,6 +135,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         commentFab.setOnClickListener(this);
         collectFab.setOnClickListener(this);
         favorFab.setOnClickListener(this);
+        faceIv.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         observableScrollViewListener();
@@ -174,6 +177,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.news_detail_image:
                 dialog.show();
+                break;
+            case R.id.iv_circle_detail_face:
+                Intent intent = new Intent(this,PersonalHomepageActivity.class);
+                intent.putExtra("userId",circleListItem.getUserId());
+                intent.putExtra("nickname",circleListItem.getNickname());
+                intent.putExtra("face",circleListItem.getFace());
+                intent.putExtra("signature",circleListItem.getSignature());
+                startActivity(intent);
                 break;
         }
     }
@@ -398,7 +409,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 case 1:
                     Gson gson = new Gson();
                     try {
-                        CircleListItem circleListItem = gson.fromJson(response, CircleListItem.class);
+                        circleListItem = gson.fromJson(response, CircleListItem.class);
                         if (circleListItem != null) {
                             CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
                             CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();

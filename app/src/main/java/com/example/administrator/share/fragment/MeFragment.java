@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FansActivity;
 import com.example.administrator.share.activity.FocusActivity;
-import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.entity.FollowsListItem;
@@ -36,6 +35,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Call;
 
@@ -105,8 +105,8 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
-                final Dialog dialog = new Dialog(MainMenuActivity.mContext, R.style.MyDialogStyle_fullScreen_black);
-                ImageView imageView = new ImageView(MainMenuActivity.mContext);
+                final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()), R.style.MyDialogStyle_fullScreen_black);
+                ImageView imageView = new ImageView(getContext());
                 imageView.setImageBitmap(Constants.FACEIMAGE);
                 dialog.setContentView(imageView);
                 dialog.show();
@@ -127,12 +127,10 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     private void setAdapter(){
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> mTitles = new ArrayList<>();
-
         Collections.addAll(mTitles, title);
-        fragmentList.add(MyWorkFragment.newInstance(title[0]));
-        fragmentList.add(MyFavoFragment.newInstance(title[1]));
-        fragmentList.add(MyCollectionFragment.newInstance(title[2]));
-
+        fragmentList.add(MyWorkFragment.newInstance(String.valueOf(Constants.USER.getUserId())));
+        fragmentList.add(MyFavoFragment.newInstance(String.valueOf(Constants.USER.getUserId())));
+        fragmentList.add(MyCollectionFragment.newInstance(String.valueOf(Constants.USER.getUserId())));
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
