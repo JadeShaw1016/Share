@@ -24,7 +24,8 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory"
         tools:targetApi="m">
-        <activity android:name=".activity.PersonalHomepageActivity"/>
+        <activity android:name=".activity.SystemInfoActivity"/>
+        <activity android:name=".activity.PersonalHomepageActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

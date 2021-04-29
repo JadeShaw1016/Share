@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CommentActivity;
 import com.example.administrator.share.activity.FavorFansActivity;
+import com.example.administrator.share.activity.SystemInfoActivity;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,6 +34,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private LinearLayout commentLl;
     private LinearLayout favorLl;
     private LinearLayout fansLl;
+    private LinearLayout systemLl;
     private BadgeView commentBadge;
     private BadgeView favorBadge;
     private BadgeView fansBadge;
@@ -56,6 +58,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         commentLl = view.findViewById(R.id.ll_message_comment);
         favorLl = view.findViewById(R.id.ll_message_favor);
         fansLl = view.findViewById(R.id.ll_message_fans);
+        systemLl = view.findViewById(R.id.ll_message_system);
         commentBadgeTv = view.findViewById(R.id.tv_comment_badge);
         favorBadgeTv = view.findViewById(R.id.tv_favor_badge);
         fansBadgeTv = view.findViewById(R.id.tv_fans_badge);
@@ -67,6 +70,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         commentLl.setOnClickListener(this);
         favorLl.setOnClickListener(this);
         fansLl.setOnClickListener(this);
+        systemLl.setOnClickListener(this);
         commentBadge = new BadgeView(mContext);
         commentBadge.setTargetView(commentBadgeTv);
         favorBadge = new BadgeView(mContext);
@@ -106,6 +110,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 intent = new Intent(getActivity(), FavorFansActivity.class);
                 intent.putExtra("index",1);
                 updateNewFansStatus();
+                break;
+            case R.id.ll_message_system:
+                intent = new Intent(getActivity(), SystemInfoActivity.class);
                 break;
         }
         startActivity(intent);

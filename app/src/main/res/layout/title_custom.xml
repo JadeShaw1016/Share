@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/title_height"
-    android:background="@color/orange" >
+    android:background="@color/orange"
+    android:id="@+id/rl_title_custom">
 
     <ImageView
         android:id="@id/title_back"

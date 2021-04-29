@@ -88,7 +88,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginEnd="17dp"/>
 
-        <LinearLayout style="@style/mid_layout">
+        <LinearLayout style="@style/mid_layout"
+            android:id="@+id/ll_message_system">
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
