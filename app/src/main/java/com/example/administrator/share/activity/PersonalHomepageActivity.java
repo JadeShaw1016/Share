@@ -168,6 +168,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         getFans();
         getFocus();
         getPopularity();
+        isFocused();
         if(signature!= null){
             signatureTv.setText(signature);
         }
