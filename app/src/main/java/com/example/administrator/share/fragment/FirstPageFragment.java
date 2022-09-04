@@ -1,17 +1,12 @@
 package com.example.administrator.share.fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +19,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FirstPageListAdapter0;
 import com.example.administrator.share.adapter.FirstPageListAdapter2;
@@ -31,6 +33,7 @@ import com.example.administrator.share.entity.CircleList;
 import com.example.administrator.share.util.AppBarStateChangeListener;
 import com.example.administrator.share.util.BingPic;
 import com.example.administrator.share.util.Constants;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -50,8 +53,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import okhttp3.Call;
-
-import static android.content.ContentValues.TAG;
 
 public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 

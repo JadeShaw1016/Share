@@ -1,5 +1,7 @@
 package com.example.administrator.share.activity;
 
+import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,10 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +23,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CircleDetailCommentsAdapter;
@@ -35,6 +37,7 @@ import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.util.ObservableScrollView;
 import com.example.administrator.share.util.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -46,8 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-
-import static com.example.administrator.share.util.Constants.BASE_IMAGE_DOWNLOAD;
 
 public class CircleDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -193,17 +194,17 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         observableScrollView.setOnScrollStatusListener(new ObservableScrollView.OnScrollStatusListener() {
             @Override
             public void onScrollStop() {
-                commentFab.setVisibility(View.VISIBLE);
-                collectFab.setVisibility(View.VISIBLE);
-                favorFab.setVisibility(View.VISIBLE);
+                commentFab.show();
+                collectFab.show();
+                favorFab.show();
             }
 
             @Override
             public void onScrolling() {
                 commentPane.setVisibility(View.GONE);
-                commentFab.setVisibility(View.INVISIBLE);
-                collectFab.setVisibility(View.INVISIBLE);
-                favorFab.setVisibility(View.INVISIBLE);
+                commentFab.hide();
+                collectFab.show();
+                favorFab.show();
             }
         });
     }
@@ -235,9 +236,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showCommemtPane() {
-        commentFab.setVisibility(View.INVISIBLE);
-        collectFab.setVisibility(View.INVISIBLE);
-        favorFab.setVisibility(View.INVISIBLE);
+        commentFab.show();
+        collectFab.show();
+        favorFab.show();
         addCommentET.setHint(R.string.new_detail_add_comment_hint);
         commentPane.setVisibility(View.VISIBLE);
         replyUsername = "";
@@ -440,9 +441,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         adapter.setOnCommentButtonClickListner(new CircleDetailCommentsAdapter.OnCommentButtonClickListner() {
                             @Override
                             public void OnCommentButtonClicked(String replyUser) {
-                                commentFab.setVisibility(View.INVISIBLE);
-                                collectFab.setVisibility(View.INVISIBLE);
-                                favorFab.setVisibility(View.INVISIBLE);
+                                commentFab.show();
+                                collectFab.show();
+                                favorFab.show();
                                 commentPane.setVisibility(View.VISIBLE);
                                 addCommentET.setHint("回复 " + replyUser + " 的评论");
                                 replyUsername = replyUser;

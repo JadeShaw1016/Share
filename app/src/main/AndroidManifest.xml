@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:appComponentFactory"
+        tools:replace="android:appComponentFactory,android:label"
         tools:targetApi="m">
         <activity android:name=".activity.SystemInfoActivity"/>
         <activity android:name=".activity.PersonalHomepageActivity" />
@@ -67,7 +67,7 @@
         <activity android:name=".activity.LoginWithVercodeActivity" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.administrator.share.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

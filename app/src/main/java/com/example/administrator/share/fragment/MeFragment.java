@@ -7,9 +7,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FansActivity;
 import com.example.administrator.share.activity.FocusActivity;
@@ -25,6 +25,7 @@ import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;

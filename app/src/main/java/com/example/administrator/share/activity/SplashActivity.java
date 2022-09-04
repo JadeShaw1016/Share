@@ -9,8 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,10 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.core.app.ActivityCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.SplashAdapter;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.UIUtils;
+import com.mob.MobSDK;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MobSDK.submitPolicyGrantResult(true);
         final SharedPreferences sharedPreferences = getSharedPreferences("is_first_in_data", Context.MODE_PRIVATE);
         edit =  sharedPreferences.edit();
         isFirstIn = sharedPreferences.getBoolean("isFirstIn",true);

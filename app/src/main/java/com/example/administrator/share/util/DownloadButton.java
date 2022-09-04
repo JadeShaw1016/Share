@@ -2,8 +2,9 @@ package com.example.administrator.share.util;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 public class DownloadButton extends AppCompatButton {
     private Uri uri = null;
