@@ -12,6 +12,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:name=".ShareApplication"
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:hardwareAccelerated="false"
@@ -23,7 +24,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory,android:label"
-        tools:targetApi="m">
+        tools:targetApi="p">
         <activity android:name=".activity.SystemInfoActivity"/>
         <activity android:name=".activity.PersonalHomepageActivity" />
         <activity android:name=".activity.SplashActivity">

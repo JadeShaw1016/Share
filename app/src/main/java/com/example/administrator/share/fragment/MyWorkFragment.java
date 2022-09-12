@@ -2,7 +2,6 @@ package com.example.administrator.share.fragment;
 
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,32 +54,35 @@ public class MyWorkFragment extends Fragment {
     private final int PAGE_COUNT = 10;
     private static String USERID;
 
-    public static Fragment newInstance(String userId){
+    public static Fragment newInstance(String userId) {
         USERID = userId;
         return new MyWorkFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.fragment_mywork,container,false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_mywork, container, false);
         findViewById(view);
         initView();
         refreshListener();
         return view;
     }
 
-    private void findViewById(View view){
+    private void findViewById(View view) {
         recyclerView = view.findViewById(R.id.rv_mywork);
         refreshLayout = view.findViewById(R.id.swipe_refresh_mywork);
         myworkRemindIv = view.findViewById(R.id.iv_mywork_remind);
         myworkRemindTv = view.findViewById(R.id.tv_mywork_remind);
     }
 
-    private void initView(){
+    private void initView() {
         layoutManager = new GridLayoutManager(getActivity(), 2);
+        adapter = new MyWorkAdapter(getActivity(), new ArrayList<CommonListItem>());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
-    private void refreshListener(){
+    private void refreshListener() {
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
         refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
@@ -113,9 +115,9 @@ public class MyWorkFragment extends Fragment {
      * 获取我的作品
      */
     private void getMyWorks() {
-        new AsyncTask<Void, Void, Integer>() {
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "GetCircleList?method=getMyWorkList";
                 OkHttpUtils
                         .post()
@@ -124,9 +126,8 @@ public class MyWorkFragment extends Fragment {
                         .addParams("userId", USERID)
                         .build()
                         .execute(new MyStringCallback());
-                return 0;
             }
-        }.execute();
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -135,9 +136,10 @@ public class MyWorkFragment extends Fragment {
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
+                    Type type = new TypeToken<ArrayList<CommonListItem>>() {
+                    }.getType();
                     mList = gson.fromJson(response, type);
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         if (mList == null || mList.size() == 0) {
                             myworkRemindIv.setVisibility(View.VISIBLE);
                             myworkRemindTv.setVisibility(View.VISIBLE);
@@ -148,20 +150,19 @@ public class MyWorkFragment extends Fragment {
                         adapter = new MyWorkAdapter(getActivity(), mList);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
                         refreshLayout.finishRefresh();
                     }
                     break;
 
                 default:
-                    Toast.makeText(MainMenuActivity.mContext,"What?",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainMenuActivity.mContext, "What?", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            Toast.makeText(MainMenuActivity.mContext,"网络链接出错!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainMenuActivity.mContext, "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }
 

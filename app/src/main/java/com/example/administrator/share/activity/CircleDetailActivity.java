@@ -138,6 +138,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         favorFab.setOnClickListener(this);
         faceIv.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
+        adapter = new CircleDetailCommentsAdapter(mContext, new ArrayList<CommentListItem>());
+        commentsRv.setLayoutManager(layoutManager);
+        commentsRv.setAdapter(adapter);
         uiFlusHandler = new MyDialogHandler(mContext, "加载中...");
         observableScrollViewListener();
         refreshData();

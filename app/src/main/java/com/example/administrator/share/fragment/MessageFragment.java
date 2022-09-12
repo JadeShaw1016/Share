@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CommentActivity;
@@ -43,6 +45,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private TextView favorBadgeTv;
     private TextView fansBadgeTv;
     private Toolbar toolbar;
+    private RecyclerView msgRecyclerView;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -63,6 +67,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         commentBadgeTv = view.findViewById(R.id.tv_comment_badge);
         favorBadgeTv = view.findViewById(R.id.tv_favor_badge);
         fansBadgeTv = view.findViewById(R.id.tv_fans_badge);
+        msgRecyclerView = view.findViewById(R.id.rv_message);
     }
 
     private void initView(){
@@ -78,6 +83,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         favorBadge.setTargetView(favorBadgeTv);
         fansBadge = new BadgeView(mContext);
         fansBadge.setTargetView(fansBadgeTv);
+        msgRecyclerView.setLayoutManager(layoutManager);
     }
 
     @Override

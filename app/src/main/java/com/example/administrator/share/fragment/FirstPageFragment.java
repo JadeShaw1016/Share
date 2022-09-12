@@ -19,6 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -54,10 +55,10 @@ import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 
-public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private Context mContext;
-    private List<Map<String,String>> mList;
+    private List<Map<String, String>> mList;
     private FirstPageListAdapter0 adapter0;
     private FirstPageListAdapter2 adapter2;
     private RecyclerView recyclerView;
@@ -86,31 +87,34 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         return view;
     }
 
-    private void findViewById(View view){
+    private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         recyclerView = view.findViewById(R.id.recycler_view);
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        mList=new ArrayList<>();
+        mList = new ArrayList<>();
         appBarLayout = view.findViewById(R.id.appbar_firstpage);
         searchView = view.findViewById(R.id.sv_firstpage);
         firstPageRemindIv = view.findViewById(R.id.iv_fristpage_remind);
         firstPageRemindTv = view.findViewById(R.id.tv_fristpage_remind);
     }
 
-    private void initView(){
+    private void initView() {
         mContext = getActivity();
         toolbar.setTitle("每日精选");
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
         swipeRefresh.setOnRefreshListener(this);
         searchView.setSubmitButtonEnabled(true);
         layoutManager = new LinearLayoutManager(getActivity());
+        adapter0 = new FirstPageListAdapter0(mContext, new ArrayList<CircleList>(), false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter0);
         getSelectedCircles();
     }
 
     @Override
     public void onRefresh() {
-        switch (POSITION){
+        switch (POSITION) {
             case 0:
                 getSelectedCircles();
                 break;
@@ -124,20 +128,20 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void initData() throws ExecutionException, InterruptedException {
-        DataAsyncTask myTask  = new DataAsyncTask();
+        DataAsyncTask myTask = new DataAsyncTask();
         List<Map<String, String>> list = new ArrayList<>(myTask.executeOnExecutor(Executors.newCachedThreadPool()).get());
         mList.addAll(list);
-        adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
+        adapter2 = new FirstPageListAdapter2(getActivity(), getDatas2(0, PAGE_COUNT), getDatas2(0, PAGE_COUNT).size() > 0);
         adapter2.notifyDataSetChanged();
     }
 
-    private void recyclerViewListener(){
+    private void recyclerViewListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if(POSITION == 0 || POSITION == 1){
+                    if (POSITION == 0 || POSITION == 1) {
                         if (!adapter0.isFadeTips() && lastVisibleItem + 1 == adapter0.getItemCount()) {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
@@ -155,8 +159,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                                 }
                             }, 500);
                         }
-                    }
-                    else{
+                    } else {
                         if (!adapter2.isFadeTips() && lastVisibleItem + 1 == adapter2.getItemCount()) {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
@@ -186,7 +189,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         });
     }
 
-    private void searchListener(){
+    private void searchListener() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -202,14 +205,14 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
 
     }
 
-    private void appBarLayoutListener(){
+    private void appBarLayoutListener() {
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                if( state == State.EXPANDED ) {
+                if (state == State.EXPANDED) {
                     //展开状态
                     searchView.setVisibility(View.INVISIBLE);
-                }else if(state == State.COLLAPSED){
+                } else if (state == State.COLLAPSED) {
                     //折叠状态
                     searchView.setVisibility(View.VISIBLE);
                 }
@@ -246,7 +249,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             case R.id.ganhuofenxiang:
                 toolbar.setTitle("干货分享");
                 POSITION = 2;
-                if(mList.isEmpty()){
+                if (mList.isEmpty()) {
                     try {
                         firstPageRemindIv.setVisibility(View.INVISIBLE);
                         firstPageRemindTv.setVisibility(View.INVISIBLE);
@@ -254,11 +257,10 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     firstPageRemindIv.setVisibility(View.INVISIBLE);
                     firstPageRemindTv.setVisibility(View.INVISIBLE);
-                    adapter2=new FirstPageListAdapter2(getActivity(),getDatas2(0, PAGE_COUNT),getDatas2(0, PAGE_COUNT).size()>0);
+                    adapter2 = new FirstPageListAdapter2(getActivity(), getDatas2(0, PAGE_COUNT), getDatas2(0, PAGE_COUNT).size() > 0);
                     adapter2.notifyDataSetChanged();
                 }
                 recyclerView.setLayoutManager(layoutManager);
@@ -268,20 +270,20 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         return super.onOptionsItemSelected(item);
     }
 
-    static class DataAsyncTask extends AsyncTask<Void,Void,List<Map<String,String>>> {
+    static class DataAsyncTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 
-        private List<Map<String,String>> list;
+        private List<Map<String, String>> list;
 
-        DataAsyncTask(){
+        DataAsyncTask() {
             super();
             list = new ArrayList<>();
         }
 
         @Override
-        protected List<Map<String,String>> doInBackground(Void... params) {
-            try{
-                for(int count = 0;count<14;count+=7){
-                    String path = "http://www.bing.com/HPImageArchive.aspx?format=js&idx="+count+"&n=7";
+        protected List<Map<String, String>> doInBackground(Void... params) {
+            try {
+                for (int count = 0; count < 14; count += 7) {
+                    String path = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=" + count + "&n=7";
                     URL url = new URL(path);
                     HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
                     urlConn.setConnectTimeout(5000);
@@ -289,15 +291,16 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     if (urlConn.getResponseCode() == 200) {
                         int i;
                         String data = readStream(urlConn.getInputStream());
-                        Type type= new TypeToken<BingPic>(){}.getType();
+                        Type type = new TypeToken<BingPic>() {
+                        }.getType();
                         Gson gson = new Gson();
-                        BingPic bingPic = gson.fromJson(data,type);
-                        for(i=0;i<7;i++){
-                            Map<String,String> map;
-                            map=new HashMap<>();
-                            map.put("picUri","http://cn.bing.com"+bingPic.getImages().get(i).getUrl());
-                            map.put("text",bingPic.getImages().get(i).getCopyright());
-                            map.put("time",bingPic.getImages().get(i).getEnddate());
+                        BingPic bingPic = gson.fromJson(data, type);
+                        for (i = 0; i < 7; i++) {
+                            Map<String, String> map;
+                            map = new HashMap<>();
+                            map.put("picUri", "http://cn.bing.com" + bingPic.getImages().get(i).getUrl());
+                            map.put("text", bingPic.getImages().get(i).getCopyright());
+                            map.put("time", bingPic.getImages().get(i).getEnddate());
                             list.add(map);
                         }
                         Log.i(TAG, "请求成功");
@@ -306,75 +309,72 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     }
                     urlConn.disconnect();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return list;
         }
 
-        private String readStream(InputStream inputStream) throws IOException{
+        private String readStream(InputStream inputStream) throws IOException {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int len;
-            while((len=inputStream.read(buffer))!=-1){
-                outputStream.write(buffer,0,len);
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
                 outputStream.flush();
             }
             outputStream.close();
             inputStream.close();
-            return  outputStream.toString();
+            return outputStream.toString();
         }
     }
 
     private void getSelectedCircles() {
-        new AsyncTask<Void,Void,Integer>(){
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "Circle?method=getCircleListWithLabel";
                 OkHttpUtils
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("label","精选")
+                        .addParams("label", "精选")
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        }).start();
     }
 
     private void getMyFocusCircles() {
-        new AsyncTask<Void,Void,Integer>(){
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "Circle?method=getMyFocusCircleList";
                 OkHttpUtils
                         .post()
                         .url(url)
                         .id(1)
-                        .addParams("userId",String.valueOf(Constants.USER.getUserId()))
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        }).start();
     }
 
     private void getSearchCircles(final String text) {
-        new AsyncTask<Void,Void,Integer>(){
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "Circle?method=getSearchCircleList";
                 OkHttpUtils
                         .post()
                         .url(url)
                         .id(2)
-                        .addParams("text","%"+text+"%")
+                        .addParams("text", "%" + text + "%")
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
@@ -382,7 +382,8 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
             try {
-                Type type = new TypeToken<ArrayList<CircleList>>() {}.getType();
+                Type type = new TypeToken<ArrayList<CircleList>>() {
+                }.getType();
                 mCircleList = gson.fromJson(response, type);
             } catch (Exception e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -397,7 +398,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                         firstPageRemindIv.setVisibility(View.INVISIBLE);
                         firstPageRemindTv.setVisibility(View.INVISIBLE);
                     }
-                    adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
+                    adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(adapter0);
                     swipeRefresh.setRefreshing(false);
@@ -406,11 +407,11 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     if (mCircleList != null && mCircleList.size() > 0) {
                         firstPageRemindIv.setVisibility(View.INVISIBLE);
                         firstPageRemindTv.setVisibility(View.INVISIBLE);
-                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT),getDatas(0, PAGE_COUNT).size()>0);
+                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter0);
                         swipeRefresh.setRefreshing(false);
-                    }else{
+                    } else {
                         Toast.makeText(mContext, "暂时没有搜索到相关的内容", Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -439,14 +440,14 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private void updateRecyclerView(int fromIndex, int toIndex) {
         List<CircleList> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
-            adapter0.updateList(newDatas,true);
+            adapter0.updateList(newDatas, true);
         } else {
             adapter0.updateList(null, false);
         }
     }
 
-    private List<Map<String,String>> getDatas2(final int firstIndex, final int lastIndex) {
-        List<Map<String,String>> resList = new ArrayList<>();
+    private List<Map<String, String>> getDatas2(final int firstIndex, final int lastIndex) {
+        List<Map<String, String>> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -456,9 +457,9 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void updateRecyclerView2(int fromIndex, int toIndex) {
-        List<Map<String,String>> newDatas = getDatas2(fromIndex, toIndex);
+        List<Map<String, String>> newDatas = getDatas2(fromIndex, toIndex);
         if (newDatas.size() > 0) {
-            adapter2.updateList(newDatas,true);
+            adapter2.updateList(newDatas, true);
         } else {
             adapter2.updateList(null, false);
         }

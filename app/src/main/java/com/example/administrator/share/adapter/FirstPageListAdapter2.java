@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -71,8 +72,9 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
         this.hasMore = hasMore;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final RecyclerView.ViewHolder holder;
         if (viewType == normalType) {
             View view = mInflater.inflate(R.layout.item_firstpage_ganhuo, parent, false);
@@ -90,6 +92,8 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             ((ViewHolder)holder).btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CompleteReceiver completeReceiver = new CompleteReceiver();
+                    mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                     if(isDownloading){
                         Toast.makeText(mContext, "当前已在进行下载，请等待下载完成", Toast.LENGTH_LONG).show();
                     }else{
@@ -113,15 +117,13 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
             ((ViewHolder)holder).text.setText(mapList.get(position).get("text"));
             ((ViewHolder)holder).time.setText(mapList.get(position).get("time"));
             Uri uri = Uri.parse(mapList.get(position).get("picUri"));
             Glide.with(mContext).load(uri).into(((ViewHolder)holder).pic);
             isDownloading=false;
-            CompleteReceiver completeReceiver = new CompleteReceiver();
-            mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
             ((ViewHolder)holder).btn.setUri(uri);
             ((ViewHolder)holder).btn.setTime(mapList.get(position).get("time"));
         } else {
@@ -159,6 +161,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
                 Toast.makeText(mContext, "图片下载完成", Toast.LENGTH_SHORT).show();
                 isDownloading=false;
             }
+            context.unregisterReceiver(this);
         }
     }
 

@@ -41,12 +41,13 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class PersonalHomepageActivity extends BaseActivity implements View.OnClickListener{
+public class PersonalHomepageActivity extends BaseActivity implements View.OnClickListener {
 
+    private String TAG = "PersonalHomepageActivity";
     private Context mContext;
     private TabLayout tabLayout;
     private ViewPager pager;
-    private String [] title={"TA的作品","TA的点赞","TA的收藏"};
+    private String[] title = {"TA的作品", "TA的点赞", "TA的收藏"};
     private TextView nicknameTv;
     private TextView fansTv;
     private TextView focusTv;
@@ -80,8 +81,8 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void findViewById() {
-        pager= findViewById(R.id.page);
-        tabLayout= findViewById(R.id.tab_layout);
+        pager = findViewById(R.id.page);
+        tabLayout = findViewById(R.id.tab_layout);
         nicknameTv = findViewById(R.id.me_homepage_nickname);
         fansTv = findViewById(R.id.me_fans);
         fansLl = findViewById(R.id.ll_fans);
@@ -96,7 +97,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         mContext = this;
         fansLl.setOnClickListener(this);
         focusLl.setOnClickListener(this);
@@ -109,16 +110,16 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.title_back:
                 finish();
                 break;
             case R.id.ll_fans:
-                intent=new Intent(this, FansActivity.class);
+                intent = new Intent(this, FansActivity.class);
                 intent.putParcelableArrayListExtra("mFansList", (ArrayList<? extends Parcelable>) mFansList);
                 break;
             case R.id.ll_focus:
-                intent=new Intent(this, FocusActivity.class);
+                intent = new Intent(this, FocusActivity.class);
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
@@ -136,20 +137,19 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
                 });
                 break;
             case R.id.btn_focus:
-                if(String.valueOf(Constants.USER.getUserId()).equals(userId)){
+                if (String.valueOf(Constants.USER.getUserId()).equals(userId)) {
                     DisplayToast("不能关注自己哦！");
-                }
-                else{
+                } else {
                     addFocus();
                 }
                 break;
         }
-        if(intent != null){
+        if (intent != null) {
             startActivity(intent);
         }
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> mTitles = new ArrayList<>();
         Collections.addAll(mTitles, title);
@@ -161,16 +161,16 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
     }
 
-    private void echo(){
+    private void echo() {
         nicknameTv.setText(nickname);
-        titleTv.setText(nickname+"的主页");
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+face);
+        titleTv.setText(nickname + "的主页");
+        Uri uri = Uri.parse(Constants.BASE_URL + "Download?method=getUserFaceImage&face=" + face);
         Glide.with(mContext).load(uri).into(faceIv);
         getFans();
         getFocus();
         getPopularity();
         isFocused();
-        if(signature!= null){
+        if (signature != null) {
             signatureTv.setText(signature);
         }
     }
@@ -232,7 +232,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         }).start();
     }
 
-    private void addFocus(){
+    private void addFocus() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -242,7 +242,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
                         .url(url)
                         .id(4)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId",String.valueOf(userId))
+                        .addParams("userId", String.valueOf(userId))
                         .addParams("followTime", Utils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
@@ -250,7 +250,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         }).start();
     }
 
-    private void isFocused(){
+    private void isFocused() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -260,7 +260,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
                         .url(url)
                         .id(5)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId",String.valueOf(userId))
+                        .addParams("userId", String.valueOf(userId))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -272,7 +272,8 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         @Override
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<FollowsListItem>>() {}.getType();
+            Type type = new TypeToken<ArrayList<FollowsListItem>>() {
+            }.getType();
             switch (id) {
                 case 1:
                     mFansList = gson.fromJson(response, type);
@@ -290,9 +291,9 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
                     DisplayToast(response);
                     break;
                 case 5:
-                    if(response.equals("已关注")){
+                    if (response.equals("已关注")) {
                         focusBtn.setText("已关注");
-                    }else{
+                    } else {
                         focusBtn.setText("关注");
                     }
                     break;

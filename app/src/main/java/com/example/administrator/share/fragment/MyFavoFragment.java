@@ -53,32 +53,35 @@ public class MyFavoFragment extends Fragment {
     private final int PAGE_COUNT = 10;
     private static String USERID;
 
-    public static Fragment newInstance(String userId){
+    public static Fragment newInstance(String userId) {
         USERID = userId;
         return new MyFavoFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.fragment_normal_list,container,false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_normal_list, container, false);
         findViewById(view);
         initView();
         refreshListener();
         return view;
     }
 
-    private void findViewById(View view){
+    private void findViewById(View view) {
         mListView = view.findViewById(R.id.normal_list_lv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         favRemindIv = view.findViewById(R.id.iv_normal_list_remind_collect);
         favRemindTv = view.findViewById(R.id.tv_fav_remind);
     }
 
-    private void initView(){
+    private void initView() {
         layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new CollectionListAdapter(getActivity(), new ArrayList<CommonListItem>());
+        mListView.setLayoutManager(layoutManager);
+        mListView.setAdapter(adapter);
     }
 
-    private void refreshListener(){
+    private void refreshListener() {
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
         refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
@@ -132,10 +135,11 @@ public class MyFavoFragment extends Fragment {
             Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
-                    if(!response.equals("error")){
+                    Type type = new TypeToken<ArrayList<CommonListItem>>() {
+                    }.getType();
+                    if (!response.equals("error")) {
                         mList = gson.fromJson(response, type);
-                        if(getActivity() != null){
+                        if (getActivity() != null) {
                             if (mList == null || mList.size() == 0) {
                                 favRemindIv.setVisibility(View.VISIBLE);
                                 favRemindTv.setVisibility(View.VISIBLE);
