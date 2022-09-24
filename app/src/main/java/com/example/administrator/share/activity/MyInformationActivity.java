@@ -265,7 +265,7 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     map = gson.fromJson(response, new TypeToken<Map<String, String>>() {
                     }.getType());
-                    // 存储用户
+                    // 更新信息
                     Constants.USER.setPassword(map.get("password"));
                     Constants.USER.setSignature(map.get("signature"));
                     Constants.USER.setFace(imageFile.getName());

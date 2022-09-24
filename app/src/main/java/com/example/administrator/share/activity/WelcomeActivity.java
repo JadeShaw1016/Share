@@ -88,6 +88,7 @@ public class WelcomeActivity extends BaseActivity {
                                 } else {
                                     user = gson.fromJson(response, User.class);
                                     // 存储用户
+                                    Constants.USER = user;
                                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                                     if (result) {
                                         Log.d("WelcomeActivity", "登录成功");

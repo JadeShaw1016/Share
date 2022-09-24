@@ -233,6 +233,7 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
                 case 2:
                     User user = gson.fromJson(response, User.class);
                     // 存储用户
+                    Constants.USER = user;
                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                     if (result) {
                         Log.d("LoginActivity","登录成功");

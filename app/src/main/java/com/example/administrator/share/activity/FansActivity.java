@@ -118,7 +118,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         } else {
             fansRemindIv.setVisibility(View.INVISIBLE);
             fansRemindTv.setVisibility(View.INVISIBLE);
-            // 存储用户
             adapter = new FollowsListAdapter(mContext, mFansList,1);
             mListView.setLayoutManager(layoutManager);
             mListView.setAdapter(adapter);

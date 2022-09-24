@@ -145,7 +145,6 @@ public class MyCollectionFragment extends Fragment {
                             collectRemindIv.setVisibility(View.INVISIBLE);
                             collectRemindTv.setVisibility(View.INVISIBLE);
                         }
-                        // 存储用户
                         adapter = new CollectionListAdapter(getActivity(), mList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);

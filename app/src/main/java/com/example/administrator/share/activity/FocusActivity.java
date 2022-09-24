@@ -118,7 +118,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         } else {
             focusRemindIv.setVisibility(View.INVISIBLE);
             focusRemindTv.setVisibility(View.INVISIBLE);
-            //存储用户
             adapter = new FollowsListAdapter(mContext, mFocusList,0);
             mListView.setAdapter(adapter);
             mListView.setLayoutManager(layoutManager);

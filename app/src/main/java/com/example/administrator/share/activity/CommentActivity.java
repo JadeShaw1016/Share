@@ -197,7 +197,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                             commentRemindIv.setVisibility(View.INVISIBLE);
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
-                        // 存储用户
                         adapter = new CommentListAdapter(mContext, getDatas(0, PAGE_COUNT));
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);

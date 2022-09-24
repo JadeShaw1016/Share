@@ -142,7 +142,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                                 .show();
                         return;
                     } else {
-                        // 存储用户
+                        // 更新用户密码
                         Constants.USER.setPassword(response);
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, Constants.USER);
                         if (result) {

@@ -147,7 +147,6 @@ public class MyFavoFragment extends Fragment {
                                 favRemindIv.setVisibility(View.INVISIBLE);
                                 favRemindTv.setVisibility(View.INVISIBLE);
                             }
-                            // 存储用户
                             adapter = new CollectionListAdapter(getActivity(), mList);
                             mListView.setLayoutManager(layoutManager);
                             mListView.setAdapter(adapter);

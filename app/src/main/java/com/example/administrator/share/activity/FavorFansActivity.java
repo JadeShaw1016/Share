@@ -189,7 +189,6 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                             msgRemindIv.setVisibility(View.INVISIBLE);
                             msgRemindTv.setVisibility(View.INVISIBLE);
                         }
-                        // 存储用户
                         favorListAdapter = new FavorListAdapter(mContext, mNewsList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(favorListAdapter);
@@ -207,7 +206,6 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
                             msgRemindIv.setVisibility(View.INVISIBLE);
                             fansRemindTv.setVisibility(View.INVISIBLE);
                         }
-                        // 存储用户
                         fansListAdapter = new NewFansListAdapter(mContext, mFansList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(fansListAdapter);

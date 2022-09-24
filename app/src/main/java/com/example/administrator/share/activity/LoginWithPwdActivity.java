@@ -156,6 +156,7 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
                     }else{
                         user = gson.fromJson(response, User.class);
                         // 存储用户
+                        Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
                             if(flag == 0){
