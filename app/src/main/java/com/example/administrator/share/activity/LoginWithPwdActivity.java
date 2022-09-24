@@ -23,8 +23,6 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.util.Map;
-
 import okhttp3.Call;
 
 
@@ -118,10 +116,10 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
      * 回显
      */
     private void echo() {
-        Map<String, String> map = SharedPreferencesUtils.getUserInfo(mContext);//获取用户名密码
-        if (map != null) {
-            String username = map.get("username");
-            String password = map.get("password");
+        User user = SharedPreferencesUtils.getUserInfo(mContext);//获取用户名密码
+        if (user != null) {
+            String username = user.getUsername();
+            String password = user.getPassword();
             et_username.setText(username);
             et_password.setText(password);
         }
@@ -132,9 +130,9 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "User?method=loginWithPwd";
+                String url = Constants.BASE_URL + "user/loginWithPwd";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("username", et_username.getText().toString().trim())
@@ -158,11 +156,10 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
                     }else{
                         user = gson.fromJson(response, User.class);
                         // 存储用户
-                        Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
                             if(flag == 0){
-                                Log.d("LoginActivity","登录成功");
+                                Log.d("LoginWithPwdActivity","登录成功");
                             }
                         } else {
                             DisplayToast("用户存储失败");
@@ -179,7 +176,7 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
         }
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            DisplayToast("网络链接出错！");
+            DisplayToast("网络链接出错！"+arg1);
         }
     }
 

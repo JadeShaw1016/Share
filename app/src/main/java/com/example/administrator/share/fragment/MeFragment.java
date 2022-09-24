@@ -147,12 +147,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
 
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                String url = Constants.BASE_URL + "download/getImage";
                 OkHttpUtils
-                        .get()//
-                        .url(url)//
+                        .get()
+                        .url(url)
                         .addParams("face", Constants.USER.getFace())
-                        .build()//
+                        .build()
                         .execute(new BitmapCallback() {
                             @Override
                             public void onError(Call call, Exception e, int i) {

@@ -81,7 +81,7 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
 
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+imageName);
         Glide.with(mContext).load(uri).into(holder.faceIv);
     }
 

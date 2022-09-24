@@ -32,7 +32,21 @@ public class SharedPreferencesUtils {
             editor.putString("nickname", user.getNickname());
             editor.putString("password", user.getPassword());
             editor.putString("sex", user.getSex());
+            editor.putString("signature", user.getSignature());
             //4.提交Editor对象
+            editor.apply();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean updateUserInfo(Context context, String key, String value) {
+        try {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+            Editor editor = sharedPreferences.edit();
+            editor.putString(key, value);
             editor.apply();
             return true;
         } catch (Exception e) {
@@ -47,8 +61,8 @@ public class SharedPreferencesUtils {
      * @param context
      * @return
      */
-    public static Map<String, String> getUserInfo(Context context) {
-        HashMap<String, String> hashMap;
+    public static User getUserInfo(Context context) {
+        User user = new User();
         try {
             //1.通过Context对象创建一个SharedPreference对象
             SharedPreferences sharedPreferences = context.getSharedPreferences("userinfo", Context.MODE_PRIVATE);
@@ -59,20 +73,21 @@ public class SharedPreferencesUtils {
             String username = sharedPreferences.getString("username", "");
             String nickname = sharedPreferences.getString("nickname","");
             String sex = sharedPreferences.getString("sex", "男");
+            String face = sharedPreferences.getString("face", "");
+            String signature = sharedPreferences.getString("signature", "");
 
-            hashMap = new HashMap<>();
-            hashMap.put("userId", String.valueOf(userId));
-            hashMap.put("password", password);
-            hashMap.put("username", username);
-            hashMap.put("nickname", nickname);
-            hashMap.put("sex", sex);
-            return hashMap;
-
+            user.setUserId(userId);
+            user.setPassword(password);
+            user.setUsername(username);
+            user.setNickname(nickname);
+            user.setSex(sex);
+            user.setFace(face);
+            user.setSignature(signature);
+            return user;
         } catch (Exception e) {
             e.printStackTrace();
-            hashMap = null;
         }
-        return hashMap;
+        return null;
     }
 
     /**

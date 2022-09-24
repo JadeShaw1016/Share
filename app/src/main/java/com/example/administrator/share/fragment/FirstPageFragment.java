@@ -423,14 +423,15 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
+            swipeRefresh.setRefreshing(false);
+            Toast.makeText(mContext, "FirstPageFragment网络链接出错！"+arg1, Toast.LENGTH_SHORT).show();
         }
     }
 
     private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {
         List<CircleList> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
-            if (i < mCircleList.size()) {
+            if (mCircleList != null && i < mCircleList.size()) {
                 resList.add(mCircleList.get(i));
             }
         }

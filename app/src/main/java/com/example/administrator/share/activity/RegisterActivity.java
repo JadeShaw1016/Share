@@ -200,7 +200,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         }
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         // 服务端验证
-        String url = Constants.BASE_URL + "User?method=register";
+        String url = Constants.BASE_URL + "user/register";
         OkHttpUtils
                 .post()
                 .addFile("face", imageFile.getName(), imageFile)

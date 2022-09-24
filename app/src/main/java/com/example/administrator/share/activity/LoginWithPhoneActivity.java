@@ -189,9 +189,9 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
 
     private void isExistUsername() {
         LoginWithVercodeActivity.uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "User?method=isExistUsername";
+        String url = Constants.BASE_URL + "user/isExistUsername";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
                 .id(1)
                 .addParams("username", phoneNum)
@@ -203,9 +203,9 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "User?method=loginWithPhone";
+                String url = Constants.BASE_URL + "user/loginWithPhone";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
                         .addParams("username", phoneNum)
@@ -233,7 +233,6 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
                 case 2:
                     User user = gson.fromJson(response, User.class);
                     // 存储用户
-                    Constants.USER = user;
                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                     if (result) {
                         Log.d("LoginActivity","登录成功");

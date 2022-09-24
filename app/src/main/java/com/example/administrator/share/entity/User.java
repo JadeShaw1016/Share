@@ -59,6 +59,10 @@ public class User {
         return sex;
     }
 
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public String getSignature() {
         return signature;
     }

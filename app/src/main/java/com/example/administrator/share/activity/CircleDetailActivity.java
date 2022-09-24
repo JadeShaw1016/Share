@@ -548,14 +548,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void getNewsImage(final String imageName) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
         Glide.with(mContext).load(uri).into(imageIV);
         Glide.with(mContext).load(uri).into(dialogIv);
         dialog.setContentView(dialogIv);
     }
 
     private void getFaceImage(final String face) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+face);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+face);
         Glide.with(mContext).load(uri).into(faceIv);
     }
 

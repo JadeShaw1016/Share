@@ -68,7 +68,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         CircleList circleList = mList.get(position);
         holder.topicTv.setText(circleList.getTopic());
         final String imageName = circleList.getImage();
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
         Glide.with(mContext).load(uri).into((holder).bgIv);
     }
 

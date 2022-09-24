@@ -94,7 +94,7 @@ public class FirstPageListAdapter0 extends RecyclerView.Adapter<RecyclerView.Vie
             final String imageName = circleList.getImage();
             ((ViewHolder)holder).titleTv.setText(circleList.getTitle());
             ((ViewHolder)holder).nicknameTv.setText(circleList.geNickName());
-            Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+            Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
             Glide.with(mContext).load(uri).into(((ViewHolder)holder).bgIv);
         } else {
             ((FootHolder) holder).tips.setVisibility(View.VISIBLE);

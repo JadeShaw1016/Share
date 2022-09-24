@@ -32,6 +32,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         TextView nicknameTv;
         ImageView imageView;
         RelativeLayout mycollectionLl;
+
         public ViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.item_normal_title);
@@ -42,7 +43,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     }
 
     public CollectionListAdapter(Context mContext, List<CommonListItem> mList) {
-        this.mContext=mContext;
+        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -72,8 +73,8 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CommonListItem detail = mList.get(position);
         holder.title.setText(detail.getTitle());
-        holder.nicknameTv.setText("作者："+detail.getNickname());
-        getImage(detail.getImage(),holder);
+        holder.nicknameTv.setText("作者：" + detail.getNickname());
+        getImage(detail.getImage(), holder);
     }
 
     @Override
@@ -82,8 +83,8 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     }
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
-        Glide.with(mContext).load(uri).into(((ViewHolder)holder).imageView);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
+        Glide.with(mContext).load(uri).into(holder.imageView);
     }
 
     public void updateList(List<CommonListItem> newDatas) {

@@ -151,7 +151,7 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
     }
 
     private void getFaceImage(final String face, final ViewHolder viewHolder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+face);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+face);
         Glide.with(mContext).load(uri).into(viewHolder.faceIv);
     }
 

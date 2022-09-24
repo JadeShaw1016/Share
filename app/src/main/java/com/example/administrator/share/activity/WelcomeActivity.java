@@ -1,7 +1,6 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,9 +13,6 @@ import com.example.administrator.share.util.SharedPreferencesUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.Call;
 
@@ -46,14 +42,13 @@ public class WelcomeActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Map<String, String> map = SharedPreferencesUtils.getUserInfo(mContext);//获取用户名密码
-                if(map.get("username") == null || Objects.equals(map.get("username"), "")){
+                User user = SharedPreferencesUtils.getUserInfo(mContext);//获取用户名密码
+                if (user == null) {
                     openActivity(LoginActivity.class);
                     Log.d("WelcomeActivity", "用户存储为空");
                     finish();
-                }
-                else{
-                    checkUser(map);
+                } else {
+                    checkUser(user);
                 }
             }
         }, time);
@@ -68,15 +63,15 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 回显
      */
-    private void checkUser(Map<String, String> map) {
-        final String username = map.get("username");
-        final String password = map.get("password");
-        new AsyncTask<Void, Void, Integer>() {
+    private void checkUser(User user) {
+        final String username = user.getUsername();
+        final String password = user.getPassword();
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "User?method=loginWithPwd";
+            public void run() {
+                String url = Constants.BASE_URL + "user/loginWithPwd";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("username", username)
@@ -87,26 +82,29 @@ public class WelcomeActivity extends BaseActivity {
                             public void onResponse(String response, int id) {
                                 Gson gson = new Gson();
                                 User user;
-                                if(response.equals("error")){
+                                if (response.equals("error")) {
                                     openActivity(LoginActivity.class);
                                     Log.d("WelcomeActivity", "用户返回值错误");
-                                }else{
+                                } else {
                                     user = gson.fromJson(response, User.class);
                                     // 存储用户
-                                    Constants.USER = user;
+                                    boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
+                                    if (result) {
+                                        Log.d("WelcomeActivity", "登录成功");
+                                    } else {
+                                        DisplayToast("用户存储失败");
+                                    }
                                     openActivity(MainMenuActivity.class);
-                                    Log.d("WelcomeActivity", "登录成功");
                                 }
                                 finish();
                             }
 
                             @Override
                             public void onError(Call call, Exception e, int id) {
-                                DisplayToast("网络链接出错！");
+                                DisplayToast("网络链接出错！" + e);
                             }
                         });
-                return null;
             }
-        }.execute();
+        }).start();
     }
 }

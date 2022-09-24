@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 
-public class BeforeDateCheckActivity extends BaseActivity{
+public class BeforeDateCheckActivity extends BaseActivity {
 
     private TextView recorddaysTv;
 
@@ -46,7 +46,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
 
 
     private void getCheckedList() {
-        new AsyncTask<Void,Void,Integer>(){
+        new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
@@ -63,7 +63,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
     }
 
     private void getRecords() {
-        new AsyncTask<Void, Void, Integer>(){
+        new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
@@ -86,7 +86,6 @@ public class BeforeDateCheckActivity extends BaseActivity{
                 case 1:
                     if (response.contains("error")) {
                         DisplayToast("暂时无法获取数据");
-                        finish();
                     } else {
                         if (response.length() == 0) {
                             Constants.DAILYCHECKEDLIST = new ArrayList<>();
@@ -105,17 +104,18 @@ public class BeforeDateCheckActivity extends BaseActivity{
                             }
                         }
                         openActivity(DateCheckActivity.class);
-                        finish();
                     }
+                    finish();
                     break;
                 case 2:
-                    recorddaysTv.setText("已打卡"+response+"天");
+                    recorddaysTv.setText("已打卡" + response + "天");
                     break;
             }
         }
 
         /**
          * 去除头部的0
+         *
          * @param str
          * @return
          */
@@ -129,8 +129,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-            DisplayToast("网络链接出错！");
+            DisplayToast("BeforeDateCheckActivity网络链接出错！" + arg1);
         }
     }
 }

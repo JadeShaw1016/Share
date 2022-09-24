@@ -76,7 +76,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
     }
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
         Glide.with(mContext).load(uri).into(holder.myworkImage);
     }
 

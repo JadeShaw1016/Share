@@ -164,7 +164,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
     private void echo() {
         nicknameTv.setText(nickname);
         titleTv.setText(nickname + "的主页");
-        Uri uri = Uri.parse(Constants.BASE_URL + "Download?method=getUserFaceImage&face=" + face);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?face=" + face);
         Glide.with(mContext).load(uri).into(faceIv);
         getFans();
         getFocus();

@@ -123,9 +123,9 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+detail.getFace());
+        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+detail.getFace());
         Glide.with(mContext).load(uri).into(((ViewHolder)holder).faceIv);
-        uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+detail.getImage());
+        uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+detail.getImage());
         Glide.with(mContext).load(uri).into(((ViewHolder)holder).imageIv);
         if(detail.getIsVisited()==0){
             holder.badge = new BadgeView(mContext);

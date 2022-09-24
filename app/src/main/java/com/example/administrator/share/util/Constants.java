@@ -3,6 +3,7 @@ package com.example.administrator.share.util;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.example.administrator.share.ShareApplication;
 import com.example.administrator.share.entity.User;
 
 import java.io.File;
@@ -14,7 +15,7 @@ public class Constants {
 	 */
 
 	// 用户对象
-	public static User USER = new User();
+	public static User USER = SharedPreferencesUtils.getUserInfo(ShareApplication.getContextObject());
 
 	//用户头像
 	public static Bitmap FACEIMAGE;
@@ -26,7 +27,7 @@ public class Constants {
 
 	// 服务器地址
 //	public static String BASE_URL = "http://81.70.145.250:8080/ShareServer/";
-	public static String BASE_URL = "http://192.168.1.11:8081/ShareServer/";
+	public static String BASE_URL = "http://192.168.1.3:8080/";
 
 	// 保存参数文件夹名称
 	public static final String SHARED_PREFERENCE_NAME = "share_prefs";
