@@ -164,6 +164,10 @@ public class MyFavoFragment extends Fragment {
 
         @Override
         public void onError(Call call, Exception e, int id) {
+            favRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            favRemindTv.setText(R.string.no_network_remind);
+            favRemindIv.setVisibility(View.VISIBLE);
+            favRemindTv.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }

@@ -424,6 +424,10 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             swipeRefresh.setRefreshing(false);
+            firstPageRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            firstPageRemindTv.setText(R.string.no_network_remind);
+            firstPageRemindIv.setVisibility(View.VISIBLE);
+            firstPageRemindTv.setVisibility(View.VISIBLE);
             Toast.makeText(mContext, "FirstPageFragment网络链接出错！"+arg1, Toast.LENGTH_SHORT).show();
         }
     }

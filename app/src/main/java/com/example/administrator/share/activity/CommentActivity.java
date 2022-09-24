@@ -232,6 +232,10 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            commentRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            msgRemindTv.setText(R.string.no_network_remind);
+            commentRemindIv.setVisibility(View.VISIBLE);
+            msgRemindTv.setVisibility(View.VISIBLE);
             DisplayToast("网络链接出错!");
         }
     }

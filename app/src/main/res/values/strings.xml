@@ -14,6 +14,7 @@
     <string name="signal_remind">摊手？好像收不到信号了呢\n下拉刷新吧！</string>
     <string name="focus_remind">还没有关注哦，快去圈子关注你喜欢的人吧！</string>
     <string name="fans_remind">还没有粉丝哦，快去发布一个圈子吧！</string>
+    <string name="no_network_remind">找不到网络啦！</string>
     <string name="system_remind">还没有系统通知哦！</string>
 
     <!--个人信息-->

@@ -34,6 +34,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/iv_mywork_remind"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
                 android:visibility="gone"/>
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

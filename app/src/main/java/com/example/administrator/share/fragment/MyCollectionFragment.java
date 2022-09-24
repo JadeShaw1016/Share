@@ -160,6 +160,10 @@ public class MyCollectionFragment extends Fragment {
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            collectRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            collectRemindTv.setText(R.string.no_network_remind);
+            collectRemindIv.setVisibility(View.VISIBLE);
+            collectRemindTv.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }

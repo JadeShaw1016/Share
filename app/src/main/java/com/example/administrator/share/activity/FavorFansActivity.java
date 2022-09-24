@@ -220,6 +220,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            msgRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            fansRemindTv.setText(R.string.no_network_remind);
+            msgRemindIv.setVisibility(View.VISIBLE);
+            fansRemindTv.setVisibility(View.VISIBLE);
             DisplayToast("网络链接出错!");
         }
     }

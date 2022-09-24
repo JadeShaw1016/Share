@@ -162,6 +162,10 @@ public class MyWorkFragment extends Fragment {
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            myworkRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            myworkRemindTv.setText(R.string.no_network_remind);
+            myworkRemindIv.setVisibility(View.VISIBLE);
+            myworkRemindTv.setVisibility(View.VISIBLE);
             Toast.makeText(MainMenuActivity.mContext, "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }

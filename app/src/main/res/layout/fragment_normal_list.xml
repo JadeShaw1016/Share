@@ -55,6 +55,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:layout_below="@+id/iv_normal_list_remind_collect"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_msg_remind"
@@ -65,6 +66,7 @@
                     android:layout_centerVertical="true"
                     android:layout_below="@+id/iv_normal_list_remind"
                     android:gravity="center"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_fav_remind"
@@ -75,6 +77,7 @@
                     android:layout_centerVertical="true"
                     android:layout_below="@+id/iv_normal_list_remind_collect"
                     android:gravity="center"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_new_fans_remind"
@@ -85,6 +88,7 @@
                     android:layout_centerVertical="true"
                     android:layout_below="@+id/iv_normal_list_remind"
                     android:gravity="center"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tv_fans_remind"
@@ -95,6 +99,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:gravity="center"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"/>
             </RelativeLayout>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
