@@ -236,14 +236,12 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                 toolbar.setTitle("每日精选");
                 POSITION = 0;
                 getSelectedCircles();
-                recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter0);
                 break;
             case R.id.myfocus:
                 toolbar.setTitle("我的关注");
                 POSITION = 1;
                 getMyFocusCircles();
-                recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter0);
                 break;
             case R.id.ganhuofenxiang:
@@ -263,7 +261,6 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     adapter2 = new FirstPageListAdapter2(getActivity(), getDatas2(0, PAGE_COUNT), getDatas2(0, PAGE_COUNT).size() > 0);
                     adapter2.notifyDataSetChanged();
                 }
-                recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter2);
                 break;
         }
@@ -333,9 +330,9 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Circle?method=getCircleListWithLabel";
+                String url = Constants.BASE_URL + "circle/getCircleListWithLabel";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("label", "精选")
@@ -349,9 +346,9 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Circle?method=getMyFocusCircleList";
+                String url = Constants.BASE_URL + "circle/getMyFocusCircleList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -365,12 +362,12 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Circle?method=getSearchCircleList";
+                String url = Constants.BASE_URL + "circle/getSearchCircleList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
-                        .addParams("text", "%" + text + "%")
+                        .addParams("searchContent", "%" + text + "%")
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -380,37 +377,31 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
-            try {
-                Type type = new TypeToken<ArrayList<CircleList>>() {
-                }.getType();
-                mCircleList = gson.fromJson(response, type);
-            } catch (Exception e) {
-                Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+            if (Constants.ERROR.equals(response)) {
                 mCircleList = null;
+            } else {
+                try {
+                    mCircleList = new Gson().fromJson(response, new TypeToken<ArrayList<CircleList>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
             switch (id) {
                 case 1:
                     if (mCircleList == null || mCircleList.size() == 0) {
+                        adapter0 = new FirstPageListAdapter0(mContext, new ArrayList<CircleList>(), false);
+                        recyclerView.setAdapter(adapter0);
                         firstPageRemindIv.setVisibility(View.VISIBLE);
                         firstPageRemindTv.setVisibility(View.VISIBLE);
+                        swipeRefresh.setRefreshing(false);
                     } else {
-                        firstPageRemindIv.setVisibility(View.INVISIBLE);
-                        firstPageRemindTv.setVisibility(View.INVISIBLE);
+                        setAdapter();
                     }
-                    adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(adapter0);
-                    swipeRefresh.setRefreshing(false);
                     break;
                 case 2:
                     if (mCircleList != null && mCircleList.size() > 0) {
-                        firstPageRemindIv.setVisibility(View.INVISIBLE);
-                        firstPageRemindTv.setVisibility(View.INVISIBLE);
-                        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter0);
-                        swipeRefresh.setRefreshing(false);
+                        setAdapter();
                     } else {
                         Toast.makeText(mContext, "暂时没有搜索到相关的内容", Toast.LENGTH_SHORT).show();
                     }
@@ -428,15 +419,25 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             firstPageRemindTv.setText(R.string.no_network_remind);
             firstPageRemindIv.setVisibility(View.VISIBLE);
             firstPageRemindTv.setVisibility(View.VISIBLE);
-            Toast.makeText(mContext, "FirstPageFragment网络链接出错！"+arg1, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "FirstPageFragment网络链接出错！" + arg1, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setAdapter() {
+        firstPageRemindIv.setVisibility(View.INVISIBLE);
+        firstPageRemindTv.setVisibility(View.INVISIBLE);
+        adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
+        recyclerView.setAdapter(adapter0);
+        swipeRefresh.setRefreshing(false);
     }
 
     private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {
         List<CircleList> resList = new ArrayList<>();
-        for (int i = firstIndex; i < lastIndex; i++) {
-            if (mCircleList != null && i < mCircleList.size()) {
-                resList.add(mCircleList.get(i));
+        if (mCircleList != null && !mCircleList.isEmpty()) {
+            for (int i = firstIndex; i < lastIndex; i++) {
+                if (i < mCircleList.size()) {
+                    resList.add(mCircleList.get(i));
+                }
             }
         }
         return resList;

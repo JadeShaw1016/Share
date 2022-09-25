@@ -69,7 +69,7 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
-        userId = String.valueOf(getIntent().getIntExtra("userId",0));
+        userId = String.valueOf(getIntent().getIntExtra("userId", 0));
         nickname = getIntent().getStringExtra("nickname");
         face = getIntent().getStringExtra("face");
         signature = getIntent().getStringExtra("signature");
@@ -162,8 +162,11 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
     }
 
     private void echo() {
+        if (nickname == null) {
+            nickname = "Share";
+        }
         nicknameTv.setText(nickname);
-        titleTv.setText(nickname + "的主页");
+        titleTv.setText(String.format(getString(R.string.user_name), nickname));
         Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?face=" + face);
         Glide.with(mContext).load(uri).into(faceIv);
         getFans();

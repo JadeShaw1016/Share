@@ -64,7 +64,7 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
         backIv.setOnClickListener(this);
         echo();
         uiFlusHandler = new MyDialogHandler(mContext, "登录中...");
-        if(!TextUtils.isEmpty(et_username.getText().toString())){
+        if (!TextUtils.isEmpty(et_username.getText().toString())) {
             flag = 1;
             login();
         }
@@ -150,17 +150,17 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
             switch (id) {
                 case 1:
                     User user;
-                    if(response.equals("error")){
+                    if (Constants.ERROR.equals(response)) {
                         DisplayToast("用户名或者密码错误");
                         return;
-                    }else{
+                    } else {
                         user = gson.fromJson(response, User.class);
                         // 存储用户
                         Constants.USER = user;
                         boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                         if (result) {
-                            if(flag == 0){
-                                Log.d("LoginWithPwdActivity","登录成功");
+                            if (flag == 0) {
+                                Log.d("LoginWithPwdActivity", "登录成功");
                             }
                         } else {
                             DisplayToast("用户存储失败");
@@ -175,9 +175,10 @@ public class LoginWithPwdActivity extends BaseActivity implements View.OnClickLi
                     break;
             }
         }
+
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            DisplayToast("网络链接出错！"+arg1);
+            DisplayToast("网络链接出错！" + arg1);
         }
     }
 

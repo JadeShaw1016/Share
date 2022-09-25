@@ -25,7 +25,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 
 
-public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
+public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener {
 
     /**
      * 退出时间
@@ -82,16 +82,15 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void OnCenterItemClick(BottomDialog dialog, View view) {
         Intent intent;
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.dialog_release:
-                intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
-                intent.putExtra("index",0);
+                intent = new Intent(MainMenuActivity.this, AddnewsActivity.class);
+                intent.putExtra("index", 0);
                 startActivity(intent);
                 break;
             case R.id.dialog_signin:
-                intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
-                intent.putExtra("index",1);
+                intent = new Intent(MainMenuActivity.this, AddnewsActivity.class);
+                intent.putExtra("index", 1);
                 startActivity(intent);
                 break;
             default:
@@ -121,29 +120,30 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
      * 统计消息数量
      */
     private void findMessageStatus() {
-        new AsyncTask<Void,Void,Integer>(){
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
             protected Integer doInBackground(Void... voids) {
                 String url = Constants.BASE_URL + "Message?method=findMessageStatus";
                 String authorname = Constants.USER.getNickname();
                 String authorId = String.valueOf(Constants.USER.getUserId());
-                if(authorname != null && authorname != null){
+                if (authorname != null && authorname != null) {
                     OkHttpUtils
                             .post()
                             .url(url)
-                            .addParams("authorName",authorname)
-                            .addParams("authorId",authorId)
+                            .addParams("authorName", authorname)
+                            .addParams("authorId", authorId)
                             .build()
-                            .execute(new StringCallback(){
+                            .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
                                 }
+
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    if(response.equals("error")){
+                                    if (Constants.ERROR.equals(response)) {
                                         mNavigateTabBar.disPlayBadgeCount(2, 0);
-                                    }else{
+                                    } else {
                                         mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
                                     }
                                 }

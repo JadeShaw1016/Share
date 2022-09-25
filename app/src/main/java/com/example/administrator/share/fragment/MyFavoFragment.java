@@ -137,7 +137,7 @@ public class MyFavoFragment extends Fragment {
                 case 1:
                     Type type = new TypeToken<ArrayList<CommonListItem>>() {
                     }.getType();
-                    if (!response.equals("error")) {
+                    if (!Constants.ERROR.equals(response)) {
                         mList = gson.fromJson(response, type);
                         if (getActivity() != null) {
                             if (mList == null || mList.size() == 0) {

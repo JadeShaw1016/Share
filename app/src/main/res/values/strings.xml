@@ -16,6 +16,8 @@
     <string name="fans_remind">还没有粉丝哦，快去发布一个圈子吧！</string>
     <string name="no_network_remind">找不到网络啦！</string>
     <string name="system_remind">还没有系统通知哦！</string>
+    <string name="user_name">%1$s的主页</string>
+    <string name="bottom_remind">已经到底啦</string>
 
     <!--个人信息-->
     <string name="face">头像</string>

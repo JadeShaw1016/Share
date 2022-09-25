@@ -60,14 +60,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/default_remind_mywork" />
+                android:src="@drawable/default_remind_mywork"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_circle_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_below="@id/iv_circle_remind"
-                android:text="还没有圈子哦，可以自己先发布一个！" />
+                android:text="还没有圈子哦，可以自己先发布一个！"
+                android:visibility="gone"/>
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

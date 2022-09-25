@@ -31,7 +31,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
 
-public class MessageFragment extends Fragment implements View.OnClickListener{
+public class MessageFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
     private LinearLayout commentLl;
@@ -49,17 +49,17 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private LinearLayoutManager layoutManager;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.fragment_message,container,false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
         setHasOptionsMenu(true);
         findViewById(view);
         initView();
         return view;
     }
 
-    private void findViewById(View view){
+    private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         commentLl = view.findViewById(R.id.ll_message_comment);
         favorLl = view.findViewById(R.id.ll_message_favor);
         fansLl = view.findViewById(R.id.ll_message_fans);
@@ -70,7 +70,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         msgRecyclerView = view.findViewById(R.id.rv_message);
     }
 
-    private void initView(){
+    private void initView() {
         mContext = getActivity();
         toolbar.setTitle("通知");
         commentLl.setOnClickListener(this);
@@ -105,17 +105,17 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.ll_message_comment:
                 intent = new Intent(getActivity(), CommentActivity.class);
                 break;
             case R.id.ll_message_favor:
                 intent = new Intent(getActivity(), FavorFansActivity.class);
-                intent.putExtra("index",0);
+                intent.putExtra("index", 0);
                 break;
             case R.id.ll_message_fans:
                 intent = new Intent(getActivity(), FavorFansActivity.class);
-                intent.putExtra("index",1);
+                intent.putExtra("index", 1);
                 updateNewFansStatus();
                 break;
             case R.id.ll_message_system:
@@ -130,13 +130,14 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("authorName",Constants.USER.getNickname())
-                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
+                .addParams("authorName", Constants.USER.getNickname())
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback(){
+                .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         commentBadge.setBadgeCount(Integer.parseInt(response));
@@ -149,15 +150,16 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("authorId",String.valueOf(Constants.USER.getUserId()))
+                .addParams("authorId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback(){
+                .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
-                        if(!response.equals("error")){
+                        if (!Constants.ERROR.equals(response)) {
                             favorBadge.setBadgeCount(Integer.parseInt(response));
                         }
                     }
@@ -169,12 +171,13 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback(){
+                .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         fansBadge.setBadgeCount(Integer.parseInt(response));
@@ -182,17 +185,18 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 });
     }
 
-    private void updateNewFansStatus(){
+    private void updateNewFansStatus() {
         String url = Constants.BASE_URL + "Message?method=updateNewFansStatus";
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("userId",String.valueOf(Constants.USER.getUserId()))
+                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback(){
+                .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                     }

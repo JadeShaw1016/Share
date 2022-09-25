@@ -172,10 +172,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 addNewComment();
                 break;
             case R.id.btn_focus:
-                if(be_focused_personId == Constants.USER.getUserId()){
+                if (be_focused_personId == Constants.USER.getUserId()) {
                     DisplayToast("不能关注自己哦！");
-                }
-                else{
+                } else {
                     addFocus();
                 }
                 break;
@@ -183,17 +182,20 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 dialog.show();
                 break;
             case R.id.iv_circle_detail_face:
-                Intent intent = new Intent(this,PersonalHomepageActivity.class);
-                intent.putExtra("userId",circleListItem.getUserId());
-                intent.putExtra("nickname",circleListItem.getNickname());
-                intent.putExtra("face",circleListItem.getFace());
-                intent.putExtra("signature",circleListItem.getSignature());
+                Intent intent = new Intent(this, PersonalHomepageActivity.class);
+                if (circleListItem == null) {
+                    circleListItem = new CircleListItem();
+                }
+                intent.putExtra("userId", circleListItem.getUserId());
+                intent.putExtra("nickname", circleListItem.getNickname());
+                intent.putExtra("face", circleListItem.getFace());
+                intent.putExtra("signature", circleListItem.getSignature());
                 startActivity(intent);
                 break;
         }
     }
 
-    private void observableScrollViewListener(){
+    private void observableScrollViewListener() {
         observableScrollView.setOnScrollStatusListener(new ObservableScrollView.OnScrollStatusListener() {
             @Override
             public void onScrollStop() {
@@ -206,13 +208,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             public void onScrolling() {
                 commentPane.setVisibility(View.GONE);
                 commentFab.hide();
-                collectFab.show();
-                favorFab.show();
+                collectFab.hide();
+                favorFab.hide();
             }
         });
     }
 
-    private void dialogListener(){
+    private void dialogListener() {
         //大图的点击事件（点击让他消失）
         dialogIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,9 +241,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showCommemtPane() {
-        commentFab.show();
-        collectFab.show();
-        favorFab.show();
+        commentFab.hide();
+        collectFab.hide();
+        favorFab.hide();
         addCommentET.setHint(R.string.new_detail_add_comment_hint);
         commentPane.setVisibility(View.VISIBLE);
         replyUsername = "";
@@ -253,9 +255,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Circle?method=getCircleDetail";
+                String url = Constants.BASE_URL + "circle/getCircleDetail";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("newsId", String.valueOf(newsId))
@@ -294,7 +296,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(3)
                 .addParams("newsId", String.valueOf(newsId))
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .addParams("authorName",nicknameTV.getText().toString())
+                .addParams("authorName", nicknameTV.getText().toString())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
                 .addParams("commentTime", Utils.getCurrentDatetime())
@@ -302,7 +304,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .execute(new MyStringCallback());
     }
 
-    private void isCollected(){
+    private void isCollected() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -319,7 +321,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }).start();
     }
 
-    private void addFocus(){
+    private void addFocus() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -329,7 +331,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .url(url)
                         .id(5)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId",String.valueOf(be_focused_personId))
+                        .addParams("userId", String.valueOf(be_focused_personId))
                         .addParams("followTime", Utils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
@@ -337,7 +339,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }).start();
     }
 
-    private void isFocused(){
+    private void isFocused() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -347,7 +349,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .url(url)
                         .id(6)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId",String.valueOf(be_focused_personId))
+                        .addParams("userId", String.valueOf(be_focused_personId))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -363,13 +365,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .id(7)
                 .addParams("newsId", String.valueOf(newsId))
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .addParams("be_focused_personId",String.valueOf(be_focused_personId))
+                .addParams("be_focused_personId", String.valueOf(be_focused_personId))
                 .addParams("favorTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
 
-    private void isFavored(){
+    private void isFavored() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -386,8 +388,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         }).start();
     }
 
-    private void addClickTimes(){
-        if(be_focused_personId != Constants.USER.getUserId()){
+    private void addClickTimes() {
+        if (be_focused_personId != Constants.USER.getUserId()) {
             new AsyncTask<Void, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... voids) {
@@ -408,45 +410,46 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-
+            if (Constants.ERROR.equals(response)) {
+                circleListItem = null;
+            } else {
+                try {
+                    circleListItem = new Gson().fromJson(response, CircleListItem.class);
+                } catch (Exception e) {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
             switch (id) {
                 case 1:
-                    Gson gson = new Gson();
-                    try {
-                        circleListItem = gson.fromJson(response, CircleListItem.class);
-                        if (circleListItem != null) {
-                            CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
-                            CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();
-                            nicknameTV.setText(circleListItem.getNickname());
-                            releaseTimeTV.setText(circleListItem.getReleaseTime());
-                            titleTV.setText(circleListItem.getTitle());
-                            contentTV.setText(circleListItem.getContent());
-                            clickTimes.setText(String.valueOf(circleListItem.getClickTimes()));
-                            collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
-                            commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
-                            topicTv.setText(circleListItem.getTopic());
-                            // 加载图片
-                            if (!TextUtils.isEmpty(circleListItem.getImage())) {
-                                imageIV.setVisibility(View.VISIBLE);
-                                getNewsImage(circleListItem.getImage());
-                                getFaceImage(circleListItem.getFace());
-                            } else {
-                                imageIV.setVisibility(View.GONE);
-                            }
+                    if (circleListItem != null) {
+                        CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
+                        CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();
+                        nicknameTV.setText(circleListItem.getNickname());
+                        releaseTimeTV.setText(circleListItem.getReleaseTime());
+                        titleTV.setText(circleListItem.getTitle());
+                        contentTV.setText(circleListItem.getContent());
+                        clickTimes.setText(String.valueOf(circleListItem.getClickTimes()));
+                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
+                        commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
+                        topicTv.setText(circleListItem.getTopic());
+                        // 加载图片
+                        if (!TextUtils.isEmpty(circleListItem.getImage())) {
+                            imageIV.setVisibility(View.VISIBLE);
+                            getNewsImage(circleListItem.getImage());
+                            getFaceImage(circleListItem.getFace());
+                        } else {
+                            imageIV.setVisibility(View.GONE);
                         }
                         mList = circleListItem.getCommentListItems();
-                    } catch (Exception e) {
-                        Toast.makeText(mContext, "错误："+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        mList = null;
                     }
                     if (mList != null && mList.size() > 0) {
                         adapter = new CircleDetailCommentsAdapter(mContext, mList);
                         adapter.setOnCommentButtonClickListner(new CircleDetailCommentsAdapter.OnCommentButtonClickListner() {
                             @Override
                             public void OnCommentButtonClicked(String replyUser) {
-                                commentFab.show();
-                                collectFab.show();
-                                favorFab.show();
+                                commentFab.hide();
+                                collectFab.hide();
+                                favorFab.hide();
                                 commentPane.setVisibility(View.VISIBLE);
                                 addCommentET.setHint("回复 " + replyUser + " 的评论");
                                 replyUsername = replyUser;
@@ -466,12 +469,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 2:
                     isCollected();
-                    if(response.equals("收藏成功")){
-                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES+1));
+                    if (response.equals("收藏成功")) {
+                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES + 1));
                         CURRENT_COLLECTTIMES++;
-                    }
-                    else if(response.equals("取消收藏")){
-                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES-1));
+                    } else if (response.equals("取消收藏")) {
+                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES - 1));
                         CURRENT_COLLECTTIMES--;
                     }
                     break;
@@ -506,9 +508,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 case 4:
-                    if(response.equals("已收藏")){
+                    if (response.equals("已收藏")) {
                         collectFab.setImageResource(R.drawable.ic_is_collected);
-                    } else{
+                    } else {
                         collectFab.setImageResource(R.drawable.ic_is_not_collected);
                     }
                     break;
@@ -517,9 +519,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     DisplayToast(response);
                     break;
                 case 6:
-                    if(response.equals("已关注")){
+                    if (response.equals("已关注")) {
                         focusBtn.setText("已关注");
-                    }else{
+                    } else {
                         focusBtn.setText("关注");
                     }
                     break;
@@ -527,9 +529,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     isFavored();
                     break;
                 case 8:
-                    if(response.equals("已点赞")){
+                    if (response.equals("已点赞")) {
                         favorFab.setImageResource(R.drawable.ic_is_favored);
-                    } else{
+                    } else {
                         favorFab.setImageResource(R.drawable.ic_is_not_favored);
                     }
                     break;
@@ -548,14 +550,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void getNewsImage(final String imageName) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
         Glide.with(mContext).load(uri).into(imageIV);
         Glide.with(mContext).load(uri).into(dialogIv);
         dialog.setContentView(dialogIv);
     }
 
     private void getFaceImage(final String face) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+face);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?face=" + face);
         Glide.with(mContext).load(uri).into(faceIv);
     }
 
@@ -589,6 +591,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 点击输入框以外的位置隐藏软键盘
+     *
      * @param ev
      * @return
      */
@@ -612,9 +615,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         return onTouchEvent(ev);
     }
 
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
+            int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];

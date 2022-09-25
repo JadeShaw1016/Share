@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/default_remind_mywork"
+                android:layout_marginTop="20dp"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_mywork_remind"
