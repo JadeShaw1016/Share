@@ -3,11 +3,9 @@ package com.example.administrator.share.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 
 import com.example.administrator.share.entity.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SharedPreferencesUtils {
 
@@ -27,7 +25,7 @@ public class SharedPreferencesUtils {
             Editor editor = sharedPreferences.edit();
             //3.往Editor中添加数据
             editor.putInt("userId", user.getUserId());
-            editor.putString("face",user.getFace());
+            editor.putString("face", user.getFace());
             editor.putString("username", user.getUsername());
             editor.putString("nickname", user.getNickname());
             editor.putString("password", user.getPassword());
@@ -71,7 +69,7 @@ public class SharedPreferencesUtils {
             int userId = sharedPreferences.getInt("userId", 0);
             String password = sharedPreferences.getString("password", "");
             String username = sharedPreferences.getString("username", "");
-            String nickname = sharedPreferences.getString("nickname","");
+            String nickname = sharedPreferences.getString("nickname", "");
             String sex = sharedPreferences.getString("sex", "男");
             String face = sharedPreferences.getString("face", "");
             String signature = sharedPreferences.getString("signature", "");
@@ -93,10 +91,10 @@ public class SharedPreferencesUtils {
     /**
      * 存储服务器信息
      *
-     * @param context
-     * @param ip
-     * @param port
-     * @return
+     * @param context 上下文环境
+     * @param ip ip地址
+     * @param port 端口
+     * @return 是否存储成功
      */
     public static boolean saveIPConfig(Context context, String ip, String port) {
         try {
@@ -104,31 +102,36 @@ public class SharedPreferencesUtils {
             Editor edit = preferences.edit();
             edit.putString("ip", ip);
             edit.putString("port", port);
-            edit.commit();
+            return edit.commit();
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     /**
      * 获取服务器配置信息
      *
-     * @param context
-     * @return
+     * @param context 上下文环境
+     * @return 服务器url地址
      */
-    public static Map<String, String> getIPConfig(Context context) {
-        Map<String, String> map = new HashMap<String, String>();
+    public static String getIPConfig(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("serverConnect", Context.MODE_PRIVATE);
-        map.put("ip", preferences.getString("ip", ""));
-        map.put("port", preferences.getString("port", ""));
-        return map;
+        String ip = preferences.getString("ip", "");
+        if (TextUtils.isEmpty(ip)) {
+            return Constants.DEFAULT_URL;
+        } else {
+            return "http://" + ip + ":" + preferences.getString("port", "") + "/";
+        }
     }
 
-    public static void clear(Context context){
-
-        SharedPreferences sharedPreferences=context.getSharedPreferences("userinfo",context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
+    /**
+     * 清除sp缓存
+     *
+     * @param context 上下文环境
+     */
+    public static void clear(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }

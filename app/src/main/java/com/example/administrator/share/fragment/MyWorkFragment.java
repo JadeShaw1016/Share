@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.MyWorkAdapter;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.MyWorkListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +35,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ import okhttp3.Call;
 
 public class MyWorkFragment extends Fragment {
 
-    private List<CommonListItem> mList;
+    private List<MyWorkListItem> mList;
     private RecyclerView recyclerView;
     private RefreshLayout refreshLayout;
     private GridLayoutManager layoutManager;
@@ -77,7 +76,7 @@ public class MyWorkFragment extends Fragment {
 
     private void initView() {
         layoutManager = new GridLayoutManager(getActivity(), 2);
-        adapter = new MyWorkAdapter(getActivity(), new ArrayList<CommonListItem>());
+        adapter = new MyWorkAdapter(getActivity(), new ArrayList<MyWorkListItem>());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -118,9 +117,9 @@ public class MyWorkFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "GetCircleList?method=getMyWorkList";
+                String url = Constants.BASE_URL + "circle/getMyWorkList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", USERID)
@@ -133,25 +132,29 @@ public class MyWorkFragment extends Fragment {
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
+            if (Constants.ERROR.equals(response)) {
+                mList = null;
+            } else {
+                try {
+                    mList = new Gson().fromJson(response, new TypeToken<ArrayList<MyWorkListItem>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<CommonListItem>>() {
-                    }.getType();
-                    mList = gson.fromJson(response, type);
-                    if (getActivity() != null) {
-                        if (mList == null || mList.size() == 0) {
-                            myworkRemindIv.setVisibility(View.VISIBLE);
-                            myworkRemindTv.setVisibility(View.VISIBLE);
-                        } else {
-                            myworkRemindIv.setVisibility(View.INVISIBLE);
-                            myworkRemindTv.setVisibility(View.INVISIBLE);
-                        }
+                    if (mList == null || mList.size() == 0) {
+                        myworkRemindIv.setVisibility(View.VISIBLE);
+                        myworkRemindTv.setVisibility(View.VISIBLE);
+                    } else {
+                        myworkRemindIv.setVisibility(View.INVISIBLE);
+                        myworkRemindTv.setVisibility(View.INVISIBLE);
                         adapter = new MyWorkAdapter(getActivity(), mList);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter);
-                        refreshLayout.finishRefresh();
                     }
+                    refreshLayout.finishRefresh();
                     break;
 
                 default:
@@ -176,8 +179,8 @@ public class MyWorkFragment extends Fragment {
         getMyWorks();
     }
 
-    private List<CommonListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<CommonListItem> resList = new ArrayList<>();
+    private List<MyWorkListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<MyWorkListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -187,7 +190,7 @@ public class MyWorkFragment extends Fragment {
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<CommonListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<MyWorkListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();

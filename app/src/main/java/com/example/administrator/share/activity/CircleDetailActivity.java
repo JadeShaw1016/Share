@@ -71,7 +71,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView addCommentIV;
     private Context mContext;
     private int newsId;
-    private int be_focused_personId;
+    private int authorId;
     private String replyUsername;
     private MyDialogHandler uiFlusHandler;
     private Dialog dialog;
@@ -79,9 +79,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView faceIv;
     private RecyclerView commentsRv;
     private LinearLayoutManager layoutManager;
-    private TextView clickTimes;
-    private TextView collectTimes;
-    private TextView commentTimes;
+    private TextView clickTimesTv;
+    private TextView collectTimesTv;
+    private TextView commentTimesTv;
     private int CURRENT_COLLECTTIMES;
     private int CURRENT_COMMENTTIMES;
     private ObservableScrollView observableScrollView;
@@ -92,7 +92,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         newsId = getIntent().getIntExtra("newsId", 0);
-        be_focused_personId = getIntent().getIntExtra("be_focused_personId", 0);
+        authorId = getIntent().getIntExtra("authorId", 0);
         setContentView(R.layout.activity_circle_detail);
         findViewById();
         initView();
@@ -117,9 +117,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         focusBtn = $(R.id.btn_focus);
         dialogIv = new ImageView(this);
         faceIv = $(R.id.iv_circle_detail_face);
-        clickTimes = $(R.id.tv_circle_detail_click_times);
-        collectTimes = $(R.id.tv_circle_detail_collect_times);
-        commentTimes = $(R.id.tv_circle_detail_comment_times);
+        clickTimesTv = $(R.id.tv_circle_detail_click_times);
+        collectTimesTv = $(R.id.tv_circle_detail_collect_times);
+        commentTimesTv = $(R.id.tv_circle_detail_comment_times);
         observableScrollView = $(R.id.osv_circle_detail);
         topicTv = $(R.id.tv_circle_detail_topic);
     }
@@ -147,7 +147,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         addClickTimes();
         isCollected();
         isFavored();
-        isFocused();
         //大图所依附的dialog
         dialog = new Dialog(mContext, R.style.MyDialogStyle_fullScreen_black);
         dialogListener();
@@ -172,7 +171,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 addNewComment();
                 break;
             case R.id.btn_focus:
-                if (be_focused_personId == Constants.USER.getUserId()) {
+                if (authorId == Constants.USER.getUserId()) {
                     DisplayToast("不能关注自己哦！");
                 } else {
                     addFocus();
@@ -270,14 +269,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     //添加新收藏
     private void addNewCollection() {
-        String url = Constants.BASE_URL + "GetCircleList?method=addNewCollection";
+        String url = Constants.BASE_URL + "collections/addNewCollection";
         OkHttpUtils
                 .post()
                 .url(url)
                 .id(2)
                 .addParams("newsId", String.valueOf(newsId))
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .addParams("collectionTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -308,9 +306,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "GetCircleList?method=isCollected";
+                String url = Constants.BASE_URL + "collections/isCollected";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(4)
                         .addParams("newsId", String.valueOf(newsId))
@@ -325,14 +323,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=addFocus";
+                String url = Constants.BASE_URL + "follows/addFocus";
                 OkHttpUtils
                         .post()
                         .url(url)
                         .id(5)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId", String.valueOf(be_focused_personId))
-                        .addParams("followTime", Utils.getCurrentDatetime())
+                        .addParams("userId", String.valueOf(authorId))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -343,13 +340,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=isFocused";
+                String url = Constants.BASE_URL + "follows/isFocused";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(6)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
-                        .addParams("userId", String.valueOf(be_focused_personId))
+                        .addParams("userId", String.valueOf(authorId))
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -358,26 +355,30 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     //添加新点赞
     private void addNewFavor() {
-        String url = Constants.BASE_URL + "GetCircleList?method=addNewFavor";
-        OkHttpUtils
-                .post()
-                .url(url)
-                .id(7)
-                .addParams("newsId", String.valueOf(newsId))
-                .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .addParams("be_focused_personId", String.valueOf(be_focused_personId))
-                .addParams("favorTime", Utils.getCurrentDatetime())
-                .build()
-                .execute(new MyStringCallback());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "favors/addNewFavor";
+                OkHttpUtils
+                        .post()
+                        .url(url)
+                        .id(7)
+                        .addParams("newsId", String.valueOf(newsId))
+                        .addParams("userId", String.valueOf(Constants.USER.getUserId()))
+                        .addParams("authorId", String.valueOf(authorId))
+                        .build()
+                        .execute(new MyStringCallback());
+            }
+        }).start();
     }
 
     private void isFavored() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "GetCircleList?method=isFavored";
+                String url = Constants.BASE_URL + "favors/isFavored";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(8)
                         .addParams("newsId", String.valueOf(newsId))
@@ -389,11 +390,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void addClickTimes() {
-        if (be_focused_personId != Constants.USER.getUserId()) {
+        if (authorId != Constants.USER.getUserId()) {
             new AsyncTask<Void, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... voids) {
-                    String url = Constants.BASE_URL + "Circle?method=addClickTimes";
+                    String url = Constants.BASE_URL + "circle/addClickTimes";
                     OkHttpUtils
                             .post()
                             .url(url)
@@ -410,17 +411,17 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            if (Constants.ERROR.equals(response)) {
-                circleListItem = null;
-            } else {
-                try {
-                    circleListItem = new Gson().fromJson(response, CircleListItem.class);
-                } catch (Exception e) {
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
             switch (id) {
                 case 1:
+                    if (Constants.ERROR.equals(response)) {
+                        circleListItem = null;
+                    } else {
+                        try {
+                            circleListItem = new Gson().fromJson(response, CircleListItem.class);
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     if (circleListItem != null) {
                         CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
                         CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();
@@ -428,9 +429,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         releaseTimeTV.setText(circleListItem.getReleaseTime());
                         titleTV.setText(circleListItem.getTitle());
                         contentTV.setText(circleListItem.getContent());
-                        clickTimes.setText(String.valueOf(circleListItem.getClickTimes()));
-                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES));
-                        commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
+                        clickTimesTv.setText(String.valueOf(circleListItem.getClickTimes()));
+                        collectTimesTv.setText(String.valueOf(CURRENT_COLLECTTIMES));
+                        commentTimesTv.setText(String.valueOf(CURRENT_COMMENTTIMES));
                         topicTv.setText(circleListItem.getTopic());
                         // 加载图片
                         if (!TextUtils.isEmpty(circleListItem.getImage())) {
@@ -468,12 +469,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                     break;
                 case 2:
-                    isCollected();
                     if (response.equals("收藏成功")) {
-                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES + 1));
+                        collectFab.setImageResource(R.drawable.ic_is_collected);
+                        collectTimesTv.setText(String.valueOf(CURRENT_COLLECTTIMES + 1));
                         CURRENT_COLLECTTIMES++;
                     } else if (response.equals("取消收藏")) {
-                        collectTimes.setText(String.valueOf(CURRENT_COLLECTTIMES - 1));
+                        collectFab.setImageResource(R.drawable.ic_is_not_collected);
+                        collectTimesTv.setText(String.valueOf(CURRENT_COLLECTTIMES - 1));
                         CURRENT_COLLECTTIMES--;
                     }
                     break;
@@ -484,7 +486,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         DisplayToast(response);
                         hideKeyboard();
                         CURRENT_COMMENTTIMES++;
-                        commentTimes.setText(String.valueOf(CURRENT_COMMENTTIMES));
+                        commentTimesTv.setText(String.valueOf(CURRENT_COMMENTTIMES));
                         CommentListItem commentListItem = new CommentListItem();
                         commentListItem.setFace(Constants.USER.getFace());
                         commentListItem.setCommentTime(Utils.getCurrentDatetime());
@@ -515,7 +517,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 case 5:
-                    isFocused();
+                    if (response.equals("关注成功")) {
+                        focusBtn.setText("已关注");
+                    } else if (response.equals("取消关注")) {
+                        focusBtn.setText("关注");
+                    }
                     DisplayToast(response);
                     break;
                 case 6:
@@ -526,7 +532,11 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 case 7:
-                    isFavored();
+                    if (response.equals("点赞成功")) {
+                        favorFab.setImageResource(R.drawable.ic_is_favored);
+                    } else if (response.equals("取消点赞")) {
+                        favorFab.setImageResource(R.drawable.ic_is_not_favored);
+                    }
                     break;
                 case 8:
                     if (response.equals("已点赞")) {
@@ -564,8 +574,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     //保存文件到指定路径
     public void saveImageToGallery(Bitmap bmp) {
         // 首先保存图片
-        String storePath = BASE_IMAGE_DOWNLOAD;
-        File appDir = new File(storePath);
+        File appDir = new File(BASE_IMAGE_DOWNLOAD);
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -635,4 +644,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         return false;
     }
 
+    @Override
+    protected void onResume() {
+        isFocused();
+        super.onResume();
+    }
 }

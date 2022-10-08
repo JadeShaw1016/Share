@@ -33,13 +33,13 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         mContext = this;
-        int time = 2000;
+        int time = 1000;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 User user = SharedPreferencesUtils.getUserInfo(mContext);//获取用户名密码
-                if (user == null) {
+                if (user == null || user.getUsername().isEmpty()) {
                     openActivity(LoginActivity.class);
                     Log.d("WelcomeActivity", "用户存储为空");
                     finish();

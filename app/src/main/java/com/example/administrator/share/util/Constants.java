@@ -13,6 +13,8 @@ public class Constants {
 
     public final static String ERROR = "error";
 
+    public final static String OK = "ok";
+
     // 用户对象
     public static User USER = SharedPreferencesUtils.getUserInfo(ShareApplication.getContextObject());
 
@@ -21,15 +23,9 @@ public class Constants {
 
     public static List<String> DAILYCHECKEDLIST;
 
-    // 应用名称
-    public static String APP_NAME = "";
-
     // 服务器地址
-//	public static String BASE_URL = "http://81.70.145.250:8080/ShareServer/";
-    public static String BASE_URL = "http://192.168.1.4:8080/";
-
-    // 保存参数文件夹名称
-    public static final String SHARED_PREFERENCE_NAME = "share_prefs";
+    public static String DEFAULT_URL = "http://192.168.1.4:8080/";
+    public static String BASE_URL = SharedPreferencesUtils.getIPConfig(ShareApplication.getContextObject());
 
     // SDCard路径
     public static final String SD_PATH = Environment
@@ -45,8 +41,4 @@ public class Constants {
 
     // 下载保存图片路径
     public static final String BASE_IMAGE_DOWNLOAD = BASE_PATH + "/download";
-
-    // 需要分享的图片
-    public static final String SHARE_FILE = BASE_PATH + "/QrShareImage.png";
-
 }

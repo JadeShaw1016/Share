@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.MyWorkListItem;
 import com.example.administrator.share.util.Constants;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
     private static final String TAG = "MyWorkAdapter";
     private Context mContext;
     private LayoutInflater inflater;
-    private List<CommonListItem> mList;
+    private List<MyWorkListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -41,7 +41,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         }
     }
 
-    public MyWorkAdapter(Context mContext, List<CommonListItem> mList) {
+    public MyWorkAdapter(Context mContext, List<MyWorkListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -60,7 +60,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("be_focused_personId", Constants.USER.getUserId());
+                intent.putExtra("authorId", Constants.USER.getUserId());
                 mContext.startActivity(intent);
             }
         });
@@ -69,7 +69,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        CommonListItem detail = mList.get(position);
+        MyWorkListItem detail = mList.get(position);
         holder.myworkName.setText(detail.getTitle());
         holder.clickTimes.setText(String.valueOf(detail.getClickTimes()));
         getImage(detail.getImage(),holder);
@@ -85,7 +85,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         return mList.size();
     }
 
-    public void updateList(List<CommonListItem> newDatas) {
+    public void updateList(List<MyWorkListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

@@ -56,7 +56,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext,CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
         });

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.CollectionAndFavorListItem;
 import com.example.administrator.share.util.Constants;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<CommonListItem> mList;
+    private List<CollectionAndFavorListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -42,7 +42,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         }
     }
 
-    public CollectionListAdapter(Context mContext, List<CommonListItem> mList) {
+    public CollectionListAdapter(Context mContext, List<CollectionAndFavorListItem> mList) {
         this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -62,7 +62,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
         });
@@ -71,7 +71,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CommonListItem detail = mList.get(position);
+        CollectionAndFavorListItem detail = mList.get(position);
         holder.title.setText(detail.getTitle());
         holder.nicknameTv.setText("作者：" + detail.getNickname());
         getImage(detail.getImage(), holder);
@@ -87,7 +87,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         Glide.with(mContext).load(uri).into(holder.imageView);
     }
 
-    public void updateList(List<CommonListItem> newDatas) {
+    public void updateList(List<CollectionAndFavorListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

@@ -111,7 +111,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 CommonListItem commonListItem = mList.get(position);
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", commonListItem.getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
         });

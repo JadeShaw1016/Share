@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.FavorMsgListItem;
 import com.example.administrator.share.util.Constants;
 import com.startsmake.mainnavigatetabbar.widget.BadgeView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -34,7 +34,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
 
     private Context mContext;
     private LayoutInflater inflater;
-    private List<CommonListItem> mList;
+    private List<FavorMsgListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nicknameTv;
@@ -55,7 +55,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         }
     }
 
-    public FavorListAdapter(Context mContext, List<CommonListItem> mList) {
+    public FavorListAdapter(Context mContext, List<FavorMsgListItem> mList) {
         this.mContext=mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
@@ -73,13 +73,13 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                CommonListItem commonListItem = mList.get(position);
-                final int favorId = commonListItem.getFavorId();
+                FavorMsgListItem favorMsgListItem = mList.get(position);
+                final int favorId = favorMsgListItem.getFavorId();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
-                intent.putExtra("newsId", commonListItem.getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("newsId", favorMsgListItem.getNewsId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
-                if(commonListItem.getIsVisited() == 0){
+                if(favorMsgListItem.getIsVisited() == 0){
                     new AsyncTask<Void, Void, Integer>(){
                         @Override
                         protected Integer doInBackground(Void... voids) {
@@ -109,7 +109,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final CommonListItem detail = mList.get(position);
+        final FavorMsgListItem detail = mList.get(position);
         holder.nicknameTv.setText(detail.getNickname()+"赞了你");
         String time = detail.getFavorTime();
         try {
@@ -148,7 +148,7 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
         return date1.getTime() > date2.getTime();
     }
 
-    public void updateList(List<CommonListItem> newDatas) {
+    public void updateList(List<FavorMsgListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

@@ -415,6 +415,8 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             swipeRefresh.setRefreshing(false);
+            adapter0 = new FirstPageListAdapter0(mContext, new ArrayList<CircleList>(), false);
+            recyclerView.setAdapter(adapter0);
             firstPageRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             firstPageRemindTv.setText(R.string.no_network_remind);
             firstPageRemindIv.setVisibility(View.VISIBLE);

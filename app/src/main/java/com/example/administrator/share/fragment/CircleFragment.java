@@ -302,6 +302,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
             refreshLayout.finishRefresh();
+            adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleList>());
+            circleList.setAdapter(adapter);
             circleRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             circleRemindTv.setText(R.string.no_network_remind);
             circleRemindIv.setVisibility(View.VISIBLE);

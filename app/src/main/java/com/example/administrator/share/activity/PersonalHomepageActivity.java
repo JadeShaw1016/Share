@@ -26,14 +26,12 @@ import com.example.administrator.share.fragment.MyCollectionFragment;
 import com.example.administrator.share.fragment.MyFavoFragment;
 import com.example.administrator.share.fragment.MyWorkFragment;
 import com.example.administrator.share.util.Constants;
-import com.example.administrator.share.util.Utils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -185,9 +183,9 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getCurrentFansList";
+                String url = Constants.BASE_URL + "follows/getCurrentFansList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", userId)
@@ -204,9 +202,9 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getFocusList";
+                String url = Constants.BASE_URL + "follows/getFocusList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
                         .addParams("userId", userId)
@@ -223,9 +221,9 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getPopularity";
+                String url = Constants.BASE_URL + "circle/getPopularity";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(3)
                         .addParams("userId", userId)
@@ -239,14 +237,13 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=addFocus";
+                String url = Constants.BASE_URL + "follows/addFocus";
                 OkHttpUtils
                         .post()
                         .url(url)
                         .id(4)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
                         .addParams("userId", String.valueOf(userId))
-                        .addParams("followTime", Utils.getCurrentDatetime())
                         .build()
                         .execute(new MyStringCallback());
             }
@@ -257,9 +254,9 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=isFocused";
+                String url = Constants.BASE_URL + "follows/isFocused";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(5)
                         .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
@@ -274,23 +271,46 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
 
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<FollowsListItem>>() {
-            }.getType();
             switch (id) {
                 case 1:
-                    mFansList = gson.fromJson(response, type);
-                    fansTv.setText(String.valueOf(mFansList.size()));
+                    if (Constants.ERROR.equals(response)) {
+                        mFansList = null;
+                    } else {
+                        try {
+                            mFansList = new Gson().fromJson(response, new TypeToken<ArrayList<FollowsListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (mFansList != null && !mFansList.isEmpty()) {
+                        fansTv.setText(String.valueOf(mFansList.size()));
+                    }
                     break;
                 case 2:
-                    mFocusList = gson.fromJson(response, type);
-                    focusTv.setText(String.valueOf(mFocusList.size()));
+                    if (Constants.ERROR.equals(response)) {
+                        mFocusList = null;
+                    } else {
+                        try {
+                            mFocusList = new Gson().fromJson(response, new TypeToken<ArrayList<FollowsListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (mFocusList != null && !mFocusList.isEmpty()) {
+                        focusTv.setText(String.valueOf(mFocusList.size()));
+                    }
                     break;
                 case 3:
                     popularityTv.setText(response);
                     break;
                 case 4:
-                    isFocused();
+                    if (response.equals("关注成功")) {
+                        focusBtn.setText("已关注");
+                    } else if (response.equals("取消关注")) {
+                        focusBtn.setText("关注");
+                    }
                     DisplayToast(response);
                     break;
                 case 5:

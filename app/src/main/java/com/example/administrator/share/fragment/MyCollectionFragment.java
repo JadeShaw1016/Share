@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.MainMenuActivity;
 import com.example.administrator.share.adapter.CollectionListAdapter;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.CollectionAndFavorListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +33,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,7 @@ import okhttp3.Call;
 
 public class MyCollectionFragment extends Fragment {
 
-    private List<CommonListItem> mList;
+    private List<CollectionAndFavorListItem> mList;
     private RefreshLayout refreshLayout;
     private ImageView collectRemindIv;
     private TextView collectRemindTv;
@@ -76,7 +74,7 @@ public class MyCollectionFragment extends Fragment {
 
     private void initView() {
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new CollectionListAdapter(getActivity(), new ArrayList<CommonListItem>());
+        adapter = new CollectionListAdapter(getActivity(), new ArrayList<CollectionAndFavorListItem>());
         mListView.setLayoutManager(layoutManager);
         mListView.setAdapter(adapter);
     }
@@ -116,9 +114,9 @@ public class MyCollectionFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "GetCircleList?method=getCollectionsList";
+                String url = Constants.BASE_URL + "collections/getCollectionsList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", USERID)
@@ -131,29 +129,35 @@ public class MyCollectionFragment extends Fragment {
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
+            if (Constants.ERROR.equals(response)) {
+                mList = null;
+            } else {
+                try {
+                    mList = new Gson().fromJson(response, new TypeToken<ArrayList<CollectionAndFavorListItem>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<CommonListItem>>() {
-                    }.getType();
-                    mList = gson.fromJson(response, type);
                     if (getActivity() != null) {
-                        if (mList == null || mList.size() == 0) {
+                        if (mList == null || mList.isEmpty()) {
                             collectRemindIv.setVisibility(View.VISIBLE);
                             collectRemindTv.setVisibility(View.VISIBLE);
                         } else {
                             collectRemindIv.setVisibility(View.INVISIBLE);
                             collectRemindTv.setVisibility(View.INVISIBLE);
+                            adapter = new CollectionListAdapter(getActivity(), mList);
+                            mListView.setLayoutManager(layoutManager);
+                            mListView.setAdapter(adapter);
                         }
-                        adapter = new CollectionListAdapter(getActivity(), mList);
-                        mListView.setLayoutManager(layoutManager);
-                        mListView.setAdapter(adapter);
                         refreshLayout.finishRefresh();
                     }
                     break;
 
                 default:
-                    Toast.makeText(MainMenuActivity.mContext, "What?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -174,8 +178,8 @@ public class MyCollectionFragment extends Fragment {
         getCollections();
     }
 
-    private List<CommonListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<CommonListItem> resList = new ArrayList<>();
+    private List<CollectionAndFavorListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<CollectionAndFavorListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -185,7 +189,7 @@ public class MyCollectionFragment extends Fragment {
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<CommonListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<CollectionAndFavorListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();
