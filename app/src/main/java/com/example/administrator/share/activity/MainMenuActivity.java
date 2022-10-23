@@ -98,7 +98,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
@@ -124,12 +123,12 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Message?method=findMessageStatus";
+                String url = Constants.BASE_URL + "message/findMessageStatus";
                 String authorname = Constants.USER.getNickname();
                 String authorId = String.valueOf(Constants.USER.getUserId());
-                if (authorname != null && authorname != null) {
+                if (authorname != null && authorId != null) {
                     OkHttpUtils
-                            .post()
+                            .get()
                             .url(url)
                             .addParams("authorName", authorname)
                             .addParams("authorId", authorId)
@@ -137,15 +136,12 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
                             .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
+                                    DisplayToast("网络链接出错！");
                                 }
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    if (Constants.ERROR.equals(response)) {
-                                        mNavigateTabBar.disPlayBadgeCount(2, 0);
-                                    } else {
-                                        mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
-                                    }
+                                    mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
                                 }
                             });
                 }

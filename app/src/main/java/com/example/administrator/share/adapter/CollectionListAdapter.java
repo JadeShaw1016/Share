@@ -24,8 +24,8 @@ import java.util.List;
 public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAdapter.ViewHolder> {
 
     private Context mContext;
-    private LayoutInflater inflater;
-    private List<CollectionAndFavorListItem> mList;
+    private final LayoutInflater inflater;
+    private final List<CollectionAndFavorListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;

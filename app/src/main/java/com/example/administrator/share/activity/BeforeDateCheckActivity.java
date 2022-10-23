@@ -38,7 +38,7 @@ public class BeforeDateCheckActivity extends BaseActivity {
             @Override
             public void run() {
                 getRecords();
-                SystemClock.sleep(2000);
+                SystemClock.sleep(1000);
                 getCheckedList();
             }
         }.start();
@@ -49,9 +49,9 @@ public class BeforeDateCheckActivity extends BaseActivity {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
+                String url = Constants.BASE_URL + "dailycheck/getCheckedList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -66,9 +66,9 @@ public class BeforeDateCheckActivity extends BaseActivity {
         new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
+                String url = Constants.BASE_URL + "dailycheck/getTotalCheckRecord";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .id(2)
@@ -84,7 +84,7 @@ public class BeforeDateCheckActivity extends BaseActivity {
         public void onResponse(String response, int id) {
             switch (id) {
                 case 1:
-                    if (response.contains("error")) {
+                    if (Constants.ERROR.equals(response)) {
                         DisplayToast("暂时无法获取数据");
                     } else {
                         if (response.length() == 0) {
@@ -93,7 +93,7 @@ public class BeforeDateCheckActivity extends BaseActivity {
                         } else {
                             String[] dates = response.split(",");
                             if (Constants.DAILYCHECKEDLIST == null) {
-                                Constants.DAILYCHECKEDLIST = new ArrayList<String>();
+                                Constants.DAILYCHECKEDLIST = new ArrayList<>();
                             } else {
                                 Constants.DAILYCHECKEDLIST.clear();
                             }

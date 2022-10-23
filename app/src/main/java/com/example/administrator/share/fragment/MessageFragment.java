@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -126,81 +127,76 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
     }
 
     private void findCommentStatus() {
-        String url = Constants.BASE_URL + "Message?method=findCommentStatus";
+        String url = Constants.BASE_URL + "comments/findCommentStatus";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
+                .id(1)
                 .addParams("authorName", Constants.USER.getNickname())
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        commentBadge.setBadgeCount(Integer.parseInt(response));
-                    }
-                });
+                .execute(new MyStringCallback());
     }
 
     private void findFavorStatus() {
-        String url = Constants.BASE_URL + "Message?method=findFavorStatus";
+        String url = Constants.BASE_URL + "favors/findFavorStatus";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
+                .id(2)
                 .addParams("authorId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (!Constants.ERROR.equals(response)) {
-                            favorBadge.setBadgeCount(Integer.parseInt(response));
-                        }
-                    }
-                });
+                .execute(new MyStringCallback());
     }
 
     private void findNewFansStatus() {
-        String url = Constants.BASE_URL + "Message?method=findNewFansStatus";
+        String url = Constants.BASE_URL + "follows/findNewFansStatus";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
+                .id(3)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        fansBadge.setBadgeCount(Integer.parseInt(response));
-                    }
-                });
+                .execute(new MyStringCallback());
     }
 
     private void updateNewFansStatus() {
-        String url = Constants.BASE_URL + "Message?method=updateNewFansStatus";
+        String url = Constants.BASE_URL + "follows/updateNewFansStatus";
         OkHttpUtils
                 .post()
                 .url(url)
+                .id(4)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                 .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                    }
+                .execute(new MyStringCallback());
+    }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                    }
-                });
+    public class MyStringCallback extends StringCallback {
+
+        @Override
+        public void onResponse(String response, int id) {
+            switch (id) {
+                case 1:
+                    commentBadge.setBadgeCount(Integer.parseInt(response));
+                    break;
+                case 2:
+                    favorBadge.setBadgeCount(Integer.parseInt(response));
+                    break;
+                case 3:
+                    fansBadge.setBadgeCount(Integer.parseInt(response));
+                    break;
+                case 4:
+                    break;
+                default:
+                    Toast.makeText(getActivity(), "What?", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        @Override
+        public void onError(Call arg0, Exception arg1, int arg2) {
+            Toast.makeText(getActivity(), "网络链接出错!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.example.administrator.share.entity;
 
 import java.util.List;
 
-public class CircleListItem {
+public class CircleDetail {
 
     private int userId;
 

@@ -32,8 +32,8 @@ import okhttp3.Call;
 public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDetailCommentsAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<CommentListItem> mList;
-    private LayoutInflater inflater;
+    private final List<CommentListItem> mList;
+    private final LayoutInflater inflater;
     OnCommentButtonClickListner onCommentButtonClickListner;
     OnCommentDeleteClickListner onCommentDeleteClickListner;
 
@@ -46,6 +46,7 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
         LinearLayout replyContainer;
         ImageView faceIv;
         RelativeLayout commentRl;
+
         ViewHolder(View view) {
             super(view);
             nickname = view.findViewById(R.id.news_detail_comment_nickname);
@@ -60,7 +61,7 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
     }
 
     public CircleDetailCommentsAdapter(Context mContext, List<CommentListItem> mList) {
-        this.mContext=mContext;
+        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -84,13 +85,13 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
             @Override
             public boolean onLongClick(View view) {
                 final int position = holder.getAdapterPosition();
-                if(mList.get(position).getNickname().equals(Constants.USER.getNickname())){
+                if (mList.get(position).getNickname().equals(Constants.USER.getNickname())) {
                     //弹出的“删除评论”的Dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setItems(new String[]{mContext.getResources().getString(R.string.delete_comment)}, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            deleteCommentById(mList.get(position).getCommentId());
+                            deleteCommentById(position, mList.get(position).getCommentId());
                         }
                     });
                     builder.show();
@@ -113,7 +114,7 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
         }
         holder.commentTime.setText(commentListItem.getCommentTime());
         holder.content.setText(commentListItem.getComment());
-        getFaceImage(commentListItem.getFace(),holder);
+        getFaceImage(commentListItem.getFace(), holder);
     }
 
     @Override
@@ -137,45 +138,46 @@ public class CircleDetailCommentsAdapter extends RecyclerView.Adapter<CircleDeta
     }
 
     public interface OnCommentDeleteClickListner {
-        void OnCommentDeleteClicked();
+        void OnCommentDeleteClicked(int position);
     }
 
     public void setOnCommentDeleteClickListner(OnCommentDeleteClickListner onCommentDeleteClickListner) {
         this.onCommentDeleteClickListner = onCommentDeleteClickListner;
     }
 
-    public void doDeleteButtonClickAction() {
+    public void doDeleteButtonClickAction(int position) {
         if (onCommentDeleteClickListner != null) {
-            onCommentDeleteClickListner.OnCommentDeleteClicked();
+            onCommentDeleteClickListner.OnCommentDeleteClicked(position);
         }
     }
 
     private void getFaceImage(final String face, final ViewHolder viewHolder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?face="+face);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?face=" + face);
         Glide.with(mContext).load(uri).into(viewHolder.faceIv);
     }
 
-    private void deleteCommentById(final int commentId) {
-        new AsyncTask<Void, Void, Integer>(){
+    private void deleteCommentById(final int position, final int commentId) {
+        new AsyncTask<Void, Void, Integer>() {
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Message?method=deleteComment";
+                String url = Constants.BASE_URL + "comments/deleteComment";
                 OkHttpUtils
-                        .get()//
-                        .url(url)//
+                        .post()
+                        .url(url)
                         .addParams("commentId", String.valueOf(commentId))
-                        .build()//
+                        .build()
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
                             }
+
                             @Override
                             public void onResponse(String response, int id) {
-                                if(response.equals("success")){
-                                    doDeleteButtonClickAction();
-                                    Toast.makeText(mContext,"删除成功",Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(mContext,"删除失败，请稍后再试",Toast.LENGTH_SHORT).show();
+                                if (Constants.OK.equals(response)) {
+                                    doDeleteButtonClickAction(position);
+                                    Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(mContext, "删除失败，请稍后再试", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

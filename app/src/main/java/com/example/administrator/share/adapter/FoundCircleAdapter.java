@@ -23,12 +23,13 @@ import java.util.List;
 public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.ViewHolder> {
 
     private Context mContext;
-    private LayoutInflater mInflater;
-    private List<CircleList> mList;
+    private final LayoutInflater mInflater;
+    private final List<CircleList> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bgIv;
         TextView topicTv;
+
         public ViewHolder(View view) {
             super(view);
             bgIv = view.findViewById(R.id.found_list_icon);
@@ -37,8 +38,8 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
     }
 
     public FoundCircleAdapter(Context mContext, List<CircleList> mList) {
-        this.mContext=mContext;
-        mInflater=LayoutInflater.from(mContext);
+        this.mContext = mContext;
+        mInflater = LayoutInflater.from(mContext);
         this.mList = mList;
     }
 
@@ -54,7 +55,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Intent intent = new Intent(mContext,CircleDetailActivity.class);
+                Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
                 intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
@@ -68,7 +69,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         CircleList circleList = mList.get(position);
         holder.topicTv.setText(circleList.getTopic());
         final String imageName = circleList.getImage();
-        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
         Glide.with(mContext).load(uri).into((holder).bgIv);
     }
 

@@ -21,6 +21,7 @@ public class Constants {
     //用户头像
     public static Bitmap FACEIMAGE;
 
+    //打卡日期列表
     public static List<String> DAILYCHECKEDLIST;
 
     // 服务器地址

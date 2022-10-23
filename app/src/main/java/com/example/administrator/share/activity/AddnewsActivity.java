@@ -335,7 +335,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
      * 今日打卡
      */
     private void todayCheck() {
-        String url = Constants.BASE_URL + "DailyCheck?method=check";
+        String url = Constants.BASE_URL + "dailycheck/check";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -346,9 +346,9 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void isChecked() {
-        String url = Constants.BASE_URL + "DailyCheck?method=isChecked";
+        String url = Constants.BASE_URL + "dailycheck/isChecked";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
                 .id(3)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -374,14 +374,14 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                     }
                     break;
                 case 2:
-                    if (response.contains("success")) {
+                    if (Constants.OK.equals(response)) {
                         DisplayToast("今日打卡成功");
                     } else {
                         DisplayToast(response);
                     }
                     break;
                 case 3:
-                    if (response.equals("true")) {
+                    if (Constants.OK.equals(response)) {
                         DisplayToast("您今日已经打卡过了，不能重复打卡");
                     } else {
                         releaseNewCircle(topicTv.getText().toString());

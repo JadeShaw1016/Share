@@ -31,7 +31,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CircleDetailCommentsAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.CircleListItem;
+import com.example.administrator.share.entity.CircleDetail;
 import com.example.administrator.share.entity.CommentListItem;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
@@ -86,7 +86,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private int CURRENT_COMMENTTIMES;
     private ObservableScrollView observableScrollView;
     private TextView topicTv;
-    private CircleListItem circleListItem;
+    private CircleDetail circleDetail;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -182,13 +182,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.iv_circle_detail_face:
                 Intent intent = new Intent(this, PersonalHomepageActivity.class);
-                if (circleListItem == null) {
-                    circleListItem = new CircleListItem();
+                if (circleDetail == null) {
+                    circleDetail = new CircleDetail();
                 }
-                intent.putExtra("userId", circleListItem.getUserId());
-                intent.putExtra("nickname", circleListItem.getNickname());
-                intent.putExtra("face", circleListItem.getFace());
-                intent.putExtra("signature", circleListItem.getSignature());
+                intent.putExtra("userId", circleDetail.getUserId());
+                intent.putExtra("nickname", circleDetail.getNickname());
+                intent.putExtra("face", circleDetail.getFace());
+                intent.putExtra("signature", circleDetail.getSignature());
                 startActivity(intent);
                 break;
         }
@@ -287,7 +287,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             DisplayToast("请先输入内容");
             return;
         }
-        String url = Constants.BASE_URL + "Message?method=addNewComment";
+        String url = Constants.BASE_URL + "comments/addNewComment";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -297,7 +297,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                 .addParams("authorName", nicknameTV.getText().toString())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
-                .addParams("commentTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -414,34 +413,34 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             switch (id) {
                 case 1:
                     if (Constants.ERROR.equals(response)) {
-                        circleListItem = null;
+                        circleDetail = null;
                     } else {
                         try {
-                            circleListItem = new Gson().fromJson(response, CircleListItem.class);
+                            circleDetail = new Gson().fromJson(response, CircleDetail.class);
                         } catch (Exception e) {
                             Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if (circleListItem != null) {
-                        CURRENT_COLLECTTIMES = circleListItem.getCollectTimes();
-                        CURRENT_COMMENTTIMES = circleListItem.getCommentTimes();
-                        nicknameTV.setText(circleListItem.getNickname());
-                        releaseTimeTV.setText(circleListItem.getReleaseTime());
-                        titleTV.setText(circleListItem.getTitle());
-                        contentTV.setText(circleListItem.getContent());
-                        clickTimesTv.setText(String.valueOf(circleListItem.getClickTimes()));
+                    if (circleDetail != null) {
+                        CURRENT_COLLECTTIMES = circleDetail.getCollectTimes();
+                        CURRENT_COMMENTTIMES = circleDetail.getCommentTimes();
+                        nicknameTV.setText(circleDetail.getNickname());
+                        releaseTimeTV.setText(circleDetail.getReleaseTime());
+                        titleTV.setText(circleDetail.getTitle());
+                        contentTV.setText(circleDetail.getContent());
+                        clickTimesTv.setText(String.valueOf(circleDetail.getClickTimes()));
                         collectTimesTv.setText(String.valueOf(CURRENT_COLLECTTIMES));
                         commentTimesTv.setText(String.valueOf(CURRENT_COMMENTTIMES));
-                        topicTv.setText(circleListItem.getTopic());
+                        topicTv.setText(circleDetail.getTopic());
                         // 加载图片
-                        if (!TextUtils.isEmpty(circleListItem.getImage())) {
+                        if (!TextUtils.isEmpty(circleDetail.getImage())) {
                             imageIV.setVisibility(View.VISIBLE);
-                            getNewsImage(circleListItem.getImage());
-                            getFaceImage(circleListItem.getFace());
+                            getNewsImage(circleDetail.getImage());
+                            getFaceImage(circleDetail.getFace());
                         } else {
                             imageIV.setVisibility(View.GONE);
                         }
-                        mList = circleListItem.getCommentListItems();
+                        mList = circleDetail.getCommentListItems();
                     }
                     if (mList != null && mList.size() > 0) {
                         adapter = new CircleDetailCommentsAdapter(mContext, mList);
@@ -459,8 +458,14 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         });
                         adapter.setOnCommentDeleteClickListner(new CircleDetailCommentsAdapter.OnCommentDeleteClickListner() {
                             @Override
-                            public void OnCommentDeleteClicked() {
-                                refreshData();
+                            public void OnCommentDeleteClicked(int position) {
+                                if (mList != null && !mList.isEmpty()) {
+                                    mList.remove(position);
+                                    adapter = new CircleDetailCommentsAdapter(mContext, mList);
+                                    commentsRv.setLayoutManager(layoutManager);
+                                    commentsRv.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                }
                             }
                         });
                         commentsRv.setLayoutManager(layoutManager);
@@ -480,10 +485,10 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 case 3:
-                    if (response.contains("error")) {
+                    if (Constants.ERROR.equals(response)) {
                         DisplayToast("请稍后再试..");
                     } else {
-                        DisplayToast(response);
+                        DisplayToast("评论成功！");
                         hideKeyboard();
                         CURRENT_COMMENTTIMES++;
                         commentTimesTv.setText(String.valueOf(CURRENT_COMMENTTIMES));
@@ -498,11 +503,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                             mList = new ArrayList<>();
                         }
                         mList.add(0, commentListItem);
-                        if (adapter == null) {
-                            adapter = new CircleDetailCommentsAdapter(mContext, mList);
-                            commentsRv.setLayoutManager(layoutManager);
-                            commentsRv.setAdapter(adapter);
-                        }
+                        adapter = new CircleDetailCommentsAdapter(mContext, mList);
+                        commentsRv.setLayoutManager(layoutManager);
+                        commentsRv.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         replyUsername = "";
                         addCommentET.setText("");
@@ -555,7 +558,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
+            DisplayToast("网络链接出错！");
         }
     }
 

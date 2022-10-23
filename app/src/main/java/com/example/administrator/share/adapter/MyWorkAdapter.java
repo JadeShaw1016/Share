@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,11 +21,11 @@ import com.example.administrator.share.util.Constants;
 
 import java.util.List;
 
-public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder>{
+public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder> {
     private static final String TAG = "MyWorkAdapter";
     private Context mContext;
-    private LayoutInflater inflater;
-    private List<MyWorkListItem> mList;
+    private final LayoutInflater inflater;
+    private final List<MyWorkListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -42,13 +43,13 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
     }
 
     public MyWorkAdapter(Context mContext, List<MyWorkListItem> mList) {
-        this.mContext=mContext;
+        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
@@ -72,11 +73,11 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         MyWorkListItem detail = mList.get(position);
         holder.myworkName.setText(detail.getTitle());
         holder.clickTimes.setText(String.valueOf(detail.getClickTimes()));
-        getImage(detail.getImage(),holder);
+        getImage(detail.getImage(), holder);
     }
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"download/getImage?imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
         Glide.with(mContext).load(uri).into(holder.myworkImage);
     }
 
