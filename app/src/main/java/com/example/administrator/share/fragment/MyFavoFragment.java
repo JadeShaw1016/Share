@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.MainMenuActivity;
+import com.example.administrator.share.ShareApplication;
 import com.example.administrator.share.adapter.CollectionListAdapter;
 import com.example.administrator.share.entity.CollectionAndFavorListItem;
 import com.example.administrator.share.util.Constants;
@@ -159,19 +159,20 @@ public class MyFavoFragment extends Fragment {
                     break;
 
                 default:
-                    Toast.makeText(MainMenuActivity.mContext, "What?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShareApplication.getContextObject(), "What?", Toast.LENGTH_SHORT).show();
                     break;
             }
-
         }
 
         @Override
         public void onError(Call call, Exception e, int id) {
+            adapter = new CollectionListAdapter(getActivity(), new ArrayList<CollectionAndFavorListItem>());
+            mListView.setAdapter(adapter);
             favRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             favRemindTv.setText(R.string.no_network_remind);
             favRemindIv.setVisibility(View.VISIBLE);
             favRemindTv.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(), "网络链接出错!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShareApplication.getContextObject(), "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }
 

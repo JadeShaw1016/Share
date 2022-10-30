@@ -164,6 +164,8 @@ public class MyCollectionFragment extends Fragment {
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            adapter = new CollectionListAdapter(getActivity(), new ArrayList<CollectionAndFavorListItem>());
+            mListView.setAdapter(adapter);
             collectRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             collectRemindTv.setText(R.string.no_network_remind);
             collectRemindIv.setVisibility(View.VISIBLE);

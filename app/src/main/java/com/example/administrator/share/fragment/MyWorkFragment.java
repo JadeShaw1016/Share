@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
-import com.example.administrator.share.activity.MainMenuActivity;
+import com.example.administrator.share.ShareApplication;
 import com.example.administrator.share.adapter.MyWorkAdapter;
 import com.example.administrator.share.entity.MyWorkListItem;
 import com.example.administrator.share.util.Constants;
@@ -158,18 +158,20 @@ public class MyWorkFragment extends Fragment {
                     break;
 
                 default:
-                    Toast.makeText(MainMenuActivity.mContext, "What?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShareApplication.getContextObject(), "What?", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            adapter = new MyWorkAdapter(getActivity(), new ArrayList<MyWorkListItem>());
+            recyclerView.setAdapter(adapter);
             myworkRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             myworkRemindTv.setText(R.string.no_network_remind);
             myworkRemindIv.setVisibility(View.VISIBLE);
             myworkRemindTv.setVisibility(View.VISIBLE);
-            Toast.makeText(MainMenuActivity.mContext, "网络链接出错!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShareApplication.getContextObject(), "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
     }
 

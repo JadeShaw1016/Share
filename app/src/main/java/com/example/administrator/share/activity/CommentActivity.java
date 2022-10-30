@@ -216,6 +216,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                     } else {
                         DisplayToast("评论成功！");
                         hideKeyboard();
+                        addCommentET.getText().clear();
                         commentPane.setVisibility(View.GONE);
                     }
                     break;

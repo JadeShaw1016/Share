@@ -40,11 +40,11 @@ import java.util.Objects;
 import okhttp3.Call;
 
 
-public class MeFragment extends Fragment implements View.OnClickListener{
+public class MeFragment extends Fragment implements View.OnClickListener {
 
     private TabLayout tabLayout;
     private ViewPager pager;
-    private String [] title={"我的作品","我的点赞","我的收藏"};
+    private final String[] title = {"我的作品", "我的点赞", "我的收藏"};
 
     private ImageView settingIv;
     private TextView nicknameTv;
@@ -67,9 +67,9 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    private void findViewById(View view){
-        pager= view.findViewById(R.id.page);
-        tabLayout= view.findViewById(R.id.tab_layout);
+    private void findViewById(View view) {
+        pager = view.findViewById(R.id.page);
+        tabLayout = view.findViewById(R.id.tab_layout);
         settingIv = view.findViewById(R.id.iv1);
         nicknameTv = view.findViewById(R.id.me_homepage_nickname);
         fansTv = view.findViewById(R.id.me_fans);
@@ -81,27 +81,27 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         signatureTv = view.findViewById(R.id.me_signature);
     }
 
-    private void initView(){
+    private void initView() {
         settingIv.setOnClickListener(this);
         fansLl.setOnClickListener(this);
         focusLl.setOnClickListener(this);
         faceIv.setOnClickListener(this);
-        echo();
+        nicknameTv.setText(Constants.USER.getNickname());
     }
 
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv1:
-                intent=new Intent(getActivity(), SettingActivity.class);
+                intent = new Intent(getActivity(), SettingActivity.class);
                 break;
             case R.id.ll_fans:
-                intent=new Intent(getActivity(), FansActivity.class);
+                intent = new Intent(getActivity(), FansActivity.class);
                 intent.putParcelableArrayListExtra("mFansList", (ArrayList<? extends Parcelable>) mFansList);
                 break;
             case R.id.ll_focus:
-                intent=new Intent(getActivity(), FocusActivity.class);
+                intent = new Intent(getActivity(), FocusActivity.class);
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
@@ -119,12 +119,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 });
                 break;
         }
-        if(intent != null){
+        if (intent != null) {
             startActivity(intent);
         }
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> mTitles = new ArrayList<>();
         Collections.addAll(mTitles, title);
@@ -136,13 +136,8 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
     }
 
-    private void echo(){
-        nicknameTv.setText(Constants.USER.getNickname());
-        getUserFace();
-    }
-
-    private void getUserFace(){
-        new AsyncTask<Void,Void,Integer>(){
+    private void getUserFace() {
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
             protected Integer doInBackground(Void... voids) {
@@ -156,6 +151,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                             @Override
                             public void onError(Call call, Exception e, int i) {
                             }
+
                             @Override
                             public void onResponse(Bitmap bitmap, int i) {
                                 faceIv.setImageBitmap(bitmap);
@@ -240,7 +236,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if(mFansList != null && !mFansList.isEmpty()){
+                    if (mFansList != null && !mFansList.isEmpty()) {
                         fansTv.setText(String.valueOf(mFansList.size()));
                     }
                     break;
@@ -255,7 +251,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if(mFocusList != null && !mFocusList.isEmpty()){
+                    if (mFocusList != null && !mFocusList.isEmpty()) {
                         focusTv.setText(String.valueOf(mFocusList.size()));
                     }
                     break;
@@ -280,8 +276,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         getFans();
         getFocus();
         getPopularity();
-        faceIv.setImageBitmap(Constants.FACEIMAGE);
-        if(Constants.USER.getSignature() != null){
+        if (Constants.FACEIMAGE == null) {
+            getUserFace();
+        } else {
+            faceIv.setImageBitmap(Constants.FACEIMAGE);
+        }
+        if (Constants.USER.getSignature() != null) {
             signatureTv.setText(Constants.USER.getSignature());
         }
     }

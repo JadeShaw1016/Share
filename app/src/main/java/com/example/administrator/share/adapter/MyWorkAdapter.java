@@ -48,6 +48,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
         this.inflater = LayoutInflater.from(mContext);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (mContext == null) {

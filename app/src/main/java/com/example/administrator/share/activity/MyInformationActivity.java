@@ -40,7 +40,6 @@ import com.zxy.tiny.callback.FileWithBitmapCallback;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -247,24 +246,20 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
         @Override
         public void onResponse(String response, int id) {
             uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-            if ("更新失败".equals(response)) {
+            if (Constants.ERROR.equals(response)) {
                 DisplayToast("更新失败，请稍后重试！");
                 return;
             }
             Gson gson = new Gson();
-            Map<String, String> map = new HashMap<>();
+            Map<String, String> map = gson.fromJson(response, new TypeToken<Map<String, String>>() {
+            }.getType());
             switch (id) {
                 case 1:
-                    map = gson.fromJson(response, new TypeToken<Map<String, String>>() {
-                    }.getType());
                     // 更新信息
                     Constants.USER.setPassword(map.get("password"));
                     Constants.USER.setSignature(map.get("signature"));
                     break;
                 case 2:
-                    uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-                    map = gson.fromJson(response, new TypeToken<Map<String, String>>() {
-                    }.getType());
                     // 更新信息
                     Constants.USER.setPassword(map.get("password"));
                     Constants.USER.setSignature(map.get("signature"));

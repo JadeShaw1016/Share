@@ -198,17 +198,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
         observableScrollView.setOnScrollStatusListener(new ObservableScrollView.OnScrollStatusListener() {
             @Override
             public void onScrollStop() {
-                commentFab.show();
-                collectFab.show();
-                favorFab.show();
+                showFloatButton();
             }
 
             @Override
             public void onScrolling() {
                 commentPane.setVisibility(View.GONE);
-                commentFab.hide();
-                collectFab.hide();
-                favorFab.hide();
+                hideFloatButton();
             }
         });
     }
@@ -240,13 +236,23 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showCommemtPane() {
-        commentFab.hide();
-        collectFab.hide();
-        favorFab.hide();
+        hideFloatButton();
         addCommentET.setHint(R.string.new_detail_add_comment_hint);
         commentPane.setVisibility(View.VISIBLE);
         replyUsername = "";
         showKeyboard(addCommentET);
+    }
+
+    private void showFloatButton() {
+        commentFab.show();
+        collectFab.show();
+        favorFab.show();
+    }
+
+    private void hideFloatButton() {
+        commentFab.hide();
+        collectFab.hide();
+        favorFab.hide();
     }
 
     private void refreshData() {
@@ -508,12 +514,13 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         commentsRv.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         replyUsername = "";
-                        addCommentET.setText("");
+                        addCommentET.getText().clear();
                         commentPane.setVisibility(View.GONE);
+                        showFloatButton();
                     }
                     break;
                 case 4:
-                    if (response.equals("已收藏")) {
+                    if (Constants.OK.equals(response)) {
                         collectFab.setImageResource(R.drawable.ic_is_collected);
                     } else {
                         collectFab.setImageResource(R.drawable.ic_is_not_collected);

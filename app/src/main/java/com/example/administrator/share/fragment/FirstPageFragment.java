@@ -67,7 +67,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     private int POSITION = 0;
     private List<CircleList> mCircleList;
     private final int PAGE_COUNT = 5;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastVisibleItem = 0;
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
@@ -182,7 +182,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
@@ -327,6 +327,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void getSelectedCircles() {
+        swipeRefresh.setRefreshing(true);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -343,6 +344,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void getMyFocusCircles() {
+        swipeRefresh.setRefreshing(true);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -359,6 +361,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void getSearchCircles(final String text) {
+        swipeRefresh.setRefreshing(true);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -394,7 +397,6 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                         recyclerView.setAdapter(adapter0);
                         firstPageRemindIv.setVisibility(View.VISIBLE);
                         firstPageRemindTv.setVisibility(View.VISIBLE);
-                        swipeRefresh.setRefreshing(false);
                     } else {
                         setAdapter();
                     }
@@ -410,17 +412,18 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
                     Toast.makeText(mContext, "what！", Toast.LENGTH_SHORT).show();
                     break;
             }
+            swipeRefresh.setRefreshing(false);
         }
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            swipeRefresh.setRefreshing(false);
             adapter0 = new FirstPageListAdapter0(mContext, new ArrayList<CircleList>(), false);
             recyclerView.setAdapter(adapter0);
             firstPageRemindIv.setImageResource(R.drawable.default_remind_nosignal);
             firstPageRemindTv.setText(R.string.no_network_remind);
             firstPageRemindIv.setVisibility(View.VISIBLE);
             firstPageRemindTv.setVisibility(View.VISIBLE);
+            swipeRefresh.setRefreshing(false);
             Toast.makeText(mContext, "FirstPageFragment网络链接出错！" + arg1, Toast.LENGTH_SHORT).show();
         }
     }
@@ -430,7 +433,6 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
         firstPageRemindTv.setVisibility(View.INVISIBLE);
         adapter0 = new FirstPageListAdapter0(mContext, getDatas(0, PAGE_COUNT), getDatas(0, PAGE_COUNT).size() > 0);
         recyclerView.setAdapter(adapter0);
-        swipeRefresh.setRefreshing(false);
     }
 
     private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {

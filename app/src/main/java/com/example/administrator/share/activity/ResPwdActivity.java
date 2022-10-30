@@ -122,7 +122,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
             switch (id) {
                 case 1:
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-                    if ("更新失败".equals(response)) {
+                    if (Constants.ERROR.equals(response)) {
                         new AlertDialog.Builder(mContext)
                                 .setTitle("提示")
                                 .setMessage("该用户不存在，请用手机号注册登录！")
@@ -136,7 +136,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                                 })
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        return;
                                     }
                                 })
                                 .show();
@@ -144,7 +143,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                     } else {
                         // 更新用户密码
                         Constants.USER.setPassword(response);
-                        boolean result = SharedPreferencesUtils.saveUserInfo(mContext, Constants.USER);
+                        boolean result = SharedPreferencesUtils.updateUserInfo(mContext, "password", response);
                         if (result) {
                             Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
                         } else {
@@ -152,9 +151,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                         }
                     }
                     finish();
-                    break;
-                case 2:
-
                     break;
                 default:
                     DisplayToast("what?");
@@ -164,7 +160,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            DisplayToast("网络链接出错！"+arg1);
+            DisplayToast("网络链接出错！" + arg1);
         }
     }
 }

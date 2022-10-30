@@ -1,6 +1,5 @@
 package com.example.administrator.share.activity;//这里换成你自己的
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     private static final String TAG_PAGE_PERSON = "我的";
 
     private MainNavigateTabBar mNavigateTabBar;
-    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         findViewById();
         mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
         initView();
-        mContext = this;
     }
 
     @Override

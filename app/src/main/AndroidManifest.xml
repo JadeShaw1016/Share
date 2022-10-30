@@ -27,7 +27,8 @@
         tools:targetApi="p">
         <activity android:name=".activity.SystemInfoActivity"/>
         <activity android:name=".activity.PersonalHomepageActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +38,8 @@
         <activity
             android:name=".activity.MainMenuActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
 
