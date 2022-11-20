@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -60,7 +61,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
 
     private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         commentLl = view.findViewById(R.id.ll_message_comment);
         favorLl = view.findViewById(R.id.ll_message_favor);
         fansLl = view.findViewById(R.id.ll_message_fans);
@@ -97,7 +100,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         inflater.inflate(R.menu.toolbar, menu);
         menu.findItem(R.id.more).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);

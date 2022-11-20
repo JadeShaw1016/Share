@@ -89,10 +89,11 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
 
     private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         recyclerView = view.findViewById(R.id.recycler_view);
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
-        mList = new ArrayList<>();
         appBarLayout = view.findViewById(R.id.appbar_firstpage);
         searchView = view.findViewById(R.id.sv_firstpage);
         firstPageRemindIv = view.findViewById(R.id.iv_fristpage_remind);
@@ -100,6 +101,7 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void initView() {
+        mList = new ArrayList<>();
         mContext = getActivity();
         toolbar.setTitle("每日精选");
         swipeRefresh.setColorSchemeResources(R.color.fuxk_base_color_cyan);
@@ -221,7 +223,10 @@ public class FirstPageFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         inflater.inflate(R.menu.toolbar, menu);
         menu.findItem(R.id.meirijingxuan).setVisible(true);
         menu.findItem(R.id.myfocus).setVisible(true);

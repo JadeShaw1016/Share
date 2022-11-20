@@ -74,7 +74,9 @@ public class CircleFragment extends Fragment implements View.OnClickListener {
 
     private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         circleList = view.findViewById(R.id.list_circle);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         circleRemindIv = view.findViewById(R.id.iv_circle_remind);
@@ -157,7 +159,10 @@ public class CircleFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         inflater.inflate(R.menu.toolbar, menu);
         menu.findItem(R.id.calendar).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);

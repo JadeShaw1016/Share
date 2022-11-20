@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -47,6 +46,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 
@@ -87,6 +89,10 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     private ObservableScrollView observableScrollView;
     private TextView topicTv;
     private CircleDetail circleDetail;
+
+    private static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(2, 4, 3,
+            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+            new ThreadPoolExecutor.DiscardOldestPolicy());
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -257,9 +263,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private void refreshData() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        new AsyncTask<Void, Void, Integer>() {
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "circle/getCircleDetail";
                 OkHttpUtils
                         .get()
@@ -268,9 +274,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                         .addParams("newsId", String.valueOf(newsId))
                         .build()
                         .execute(new MyStringCallback());
-                return 0;
             }
-        }.execute();
+        });
     }
 
     //添加新收藏
@@ -396,9 +401,9 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private void addClickTimes() {
         if (authorId != Constants.USER.getUserId()) {
-            new AsyncTask<Void, Void, Integer>() {
+            THREADPOOL.execute(new Runnable() {
                 @Override
-                protected Integer doInBackground(Void... voids) {
+                public void run() {
                     String url = Constants.BASE_URL + "circle/addClickTimes";
                     OkHttpUtils
                             .post()
@@ -407,9 +412,8 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
                             .addParams("newsId", String.valueOf(newsId))
                             .build()
                             .execute(new MyStringCallback());
-                    return 0;
                 }
-            }.execute();
+            });
         }
     }
 
@@ -621,7 +625,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
             //当isShouldHideInput(v, ev)为true时，表示的是点击输入框区域，则需要显示键盘，同时显示光标，反之，需要隐藏键盘、光标
             if (isShouldHideInput(v, ev)) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
+                if (imm != null && v != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
@@ -635,7 +639,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
+        if ((v instanceof EditText)) {
             int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
