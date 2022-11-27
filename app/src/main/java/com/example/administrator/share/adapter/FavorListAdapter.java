@@ -3,7 +3,6 @@ package com.example.administrator.share.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,30 +77,24 @@ public class FavorListAdapter extends RecyclerView.Adapter<FavorListAdapter.View
                 final int favorId = favorMsgListItem.getFavorId();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", favorMsgListItem.getNewsId());
-                intent.putExtra("authorId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getAuthorId());
                 mContext.startActivity(intent);
                 if (favorMsgListItem.getIsVisited() == 0) {
-                    new AsyncTask<Void, Void, Integer>() {
-                        @Override
-                        protected Integer doInBackground(Void... voids) {
-                            String url = Constants.BASE_URL + "favors/updateFavorStatus";
-                            OkHttpUtils
-                                    .post()
-                                    .url(url)
-                                    .addParams("favorId", String.valueOf(favorId))
-                                    .build()
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                        }
+                    String url = Constants.BASE_URL + "favors/updateFavorStatus";
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .addParams("favorId", String.valueOf(favorId))
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                }
 
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                        }
-                                    });
-                            return 0;
-                        }
-                    }.execute();
+                                @Override
+                                public void onResponse(String response, int id) {
+                                }
+                            });
                 }
             }
         });

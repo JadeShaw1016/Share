@@ -74,7 +74,6 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_personal_homepage);
         findViewById();
         initView();
-        setAdapter();
     }
 
     @Override
@@ -170,7 +169,6 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         getFans();
         getFocus();
         getPopularity();
-        isFocused();
         if (signature != null) {
             signatureTv.setText(signature);
         }
@@ -330,5 +328,12 @@ public class PersonalHomepageActivity extends BaseActivity implements View.OnCli
         public void onError(Call arg0, Exception arg1, int arg2) {
             Toast.makeText(mContext, "网络链接出错!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        setAdapter();
+        isFocused();
+        super.onResume();
     }
 }

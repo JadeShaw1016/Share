@@ -5,9 +5,9 @@ public class FavorMsgListItem {
     private int newsId;
 
     /**
-     *  userId是点赞者的id
+     *  authorId是被点赞的人的id
      */
-    private int userId;
+    private int authorId;
 
     private String face;
 
@@ -41,8 +41,8 @@ public class FavorMsgListItem {
         return nickname;
     }
 
-    public int getUserId(){
-        return userId;
+    public int getAuthorId(){
+        return authorId;
     }
 
     public String getFace(){ return face; }

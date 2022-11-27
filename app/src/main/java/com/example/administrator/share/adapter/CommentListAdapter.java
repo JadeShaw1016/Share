@@ -3,7 +3,6 @@ package com.example.administrator.share.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,27 +80,21 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 CommentMsgListItem commentMsgListItem = mList.get(position);
                 final int commentId = commentMsgListItem.getCommentId();
                 if (commentMsgListItem.getIsVisited() == 0) {
-                    new AsyncTask<Void, Void, Integer>() {
-                        @Override
-                        protected Integer doInBackground(Void... voids) {
-                            String url = Constants.BASE_URL + "comments/updateCommentStatus";
-                            OkHttpUtils
-                                    .post()
-                                    .url(url)
-                                    .addParams("commentId", String.valueOf(commentId))
-                                    .build()
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                        }
+                    String url = Constants.BASE_URL + "comments/updateCommentStatus";
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .addParams("commentId", String.valueOf(commentId))
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                }
 
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                        }
-                                    });
-                            return 0;
-                        }
-                    }.execute();
+                                @Override
+                                public void onResponse(String response, int id) {
+                                }
+                            });
                 }
             }
         });

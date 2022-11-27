@@ -62,7 +62,7 @@ public class MyWorkAdapter extends RecyclerView.Adapter<MyWorkAdapter.ViewHolder
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("authorId", Constants.USER.getUserId());
+                intent.putExtra("authorId", mList.get(position).getuserId());
                 mContext.startActivity(intent);
             }
         });

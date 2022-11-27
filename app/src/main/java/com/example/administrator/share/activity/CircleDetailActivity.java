@@ -56,7 +56,6 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
 
     private CircleDetailCommentsAdapter adapter;
     private List<CommentListItem> mList;
-    private String TITLE_NAME = "圈子详情";
     private View title_back;
     private TextView titleText;
     private TextView nicknameTV;
@@ -133,7 +132,7 @@ public class CircleDetailActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initView() {
         mContext = this;
-        this.titleText.setText(TITLE_NAME);
+        this.titleText.setText("圈子详情");
         this.title_back.setOnClickListener(this);
         addCommentIV.setOnClickListener(this);
         focusBtn.setOnClickListener(this);

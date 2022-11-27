@@ -51,10 +51,10 @@ public class MyWorkFragment extends Fragment {
     private TextView myworkRemindTv;
     private MyWorkAdapter adapter;
     private final int PAGE_COUNT = 10;
-    private static String USERID;
+    private static String mUserId;
 
     public static Fragment newInstance(String userId) {
-        USERID = userId;
+        mUserId = userId;
         return new MyWorkFragment();
     }
 
@@ -122,7 +122,7 @@ public class MyWorkFragment extends Fragment {
                         .get()
                         .url(url)
                         .id(1)
-                        .addParams("userId", USERID)
+                        .addParams("userId", mUserId)
                         .build()
                         .execute(new MyStringCallback());
             }

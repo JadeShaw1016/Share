@@ -1,7 +1,6 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -140,21 +139,14 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
      * 获取所有对我的评论消息
      */
     private void getComments() {
-        new AsyncTask<Void,Void,Integer>(){
-
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "comments/getCommentsList";
-                OkHttpUtils
-                        .get()
-                        .url(url)
-                        .id(1)
-                        .addParams("authorName", Constants.USER.getNickname())
-                        .build()
-                        .execute(new MyStringCallback());
-                return null;
-            }
-        }.execute();
+        String url = Constants.BASE_URL + "comments/getCommentsList";
+        OkHttpUtils
+                .get()
+                .url(url)
+                .id(1)
+                .addParams("authorName", Constants.USER.getNickname())
+                .build()
+                .execute(new MyStringCallback());
     }
 
     // 添加新评论

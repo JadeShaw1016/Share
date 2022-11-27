@@ -67,7 +67,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         titleText.setText("粉丝");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
-        getFans();
     }
 
     private void refreshListener(){
@@ -144,4 +143,9 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    @Override
+    protected void onResume() {
+        getFans();
+        super.onResume();
+    }
 }

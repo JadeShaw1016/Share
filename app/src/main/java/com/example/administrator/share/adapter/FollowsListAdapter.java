@@ -3,7 +3,6 @@ package com.example.administrator.share.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,9 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 
@@ -35,6 +37,10 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
     private final List<FollowsListItem> mList;
     //flag区分关注列表和粉丝列表，0表示关注列表，1表示粉丝列表
     private final int flag;
+
+    private static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(3, 4, 3,
+            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+            new ThreadPoolExecutor.DiscardOldestPolicy());
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nicknameTv;
@@ -104,7 +110,11 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
                                 }).show();
                         break;
                     case "添加关注":
-                        addFocus(mList.get(position).getUserId(), holder, 1);
+                        if (Constants.USER.getUserId() == mList.get(position).getUserId()) {
+                            Toast.makeText(mContext, "不能关注自己哦！", Toast.LENGTH_SHORT).show();
+                        } else {
+                            addFocus(mList.get(position).getUserId(), holder, 1);
+                        }
                         break;
                 }
             }
@@ -122,6 +132,7 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
         if (flag == 0) {
             holder.stateIv.setImageResource(R.drawable.icon_has_focused);
             holder.stateTv.setText("\u0020\u0020已关注\u0020\u0020");
+            isFocused(detail.getUserId(), holder);
             isFocusedEachOther(detail.getUserId(), holder);
         } else {
             holder.stateIv.setImageResource(R.drawable.icon_add_focus);
@@ -149,7 +160,7 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
     }
 
     private void addFocus(final int userId, final ViewHolder holder, final int id) {
-        new Thread(new Runnable() {
+        THREADPOOL.execute(new Runnable() {
             @Override
             public void run() {
                 String url = Constants.BASE_URL + "follows/addFocus";
@@ -162,13 +173,13 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
                         .build()
                         .execute(new MyStringCallback(holder));
             }
-        }).start();
+        });
     }
 
     private void isFocusedEachOther(final int fansId, final ViewHolder holder) {
-        new AsyncTask<Void, Void, Integer>() {
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "follows/isFocusedEachOther";
                 OkHttpUtils
                         .get()
@@ -178,9 +189,25 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
                         .addParams("fansId", String.valueOf(fansId))
                         .build()
                         .execute(new MyStringCallback(holder));
-                return 0;
             }
-        }.execute();
+        });
+    }
+
+    private void isFocused(final int fansId, final ViewHolder holder) {
+        THREADPOOL.execute(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constants.BASE_URL + "follows/isFocused";
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .id(4)
+                        .addParams("fansId", String.valueOf(Constants.USER.getUserId()))
+                        .addParams("userId", String.valueOf(fansId))
+                        .build()
+                        .execute(new MyStringCallback(holder));
+            }
+        });
     }
 
     public class MyStringCallback extends StringCallback {
@@ -211,6 +238,12 @@ public class FollowsListAdapter extends RecyclerView.Adapter<FollowsListAdapter.
                     if (response.equals("true")) {
                         holder.stateIv.setImageResource(R.drawable.icon_focus_eachother);
                         holder.stateTv.setText("互相关注");
+                    }
+                    break;
+                case 4:
+                    if (!response.equals("已关注")) {
+                        holder.stateIv.setImageResource(R.drawable.icon_add_focus);
+                        holder.stateTv.setText("添加关注");
                     }
                     break;
                 default:

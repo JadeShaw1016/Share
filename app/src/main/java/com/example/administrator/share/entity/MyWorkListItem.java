@@ -3,6 +3,8 @@ package com.example.administrator.share.entity;
 public class MyWorkListItem {
     private int newsId;
 
+    private int userId;
+
     private String image;
 
     private String title;
@@ -11,6 +13,10 @@ public class MyWorkListItem {
 
     public int getNewsId() {
         return newsId;
+    }
+
+    public int getuserId() {
+        return userId;
     }
 
     public String getImage() {

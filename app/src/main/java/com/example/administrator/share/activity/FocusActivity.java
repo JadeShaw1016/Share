@@ -67,7 +67,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         titleText.setText("关注");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
-        getFocus();
     }
 
     private void refreshListener(){
@@ -142,5 +141,11 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         } else {
             refreshLayout.finishLoadmoreWithNoMoreData();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        getFocus();
+        super.onResume();
     }
 }

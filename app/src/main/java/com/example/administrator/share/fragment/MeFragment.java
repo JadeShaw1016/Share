@@ -35,7 +35,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import okhttp3.Call;
 
@@ -63,7 +62,6 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_me, null);
         findViewById(view);
         initView();
-        setAdapter();
         return view;
     }
 
@@ -105,7 +103,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
-                final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()), R.style.MyDialogStyle_fullScreen_black);
+                final Dialog dialog = new Dialog(requireContext(), R.style.MyDialogStyle_fullScreen_black);
                 ImageView imageView = new ImageView(getContext());
                 imageView.setImageBitmap(Constants.FACEIMAGE);
                 dialog.setContentView(imageView);
@@ -272,7 +270,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
-        super.onResume();
+        setAdapter();
         getFans();
         getFocus();
         getPopularity();
@@ -284,5 +282,6 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         if (Constants.USER.getSignature() != null) {
             signatureTv.setText(Constants.USER.getSignature());
         }
+        super.onResume();
     }
 }
