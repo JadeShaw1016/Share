@@ -333,9 +333,9 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     /**
      * 申请权限回调方法
      *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode 请求码
+     * @param permissions 请求
+     * @param grantResults 授予结果
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -363,9 +363,9 @@ public class MyInformationActivity extends BaseActivity implements View.OnClickL
     /**
      * startActivityForResult执行后的回调方法，接收返回的图片
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode 请求码
+     * @param resultCode 结果码
+     * @param data intent数据
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

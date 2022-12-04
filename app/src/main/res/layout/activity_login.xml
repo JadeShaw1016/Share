@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_login_welcome"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="84dp"
         android:text="欢迎\n来到晒的世界"
         android:textColor="#ff404040"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/tv_login_content"
-        android:layout_width="96dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:text="体验真实的生活感\n和美的感染力"
         android:textColor="#ff404040"

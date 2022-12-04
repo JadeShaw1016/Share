@@ -79,7 +79,9 @@ public class PhoneCode extends RelativeLayout {
                 if (editable != null && editable.length() > 0) {
                     et_code.setText("");
                     if (codes.size() < 4) {
-                        codes.add(editable.toString());
+                        for (int i = 0; i < editable.length() && i <4 ; i++) {
+                            codes.add(String.valueOf(editable.charAt(i)));
+                        }
                         showCode();
                     }
                 }
