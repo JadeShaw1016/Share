@@ -13,7 +13,7 @@ public class Utils {
     }
 
     /**
-     * 正则匹配手机号码:
+     * 正则匹配手机号码
      */
     public static boolean checkTel(String tel){
         Pattern p = Pattern.compile("^[1][3,4,5,7,8,9][0-9]{9}$");

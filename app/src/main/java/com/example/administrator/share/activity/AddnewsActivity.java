@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -99,7 +100,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         if (INDEX == 1) {
             topicRl.setVisibility(View.VISIBLE);
         }
-        uiFlusHandler = new MyDialogHandler(this, "登录中...");
+        uiFlusHandler = new MyDialogHandler(this, "发布中...");
     }
 
     @Override
@@ -169,7 +170,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private void releaseNewCircle(String topic) {
         String titleStr = titleEt.getText().toString();
         String contentStr = contentEt.getText().toString();
-        uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
+        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         String url = Constants.BASE_URL + "circle/releaseNewCircleWithImage";
         OkHttpUtils
                 .post()
@@ -194,7 +195,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 outputImage.delete();
             }
             outputImage.createNewFile();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,25 +257,17 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case CHOOSE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {  //4.4及以上的系统使用这个方法处理图片；
-                        handleImageOnKitKat(data);
-                    } else {
-                        handleImageBeforeKitKat(data);  //4.4及以下的系统使用这个方法处理图片
-                    }
+                    //4.4及以上的系统使用这个方法处理图片；
+                    handleImageOnKitKat(data);
                 }
                 break;
             default:
                 break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleImageBeforeKitKat(Intent data) {
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri, null);
-        displayImage(imagePath);
-    }
-
-
+    @SuppressLint("Range")
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         //通过Uri和selection来获取真实的图片路径
@@ -289,7 +281,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         return path;
     }
 
-
     /**
      * 4.4及以上的系统使用这个方法处理图片
      *
@@ -299,31 +290,32 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private void handleImageOnKitKat(Intent data) {
         String imagePath = null;
         Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            //如果document类型的Uri,则通过document来处理
-            String docID = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docID.split(":")[1];     //解析出数字格式的id
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/piblic_downloads"), Long.parseLong(docID));
-                imagePath = getImagePath(contentUri, null);
+        if (uri != null) {
+            if (DocumentsContract.isDocumentUri(this, uri)) {
+                //如果document类型的Uri,则通过document来处理
+                String docID = DocumentsContract.getDocumentId(uri);
+                if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                    String id = docID.split(":")[1];     //解析出数字格式的id
+                    String selection = MediaStore.Images.Media._ID + "=" + id;
+                    imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+                } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                    Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/piblic_downloads"), Long.parseLong(docID));
+                    imagePath = getImagePath(contentUri, null);
+                }
+            } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                //如果是content类型的uri，则使用普通方式使用
+                imagePath = getImagePath(uri, null);
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                //如果是file类型的uri，直接获取路径即可
+                imagePath = uri.getPath();
             }
-
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            //如果是content类型的uri，则使用普通方式使用
-            imagePath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            //如果是file类型的uri，直接获取路径即可
-            imagePath = uri.getPath();
         }
         displayImage(imagePath);
-        imageFile = new File(imagePath);
     }
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
+            imageFile = new File(imagePath);
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             picture.setImageBitmap(bitmap);
         } else {
@@ -395,6 +387,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
             DisplayToast("网络链接出错！");
         }
     }

@@ -16,7 +16,7 @@ import com.example.administrator.share.util.Utils;
 
 import cn.smssdk.SMSSDK;
 
-public class LoginWithVercodeActivity extends BaseActivity implements View.OnClickListener{
+public class LoginWithVercodeActivity extends BaseActivity implements View.OnClickListener {
 
     protected static Button buttonLogin;
     protected static PhoneCode editTextCode;
@@ -48,11 +48,11 @@ public class LoginWithVercodeActivity extends BaseActivity implements View.OnCli
     @Override
     protected void initView() {
         uiFlusHandler = new MyDialogHandler(this, "登录中...");
-        phoneNumTv.setText("+86 "+ Utils.hidePhoneNum(phoneNum));
+        phoneNumTv.setText("+86 " + Utils.hidePhoneNum(phoneNum));
         timeTv.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
         backIv.setOnClickListener(this);
-        myCountDownTimer = new MyCountDownTimer(60000,1000);
+        myCountDownTimer = new MyCountDownTimer(60000, 1000);
         myCountDownTimer.start();
         editTextCode.setOnInputListener(new PhoneCode.OnInputListener() {
             @Override
@@ -74,14 +74,14 @@ public class LoginWithVercodeActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.buttonLogin:
                 String code = editTextCode.getPhoneCode();
-                if(!code.isEmpty()){
+                if (!code.isEmpty()) {
                     //提交验证码
                     SMSSDK.submitVerificationCode("86", phoneNum, code);
-                }else{
-                    Toast.makeText(getApplicationContext(),"请输入验证码",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
@@ -97,7 +97,6 @@ public class LoginWithVercodeActivity extends BaseActivity implements View.OnCli
 
     //倒计时函数
     private class MyCountDownTimer extends CountDownTimer {
-
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
@@ -107,7 +106,7 @@ public class LoginWithVercodeActivity extends BaseActivity implements View.OnCli
         public void onTick(long l) {
             //防止计时过程中重复点击
             timeTv.setClickable(false);
-            timeTv.setText(l/1000+"秒");
+            timeTv.setText(l / 1000 + "秒");
 
         }
 

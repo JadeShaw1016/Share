@@ -1,6 +1,5 @@
 package com.example.administrator.share.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.TextView;
@@ -12,12 +11,18 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 
 public class BeforeDateCheckActivity extends BaseActivity {
 
     private TextView recorddaysTv;
+    private static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(2, 4, 3,
+            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+            new ThreadPoolExecutor.DiscardOldestPolicy());
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -46,9 +51,9 @@ public class BeforeDateCheckActivity extends BaseActivity {
 
 
     private void getCheckedList() {
-        new AsyncTask<Void, Void, Integer>() {
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "dailycheck/getCheckedList";
                 OkHttpUtils
                         .get()
@@ -57,15 +62,14 @@ public class BeforeDateCheckActivity extends BaseActivity {
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        });
     }
 
     private void getRecords() {
-        new AsyncTask<Void, Void, Integer>() {
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            public void run() {
                 String url = Constants.BASE_URL + "dailycheck/getTotalCheckRecord";
                 OkHttpUtils
                         .get()
@@ -74,9 +78,8 @@ public class BeforeDateCheckActivity extends BaseActivity {
                         .id(2)
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        });
     }
 
     public class MyStringCallback extends StringCallback {
@@ -84,27 +87,20 @@ public class BeforeDateCheckActivity extends BaseActivity {
         public void onResponse(String response, int id) {
             switch (id) {
                 case 1:
-                    if (Constants.ERROR.equals(response)) {
-                        DisplayToast("暂时无法获取数据");
+                    if (Constants.DAILYCHECKEDLIST == null) {
+                        Constants.DAILYCHECKEDLIST = new ArrayList<>();
                     } else {
-                        if (response.length() == 0) {
-                            Constants.DAILYCHECKEDLIST = new ArrayList<>();
-                            Constants.DAILYCHECKEDLIST.add("2000-1-1");
-                        } else {
-                            String[] dates = response.split(",");
-                            if (Constants.DAILYCHECKEDLIST == null) {
-                                Constants.DAILYCHECKEDLIST = new ArrayList<>();
-                            } else {
-                                Constants.DAILYCHECKEDLIST.clear();
-                            }
-                            for (String s : dates) {
-                                String[] split = s.split("-");
-                                s = split[0] + "-" + removeHeadingZero(split[1]) + "-" + removeHeadingZero(split[2]);
-                                Constants.DAILYCHECKEDLIST.add(s);
-                            }
-                        }
-                        openActivity(DateCheckActivity.class);
+                        Constants.DAILYCHECKEDLIST.clear();
                     }
+                    if (response.length() != 0) {
+                        String[] dates = response.split(",");
+                        for (String s : dates) {
+                            String[] split = s.split("-");
+                            s = split[0] + "-" + removeHeadingZero(split[1]) + "-" + removeHeadingZero(split[2]);
+                            Constants.DAILYCHECKEDLIST.add(s);
+                        }
+                    }
+                    openActivity(DateCheckActivity.class);
                     finish();
                     break;
                 case 2:
@@ -129,7 +125,7 @@ public class BeforeDateCheckActivity extends BaseActivity {
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            DisplayToast("BeforeDateCheckActivity网络链接出错！" + arg1);
+            DisplayToast("网络链接出错！" + arg1);
         }
     }
 }
