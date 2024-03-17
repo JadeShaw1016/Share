@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -166,10 +166,16 @@
                     android:layout_height="0.1dp"
                     android:background="@color/aliceblue" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/news_detail_comment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/bottom_remind"
+                    android:layout_marginBottom="55dp"/>
             </LinearLayout>
         </com.example.administrator.share.util.ObservableScrollView>
 
@@ -206,7 +212,7 @@
             android:background="@color/aliceblue" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_cirlce_detail_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -223,7 +229,7 @@
         android:layout_margin="15dp"
         android:layout_gravity="bottom|end"
         android:orientation="horizontal">
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_cirlce_detail_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -232,7 +238,7 @@
             android:scaleType="centerCrop"
             android:layout_marginEnd="15dp"
             app:backgroundTint="@color/white"/>
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_cirlce_detail_favor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -241,4 +247,4 @@
             android:scaleType="centerCrop"
             app:backgroundTint="@color/white"/>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

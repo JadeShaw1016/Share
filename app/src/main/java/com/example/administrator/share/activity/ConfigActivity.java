@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,11 +14,8 @@ import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.SharedPreferencesUtils;
 
-import java.util.Map;
-
 public class ConfigActivity extends BaseActivity implements View.OnClickListener {
 
-    private String TITLE_NAME = "配置";
     private View title_back;
     private TextView titleText;
 
@@ -48,7 +46,7 @@ public class ConfigActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         mContext = this;
-        this.titleText.setText(TITLE_NAME);
+        this.titleText.setText("配置");
         this.title_back.setOnClickListener(this);
         saveButton.setOnClickListener(this);
 
@@ -60,9 +58,9 @@ public class ConfigActivity extends BaseActivity implements View.OnClickListener
      * 数据回显
      */
     private void echo() {
-        Map<String, String> map = SharedPreferencesUtils.getIPConfig(mContext);
-        ipEditText.setText(map.get("ip"));
-        portEditText.setText(map.get("port"));
+        SharedPreferences preferences = mContext.getSharedPreferences("serverConnect", Context.MODE_PRIVATE);
+        ipEditText.setText(preferences.getString("ip", ""));
+        portEditText.setText(preferences.getString("port", ""));
     }
 
     @Override
@@ -85,9 +83,12 @@ public class ConfigActivity extends BaseActivity implements View.OnClickListener
             DisplayToast("请勿留空！");
             return;
         }
-        SharedPreferencesUtils.saveIPConfig(mContext, ip, port);
-        Constants.BASE_URL = "http://" + ip + ":" + port + "/ShareServer/";
-        DisplayToast(Constants.BASE_URL);
-        this.finish();
+        if(SharedPreferencesUtils.saveIPConfig(mContext, ip, port)){
+            Constants.BASE_URL = "http://" + ip + ":" + port + "/";
+            DisplayToast("修改成功:"+Constants.BASE_URL);
+            this.finish();
+        } else {
+            DisplayToast("修改失败！");
+        }
     }
 }

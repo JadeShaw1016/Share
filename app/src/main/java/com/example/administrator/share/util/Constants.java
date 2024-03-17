@@ -3,98 +3,43 @@ package com.example.administrator.share.util;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.example.administrator.share.ShareApplication;
 import com.example.administrator.share.entity.User;
 
 import java.io.File;
 import java.util.List;
 
 public class Constants {
-	/**
-	 ******************************************* 参数设置信息开始 ******************************************
-	 */
 
-	// 用户对象
-	public static User USER = new User();
+    public final static String ERROR = "error";
 
-	//用户头像
-	public static Bitmap FACEIMAGE;
+    public final static String OK = "ok";
 
-	public static List<String> DAILYCHECKEDLIST;
+    // 用户对象
+    public static User USER = SharedPreferencesUtils.getUserInfo(ShareApplication.getContextObject());
 
-	// 应用名称
-	public static String APP_NAME = "";
+    //用户头像
+    public static Bitmap FACEIMAGE;
 
-	// 服务器地址
-//	public static String BASE_URL = "http://81.70.145.250:8080/ShareServer/";
-	public static String BASE_URL = "http://192.168.1.114:8081/ShareServer/";
+    //打卡日期列表
+    public static List<String> DAILYCHECKEDLIST;
 
-	// 保存参数文件夹名称
-	public static final String SHARED_PREFERENCE_NAME = "share_prefs";
+    // 服务器地址
+    public static String DEFAULT_URL = "http://192.168.1.4:8080/";
+    public static String BASE_URL = SharedPreferencesUtils.getIPConfig(ShareApplication.getContextObject());
 
-	// SDCard路径
-	public static final String SD_PATH = Environment
-			.getExternalStorageDirectory().getAbsolutePath()
-			+ File.separator
-			+ "com.share";
+    // SDCard路径
+    public static final String SD_PATH = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + File.separator
+            + "com.share";
 
-	// 图片存储路径
-	public static final String BASE_PATH = SD_PATH + "/images";
+    // 图片存储路径
+    public static final String BASE_PATH = SD_PATH + "/images";
 
-	// 缓存图片路径
-	public static final String BASE_IMAGE_CACHE = BASE_PATH + "/cache";
+    // 缓存图片路径
+    public static final String BASE_IMAGE_CACHE = BASE_PATH + "/cache";
 
-	// 下载保存图片路径
-	public static final String BASE_IMAGE_DOWNLOAD = BASE_PATH + "/download";
-
-	// 需要分享的图片
-	public static final String SHARE_FILE = BASE_PATH + "/QrShareImage.png";
-
-	// 手机IMEI号码
-	public static String IMEI = "";
-
-	// 手机号码
-	public static String TEL = "";
-
-	// 屏幕高度
-	public static int SCREEN_HEIGHT = 800;
-
-	// 屏幕宽度
-	public static int SCREEN_WIDTH = 480;
-
-	// 屏幕密度
-	public static float SCREEN_DENSITY = 1.5f;
-
-	// 分享成功
-	public static final int SHARE_SUCCESS = 0X1000;
-
-	// 分享取消
-	public static final int SHARE_CANCEL = 0X2000;
-
-	// 分享失败
-	public static final int SHARE_ERROR = 0X3000;
-
-	// 开始执行
-	public static final int EXECUTE_LOADING = 0X4000;
-
-	// 正在执行
-	public static final int EXECUTE_SUCCESS = 0X5000;
-
-	// 执行完成
-	public static final int EXECUTE_FAILED = 0X6000;
-
-	// 加载数据成功
-	public static final int LOAD_DATA_SUCCESS = 0X7000;
-
-	// 加载数据失败
-	public static final int LOAD_DATA_ERROR = 0X8000;
-
-	// 动态加载数据
-	public static final int SET_DATA = 0X9000;
-
-	// 未登录
-	public static final int NONE_LOGIN = 0X10000;
-
-	/**
-	 ******************************************* 参数设置信息结束 ******************************************
-	 */
+    // 下载保存图片路径
+    public static final String BASE_IMAGE_DOWNLOAD = BASE_PATH + "/download";
 }

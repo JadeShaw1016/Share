@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -12,18 +11,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.User;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.util.SharedPreferencesUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
+import okhttp3.FormBody;
 
 public class ResPwdActivity extends BaseActivity implements View.OnClickListener {
 
@@ -88,11 +87,11 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
         password = pwdEt.getText().toString().trim();
         String repassword = respwdEt.getText().toString().trim();
 
-        if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)){
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)) {
             DisplayToast("用户名或密码不能为空！");
             return;
         }
-        if(!password.equals(repassword)){
+        if (!password.equals(repassword)) {
             DisplayToast("重复输入密码不正确！");
             return;
         }
@@ -102,12 +101,15 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
     private void update() {
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "User?method=updatePassword";
+        String url = Constants.BASE_URL + "user/updatePassword";
+        FormBody formBody = new FormBody.Builder()
+                .add("username", username)
+                .add("password", password)
+                .build();
         OkHttpUtils
-                .post()
+                .put()
                 .url(url)
-                .addParams("username", username)
-                .addParams("password", password)
+                .requestBody(formBody)
                 .id(1)
                 .build()
                 .execute(new MyStringCallback());
@@ -117,39 +119,31 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
             switch (id) {
                 case 1:
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-                    User user = null;
-                    try {
-                        user = gson.fromJson(response, User.class);
-                    } catch (JsonSyntaxException e) {
-                        user = null;
-                    }
-                    if (user == null) {
+                    if (Constants.ERROR.equals(response)) {
                         new AlertDialog.Builder(mContext)
                                 .setTitle("提示")
                                 .setMessage("该用户不存在，请用手机号注册登录！")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         setResult(RESULT_OK);
-                                        Intent intent=new Intent(ResPwdActivity.this, LoginActivity.class);
+                                        Intent intent = new Intent(ResPwdActivity.this, LoginActivity.class);
                                         ResPwdActivity.this.startActivity(intent);
                                         finish();
                                     }
                                 })
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        return;
                                     }
                                 })
                                 .show();
                         return;
                     } else {
-                        // 存储用户
-                        Constants.USER.setPassword(user.getPassword());
-                        boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
+                        // 更新用户密码
+                        Constants.USER.setPassword(response);
+                        boolean result = SharedPreferencesUtils.updateUserInfo(mContext, "password", response);
                         if (result) {
                             Toast.makeText(mContext, "更新成功！", Toast.LENGTH_SHORT).show();
                         } else {
@@ -157,9 +151,6 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
                         }
                     }
                     finish();
-                    break;
-                case 2:
-
                     break;
                 default:
                     DisplayToast("what?");
@@ -169,7 +160,7 @@ public class ResPwdActivity extends BaseActivity implements View.OnClickListener
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            DisplayToast("网络链接出错！");
+            DisplayToast("网络链接出错！" + arg1);
         }
     }
 }

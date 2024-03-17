@@ -14,7 +14,10 @@
     <string name="signal_remind">摊手？好像收不到信号了呢\n下拉刷新吧！</string>
     <string name="focus_remind">还没有关注哦，快去圈子关注你喜欢的人吧！</string>
     <string name="fans_remind">还没有粉丝哦，快去发布一个圈子吧！</string>
+    <string name="no_network_remind">找不到网络啦！</string>
     <string name="system_remind">还没有系统通知哦！</string>
+    <string name="user_name">%1$s的主页</string>
+    <string name="bottom_remind">已经到底啦</string>
 
     <!--个人信息-->
     <string name="face">头像</string>
@@ -46,7 +49,7 @@
     <string name="me_favor_text">我的收藏</string>
     <string name="me_report_text">成长报告</string>
     <string name="me_record_number">0</string>
-    <string name="me_app_version">V1.5</string>
+    <string name="me_app_version">V2.0</string>
     <string name="confirm_modify_text">确认修改</string>
     <!--我的-->
 

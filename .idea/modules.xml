@@ -2,10 +2,19 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DatePicker/DatePicker.iml" filepath="$PROJECT_DIR$/.idea/modules/DatePicker/DatePicker.iml" group="Share/DatePicker" />
-      <module fileurl="file://$PROJECT_DIR$/Share.iml" filepath="$PROJECT_DIR$/Share.iml" group="Share" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Share/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/mainnavigatetabbar.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/mainnavigatetabbar.iml" group="Share/mainnavigatetabbar" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Share.iml" filepath="$PROJECT_DIR$/.idea/modules/Share.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.iml" filepath="$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/DatePicker/Share.DatePicker.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Share.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Share.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Share.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Share.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Share.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Share.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Share.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Share.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.unitTest.iml" />
     </modules>
   </component>
 </project>

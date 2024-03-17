@@ -2,19 +2,21 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FavorListAdapter;
 import com.example.administrator.share.adapter.NewFansListAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.FavorMsgListItem;
 import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
 import com.google.gson.Gson;
@@ -31,13 +33,12 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 
-public class FavorFansActivity extends BaseActivity implements View.OnClickListener{
+public class FavorFansActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView titleText;
     private RefreshLayout refreshLayout;
@@ -51,7 +52,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     private View title_back;
     private FavorListAdapter favorListAdapter;
     private NewFansListAdapter fansListAdapter;
-    private List<CommonListItem> mNewsList;
+    private List<FavorMsgListItem> mFavorList;
     private List<FollowsListItem> mFansList;
     private final int PAGE_COUNT = 10;
     private int INDEX;
@@ -59,7 +60,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        INDEX = getIntent().getIntExtra("index",0);
+        INDEX = getIntent().getIntExtra("index", 0);
         setContentView(R.layout.fragment_normal_list);
         findViewById();
         initView();
@@ -67,7 +68,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void findViewById(){
+    protected void findViewById() {
         titleText = $(R.id.titleText);
         title_back = $(R.id.title_back);
         mListView = $(R.id.normal_list_lv);
@@ -79,11 +80,11 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void initView(){
+    protected void initView() {
         mContext = this;
-        if(INDEX == 0){
+        if (INDEX == 0) {
             titleText.setText("点赞");
-        }else{
+        } else {
             titleText.setText("粉丝");
         }
         title_back.setOnClickListener(this);
@@ -91,7 +92,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         messageLl.setVisibility(View.VISIBLE);
     }
 
-    private void refreshListener(){
+    private void refreshListener() {
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
         refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
@@ -100,11 +101,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                if(INDEX == 0){
-                    updateRecyclerView(favorListAdapter.getItemCount(), favorListAdapter.getItemCount() + PAGE_COUNT,0);
-                }
-                else{
-                    updateRecyclerView(fansListAdapter.getItemCount(), fansListAdapter.getItemCount() + PAGE_COUNT,1);
+                if (INDEX == 0) {
+                    updateRecyclerView(favorListAdapter.getItemCount(), favorListAdapter.getItemCount() + PAGE_COUNT, 0);
+                } else {
+                    updateRecyclerView(fansListAdapter.getItemCount(), fansListAdapter.getItemCount() + PAGE_COUNT, 1);
                 }
             }
         });
@@ -126,7 +126,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.title_back:
                 finish();
                 break;
@@ -140,9 +140,9 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Message?method=getBeFavoredList";
+                String url = Constants.BASE_URL + "favors/getBeFavoredList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -159,9 +159,9 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getFansList";
+                String url = Constants.BASE_URL + "follows/getNewFansList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -174,44 +174,52 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
-            Type type;
             switch (id) {
                 case 1:
-                    type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
-                    mNewsList = gson.fromJson(response, type);
-                    if(mContext != null){
-                        if (mNewsList.size() == 0) {
-                            msgRemindIv.setVisibility(View.VISIBLE);
-                            msgRemindTv.setVisibility(View.VISIBLE);
-                        } else {
-                            msgRemindIv.setVisibility(View.INVISIBLE);
-                            msgRemindTv.setVisibility(View.INVISIBLE);
+                    if (Constants.ERROR.equals(response)) {
+                        mFavorList = null;
+                    } else {
+                        try {
+                            mFavorList = new Gson().fromJson(response, new TypeToken<ArrayList<FavorMsgListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        // 存储用户
-                        favorListAdapter = new FavorListAdapter(mContext, mNewsList);
+                    }
+                    if (mFavorList == null || mFavorList.isEmpty()) {
+                        msgRemindIv.setVisibility(View.VISIBLE);
+                        msgRemindTv.setVisibility(View.VISIBLE);
+                    } else {
+                        msgRemindIv.setVisibility(View.INVISIBLE);
+                        msgRemindTv.setVisibility(View.INVISIBLE);
+                        favorListAdapter = new FavorListAdapter(mContext, mFavorList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(favorListAdapter);
-                        refreshLayout.finishRefresh();
                     }
+                    refreshLayout.finishRefresh();
                     break;
                 case 2:
-                    type = new TypeToken<ArrayList<FollowsListItem>>() {}.getType();
-                    mFansList = gson.fromJson(response, type);
-                    if(mContext != null){
-                        if (mFansList.size() == 0) {
-                            msgRemindIv.setVisibility(View.VISIBLE);
-                            fansRemindTv.setVisibility(View.VISIBLE);
-                        } else {
-                            msgRemindIv.setVisibility(View.INVISIBLE);
-                            fansRemindTv.setVisibility(View.INVISIBLE);
+                    if (Constants.ERROR.equals(response)) {
+                        mFansList = null;
+                    } else {
+                        try {
+                            mFansList = new Gson().fromJson(response, new TypeToken<ArrayList<FollowsListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        // 存储用户
+                    }
+                    if (mFansList == null || mFansList.isEmpty()) {
+                        msgRemindIv.setVisibility(View.VISIBLE);
+                        fansRemindTv.setVisibility(View.VISIBLE);
+                    } else {
+                        msgRemindIv.setVisibility(View.INVISIBLE);
+                        fansRemindTv.setVisibility(View.INVISIBLE);
                         fansListAdapter = new NewFansListAdapter(mContext, mFansList);
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(fansListAdapter);
-                        refreshLayout.finishRefresh();
                     }
+                    refreshLayout.finishRefresh();
                     break;
                 default:
                     DisplayToast("what?");
@@ -221,6 +229,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            msgRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            fansRemindTv.setText(R.string.no_network_remind);
+            msgRemindIv.setVisibility(View.VISIBLE);
+            fansRemindTv.setVisibility(View.VISIBLE);
             DisplayToast("网络链接出错!");
         }
     }
@@ -228,7 +240,7 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        switch (INDEX){
+        switch (INDEX) {
             case 0:
                 getFavors();
                 break;
@@ -238,11 +250,11 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private List<CommonListItem> getNewsDatas(final int firstIndex, final int lastIndex) {
-        List<CommonListItem> resList = new ArrayList<>();
+    private List<FavorMsgListItem> getNewsDatas(final int firstIndex, final int lastIndex) {
+        List<FavorMsgListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
-            if (i < mNewsList.size()) {
-                resList.add(mNewsList.get(i));
+            if (i < mFavorList.size()) {
+                resList.add(mFavorList.get(i));
             }
         }
         return resList;
@@ -258,10 +270,10 @@ public class FavorFansActivity extends BaseActivity implements View.OnClickListe
         return resList;
     }
 
-    private void updateRecyclerView(int fromIndex, int toIndex,int index) {
-        switch (index){
+    private void updateRecyclerView(int fromIndex, int toIndex, int index) {
+        switch (index) {
             case 0:
-                List<CommonListItem> newNewsDatas = getNewsDatas(fromIndex, toIndex);
+                List<FavorMsgListItem> newNewsDatas = getNewsDatas(fromIndex, toIndex);
                 if (newNewsDatas.size() > 0) {
                     favorListAdapter.updateList(newNewsDatas);
                     refreshLayout.finishLoadmore();

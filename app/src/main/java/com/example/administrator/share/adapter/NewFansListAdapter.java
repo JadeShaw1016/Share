@@ -2,13 +2,14 @@ package com.example.administrator.share.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
@@ -23,14 +24,15 @@ import java.util.List;
 public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.ViewHolder> {
 
     private Context mContext;
-    private LayoutInflater inflater;
-    private List<FollowsListItem> mList;
+    private final LayoutInflater inflater;
+    private final List<FollowsListItem> mList;
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nicknameTv;
         TextView followTimeTv;
         ImageView faceIv;
+
         public ViewHolder(View view) {
             super(view);
             nicknameTv = view.findViewById(R.id.tv_msg_newfans_nickname);
@@ -57,20 +59,20 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FollowsListItem detail = mList.get(position);
-        holder.nicknameTv.setText(detail.getNickName()+"关注了你");
+        holder.nicknameTv.setText(detail.getNickName() + "关注了你");
         String time = detail.getFollowTime();
         try {
-            if(isOldTime(time)){
+            if (isOldTime(time)) {
                 //设置为年月日
-                holder.followTimeTv.setText(time.substring(0,11));
-            }else{
+                holder.followTimeTv.setText(time.substring(0, 11));
+            } else {
                 //设置为时分
-                holder.followTimeTv.setText("今天 "+time.substring(11,16));
+                holder.followTimeTv.setText("今天 " + time.substring(11, 16));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        getImage(detail.getFace(),holder);
+        getImage(detail.getFace(), holder);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
 
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getUserFaceImage&face="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?face=" + imageName);
         Glide.with(mContext).load(uri).into(holder.faceIv);
     }
 
@@ -94,7 +96,7 @@ public class NewFansListAdapter extends RecyclerView.Adapter<NewFansListAdapter.
     private boolean isOldTime(String time) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowTime = sdf.format(new Date());
-        String standardTime = nowTime.substring(0,11)+"00:00:00";
+        String standardTime = nowTime.substring(0, 11) + "00:00:00";
         Date date1 = sdf.parse(standardTime);
         Date date2 = sdf.parse(time);
         return date1.getTime() > date2.getTime();

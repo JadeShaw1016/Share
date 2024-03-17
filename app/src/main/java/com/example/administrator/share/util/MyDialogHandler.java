@@ -13,7 +13,7 @@ public class MyDialogHandler extends Handler {
 	private final int SHOW_LOADING_DIALOG = 0x0102;
 	private final int DISMISS_LOADING_DIALOG = 0x0103;
 	private LoadingDialog dialog;
-	private Context context;
+	private final Context context;
 	private String tip;
 	
 	public MyDialogHandler(Context context, String tip) {

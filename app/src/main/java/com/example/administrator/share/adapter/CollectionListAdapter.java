@@ -3,8 +3,6 @@ package com.example.administrator.share.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.CircleDetailActivity;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.CollectionAndFavorListItem;
 import com.example.administrator.share.util.Constants;
 
 import java.util.List;
@@ -23,14 +24,15 @@ import java.util.List;
 public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAdapter.ViewHolder> {
 
     private Context mContext;
-    private LayoutInflater inflater;
-    private List<CommonListItem> mList;
+    private final LayoutInflater inflater;
+    private final List<CollectionAndFavorListItem> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView nicknameTv;
         ImageView imageView;
         RelativeLayout mycollectionLl;
+
         public ViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.item_normal_title);
@@ -40,8 +42,8 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
         }
     }
 
-    public CollectionListAdapter(Context mContext, List<CommonListItem> mList) {
-        this.mContext=mContext;
+    public CollectionListAdapter(Context mContext, List<CollectionAndFavorListItem> mList) {
+        this.mContext = mContext;
         this.mList = mList;
         this.inflater = LayoutInflater.from(mContext);
     }
@@ -60,7 +62,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
                 int position = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
         });
@@ -69,10 +71,10 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CommonListItem detail = mList.get(position);
+        CollectionAndFavorListItem detail = mList.get(position);
         holder.title.setText(detail.getTitle());
-        holder.nicknameTv.setText("作者："+detail.getNickname());
-        getImage(detail.getImage(),holder);
+        holder.nicknameTv.setText("作者：" + detail.getNickname());
+        getImage(detail.getImage(), holder);
     }
 
     @Override
@@ -81,11 +83,11 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
     }
 
     private void getImage(final String imageName, final ViewHolder holder) {
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
-        Glide.with(mContext).load(uri).into(((ViewHolder)holder).imageView);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
+        Glide.with(mContext).load(uri).into(holder.imageView);
     }
 
-    public void updateList(List<CommonListItem> newDatas) {
+    public void updateList(List<CollectionAndFavorListItem> newDatas) {
         if (newDatas != null) {
             mList.addAll(newDatas);
         }

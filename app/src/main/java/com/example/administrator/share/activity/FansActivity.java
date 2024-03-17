@@ -2,12 +2,13 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FollowsListAdapter;
@@ -66,7 +67,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         titleText.setText("粉丝");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
-        getFans();
     }
 
     private void refreshListener(){
@@ -117,7 +117,6 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         } else {
             fansRemindIv.setVisibility(View.INVISIBLE);
             fansRemindTv.setVisibility(View.INVISIBLE);
-            // 存储用户
             adapter = new FollowsListAdapter(mContext, mFansList,1);
             mListView.setLayoutManager(layoutManager);
             mListView.setAdapter(adapter);
@@ -144,4 +143,9 @@ public class FansActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    @Override
+    protected void onResume() {
+        getFans();
+        super.onResume();
+    }
 }

@@ -1,11 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,14 +10,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.CommentListAdapter;
 import com.example.administrator.share.base.BaseActivity;
-import com.example.administrator.share.entity.CommentListItem;
-import com.example.administrator.share.entity.CommonListItem;
+import com.example.administrator.share.entity.CommentMsgListItem;
 import com.example.administrator.share.util.Constants;
-import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,7 +35,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private LinearLayoutManager layoutManager;
     private FrameLayout messageLl;
     private View title_back;
-    private List<CommonListItem> mList;
+    private List<CommentMsgListItem> mList;
     private CommentListAdapter adapter;
     private final int PAGE_COUNT = 10;
     private LinearLayout commentPane;
@@ -138,24 +136,17 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * 获取评论
+     * 获取所有对我的评论消息
      */
     private void getComments() {
-        new AsyncTask<Void,Void,Integer>(){
-
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Message?method=getCommentsList";
-                OkHttpUtils
-                        .post()
-                        .url(url)
-                        .id(1)
-                        .addParams("authorName", Constants.USER.getNickname())
-                        .build()
-                        .execute(new MyStringCallback());
-                return null;
-            }
-        }.execute();
+        String url = Constants.BASE_URL + "comments/getCommentsList";
+        OkHttpUtils
+                .get()
+                .url(url)
+                .id(1)
+                .addParams("authorName", Constants.USER.getNickname())
+                .build()
+                .execute(new MyStringCallback());
     }
 
     // 添加新评论
@@ -165,7 +156,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             DisplayToast("请先输入内容");
             return;
         }
-        String url = Constants.BASE_URL + "Message?method=addNewComment";
+        String url = Constants.BASE_URL + "comments/addNewComment";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -175,7 +166,6 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
                 .addParams("authorName",Constants.USER.getUsername())
                 .addParams("comment", commentText)
                 .addParams("replyUser", replyUsername)
-                .addParams("commentTime", Utils.getCurrentDatetime())
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -183,44 +173,42 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    Type type = new TypeToken<ArrayList<CommonListItem>>() {}.getType();
-                    mList = gson.fromJson(response, type);
-                    if(mContext != null){
-                        if (mList.size() == 0) {
-                            commentRemindIv.setVisibility(View.VISIBLE);
-                            msgRemindTv.setVisibility(View.VISIBLE);
-                        } else {
-                            commentRemindIv.setVisibility(View.INVISIBLE);
-                            msgRemindTv.setVisibility(View.INVISIBLE);
+                    if (Constants.ERROR.equals(response)) {
+                        mList = null;
+                    } else {
+                        try {
+                            mList = new Gson().fromJson(response, new TypeToken<ArrayList<CommentMsgListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        // 存储用户
+                    }
+                    if (mList == null || mList.isEmpty()) {
+                        commentRemindIv.setVisibility(View.VISIBLE);
+                        msgRemindTv.setVisibility(View.VISIBLE);
+                    } else {
+                        commentRemindIv.setVisibility(View.INVISIBLE);
+                        msgRemindTv.setVisibility(View.INVISIBLE);
                         adapter = new CommentListAdapter(mContext, getDatas(0, PAGE_COUNT));
                         mListView.setLayoutManager(layoutManager);
                         mListView.setAdapter(adapter);
                         adapter.setOnCommentButtonClickListner(new CommentListAdapter.OnCommentButtonClickListner() {
                             @Override
-                            public void OnCommentButtonClicked(CommonListItem commonListItem) {
-                                showCommemtPane(commonListItem);
+                            public void OnCommentButtonClicked(CommentMsgListItem commentMsgListItem) {
+                                showCommemtPane(commentMsgListItem);
                             }
                         });
                     }
                     break;
                 case 2:
-                    if (response.contains("error")) {
+                    if (Constants.ERROR.equals(response)) {
                         DisplayToast("请稍后再试..");
                     } else {
-                        DisplayToast(response);
+                        DisplayToast("评论成功！");
                         hideKeyboard();
-                        CommentListItem commentListItem = new CommentListItem();
-                        commentListItem.setFace(Constants.USER.getFace());
-                        commentListItem.setCommentTime(Utils.getCurrentDatetime());
-                        commentListItem.setComment(addCommentET.getText().toString());
-                        commentListItem.setReplyUser(replyUsername);
-                        commentListItem.setNickname(Constants.USER.getNickname());
-                        commentListItem.setAuthorname(Constants.USER.getNickname());
+                        addCommentET.getText().clear();
                         commentPane.setVisibility(View.GONE);
                     }
                     break;
@@ -232,6 +220,10 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            commentRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            msgRemindTv.setText(R.string.no_network_remind);
+            commentRemindIv.setVisibility(View.VISIBLE);
+            msgRemindTv.setVisibility(View.VISIBLE);
             DisplayToast("网络链接出错!");
         }
     }
@@ -242,8 +234,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         getComments();
     }
 
-    private List<CommonListItem> getDatas(final int firstIndex, final int lastIndex) {
-        List<CommonListItem> resList = new ArrayList<>();
+    private List<CommentMsgListItem> getDatas(final int firstIndex, final int lastIndex) {
+        List<CommentMsgListItem> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
             if (i < mList.size()) {
                 resList.add(mList.get(i));
@@ -253,7 +245,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
-        List<CommonListItem> newDatas = getDatas(fromIndex, toIndex);
+        List<CommentMsgListItem> newDatas = getDatas(fromIndex, toIndex);
         if (newDatas.size() > 0) {
             adapter.updateList(newDatas);
             refreshLayout.finishLoadmore();
@@ -262,11 +254,11 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void showCommemtPane(CommonListItem commonListItem) {
+    private void showCommemtPane(CommentMsgListItem commentMsgListItem) {
         isShowCommentPane = !isShowCommentPane;
         if (isShowCommentPane) {
-            newsId = commonListItem.getNewsId();
-            replyUsername = commonListItem.getNickname();
+            newsId = commentMsgListItem.getNewsId();
+            replyUsername = commentMsgListItem.getNickname();
             commentPane.setVisibility(View.VISIBLE);
             addCommentET.setHint("回复 " + replyUsername + " 的评论");
             showKeyboard(addCommentET);

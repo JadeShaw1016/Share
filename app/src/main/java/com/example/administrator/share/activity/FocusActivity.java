@@ -2,12 +2,13 @@ package com.example.administrator.share.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.adapter.FollowsListAdapter;
@@ -66,7 +67,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         titleText.setText("关注");
         title_back.setOnClickListener(this);
         layoutManager = new LinearLayoutManager(this);
-        getFocus();
     }
 
     private void refreshListener(){
@@ -117,7 +117,6 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         } else {
             focusRemindIv.setVisibility(View.INVISIBLE);
             focusRemindTv.setVisibility(View.INVISIBLE);
-            //存储用户
             adapter = new FollowsListAdapter(mContext, mFocusList,0);
             mListView.setAdapter(adapter);
             mListView.setLayoutManager(layoutManager);
@@ -142,5 +141,11 @@ public class FocusActivity extends BaseActivity implements View.OnClickListener{
         } else {
             refreshLayout.finishLoadmoreWithNoMoreData();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        getFocus();
+        super.onResume();
     }
 }

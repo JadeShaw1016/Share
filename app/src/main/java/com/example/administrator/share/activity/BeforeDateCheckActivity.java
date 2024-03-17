@@ -1,6 +1,5 @@
 package com.example.administrator.share.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.TextView;
@@ -12,12 +11,18 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 
-public class BeforeDateCheckActivity extends BaseActivity{
+public class BeforeDateCheckActivity extends BaseActivity {
 
     private TextView recorddaysTv;
+    private static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(2, 4, 3,
+            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+            new ThreadPoolExecutor.DiscardOldestPolicy());
 
     @Override
     protected void onCreate(Bundle paramBundle) {
@@ -38,7 +43,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
             @Override
             public void run() {
                 getRecords();
-                SystemClock.sleep(2000);
+                SystemClock.sleep(1000);
                 getCheckedList();
             }
         }.start();
@@ -46,37 +51,35 @@ public class BeforeDateCheckActivity extends BaseActivity{
 
 
     private void getCheckedList() {
-        new AsyncTask<Void,Void,Integer>(){
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "DailyCheck?method=getCheckedList";
+            public void run() {
+                String url = Constants.BASE_URL + "dailycheck/getCheckedList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        });
     }
 
     private void getRecords() {
-        new AsyncTask<Void, Void, Integer>(){
+        THREADPOOL.execute(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "DailyCheck?method=getHomepageTotalRecord";
+            public void run() {
+                String url = Constants.BASE_URL + "dailycheck/getTotalCheckRecord";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .id(2)
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        });
     }
 
     public class MyStringCallback extends StringCallback {
@@ -84,38 +87,31 @@ public class BeforeDateCheckActivity extends BaseActivity{
         public void onResponse(String response, int id) {
             switch (id) {
                 case 1:
-                    if (response.contains("error")) {
-                        DisplayToast("暂时无法获取数据");
-                        finish();
+                    if (Constants.DAILYCHECKEDLIST == null) {
+                        Constants.DAILYCHECKEDLIST = new ArrayList<>();
                     } else {
-                        if (response.length() == 0) {
-                            Constants.DAILYCHECKEDLIST = new ArrayList<>();
-                            Constants.DAILYCHECKEDLIST.add("2000-1-1");
-                        } else {
-                            String[] dates = response.split(",");
-                            if (Constants.DAILYCHECKEDLIST == null) {
-                                Constants.DAILYCHECKEDLIST = new ArrayList<String>();
-                            } else {
-                                Constants.DAILYCHECKEDLIST.clear();
-                            }
-                            for (String s : dates) {
-                                String[] split = s.split("-");
-                                s = split[0] + "-" + removeHeadingZero(split[1]) + "-" + removeHeadingZero(split[2]);
-                                Constants.DAILYCHECKEDLIST.add(s);
-                            }
-                        }
-                        openActivity(DateCheckActivity.class);
-                        finish();
+                        Constants.DAILYCHECKEDLIST.clear();
                     }
+                    if (response.length() != 0) {
+                        String[] dates = response.split(",");
+                        for (String s : dates) {
+                            String[] split = s.split("-");
+                            s = split[0] + "-" + removeHeadingZero(split[1]) + "-" + removeHeadingZero(split[2]);
+                            Constants.DAILYCHECKEDLIST.add(s);
+                        }
+                    }
+                    openActivity(DateCheckActivity.class);
+                    finish();
                     break;
                 case 2:
-                    recorddaysTv.setText("已打卡"+response+"天");
+                    recorddaysTv.setText("已打卡" + response + "天");
                     break;
             }
         }
 
         /**
          * 去除头部的0
+         *
          * @param str
          * @return
          */
@@ -129,8 +125,7 @@ public class BeforeDateCheckActivity extends BaseActivity{
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
-            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-            DisplayToast("网络链接出错！");
+            DisplayToast("网络链接出错！" + arg1);
         }
     }
 }

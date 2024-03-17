@@ -1,11 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.17685305591677503" />
+        <entry key="../../Library/Android/sdk/ndk/21.4.7075529/caches/transforms-2/files-2.1/d28418f0afaae5558bcd1a3978308c55/MonitorCrashLib-1.2.8/res/layout/activity_crash_details.xml" value="0.11979166666666667" />
+        <entry key="../../Library/Android/sdk/ndk/21.4.7075529/caches/transforms-2/files-2.1/d28418f0afaae5558bcd1a3978308c55/MonitorCrashLib-1.2.8/res/layout/activity_crash_list.xml" value="0.11979166666666667" />
+        <entry key="app/src/main/res/drawable/mid_layout_selector.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/rounded_4dp.xml" value="0.277" />
+        <entry key="app/src/main/res/layout/activity_addnews.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_badge_view_two.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_before_date_check.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_circle_detail.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_config.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_date_check.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_fans_focus.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_fruit.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_login_with_phone.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_login_with_pwd.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_login_with_vercode.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/activity_main_menu.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_my_information.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_personal_homepage.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_respwd.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/activity_system_info.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/dialog_select_photo.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/footview.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_circle.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_firstpage.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_me.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_message.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_mywork.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_normal_list.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_circle_detail_comment.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_circle_image.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_comment.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_fans_focus.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_favor.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_firstpage_ganhuo.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_firstpage_image.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_fruit.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_mycollection.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_mywork.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/item_new_fans.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/layout_custom_dialog.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/loading_dialog_layout.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/phone_code.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/title_custom.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/toolbar_circle.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/menu/toolbar.xml" value="0.2953125" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />
     <option name="myNullables">
       <value>
-        <list size="12">
+        <list size="13">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
@@ -18,12 +75,13 @@
           <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
           <item index="10" class="java.lang.String" itemvalue="android.annotation.Nullable" />
           <item index="11" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
+          <item index="12" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.Nullable" />
         </list>
       </value>
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="11">
+        <list size="12">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
@@ -35,11 +93,12 @@
           <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
           <item index="9" class="java.lang.String" itemvalue="android.annotation.NonNull" />
           <item index="10" class="java.lang.String" itemvalue="com.android.annotations.NonNull" />
+          <item index="11" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
         </list>
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="liberica-1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

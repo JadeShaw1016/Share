@@ -12,6 +12,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:name=".ShareApplication"
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:hardwareAccelerated="false"
@@ -22,11 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:appComponentFactory"
-        tools:targetApi="m">
+        tools:replace="android:appComponentFactory,android:label"
+        tools:targetApi="p">
         <activity android:name=".activity.SystemInfoActivity"/>
         <activity android:name=".activity.PersonalHomepageActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +38,8 @@
         <activity
             android:name=".activity.MainMenuActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.example.administrator.share.view.MainMenuActivity" />
 
@@ -67,7 +70,7 @@
         <activity android:name=".activity.LoginWithVercodeActivity" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.administrator.share.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

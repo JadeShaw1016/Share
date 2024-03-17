@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_login_welcome"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="84dp"
         android:text="欢迎\n来到晒的世界"
         android:textColor="#ff404040"
@@ -28,7 +29,7 @@
 
     <TextView
         android:id="@+id/tv_login_content"
-        android:layout_width="96dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:text="体验真实的生活感\n和美的感染力"
         android:textColor="#ff404040"
@@ -88,4 +89,4 @@
             android:layout_toEndOf="@+id/cb_login"/>
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

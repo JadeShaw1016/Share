@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +32,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import okhttp3.Call;
 
-public class LoginWithPhoneActivity extends BaseActivity implements View.OnClickListener{
+public class LoginWithPhoneActivity extends BaseActivity implements View.OnClickListener {
     private Button buttonCode;
     private EditText editTextPhoneNum;
     private EventHandler eh;
@@ -72,9 +71,11 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 clearPhoneIv.setVisibility(View.VISIBLE);
@@ -82,52 +83,61 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
         });
     }
 
-    private void EventHandlerListener(){
+    private void EventHandlerListener() {
         eh = new EventHandler() {
             @Override
             public void afterEvent(int event, int result, Object data) {
-                if (result == SMSSDK.RESULT_COMPLETE){
+                if (result == SMSSDK.RESULT_COMPLETE) {
                     //回调完成
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         //提交验证码成功
                         isExistUsername();
-                    }else if (event == SMSSDK.EVENT_GET_VOICE_VERIFICATION_CODE){
+                    } else if (event == SMSSDK.EVENT_GET_VOICE_VERIFICATION_CODE) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LoginWithPhoneActivity.this,"语音验证发送",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginWithPhoneActivity.this, "语音验证发送", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         //获取验证码成功
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LoginWithPhoneActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginWithPhoneActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
+                    } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                         //返回支持发送验证码的国家列表
                     }
-                }else{
-                    ((Throwable)data).printStackTrace();
+                } else {
                     Throwable throwable = (Throwable) data;
                     throwable.printStackTrace();
-                    Log.i("1234",throwable.toString());
+                    Log.i("LoginWithPhoneActivity", throwable.toString());
                     try {
                         JSONObject obj = new JSONObject(throwable.getMessage());
                         final String des = obj.optString("detail");
-                        if (!TextUtils.isEmpty(des)){
+                        //TODO 因为SMSSDK不免费了，所以这里直接跳过验证了，随便输什么验证码都能通过
+                        if ("账户余额不足".equals(des)) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    LoginWithVercodeActivity.editTextCode.clear();
-                                    LoginWithVercodeActivity.buttonLogin.setBackground(getDrawable(R.color.smssdk_gray_press));
-                                    DisplayToast(des);
+                                    Toast.makeText(LoginWithPhoneActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                        } else if ("需要校验的验证码错误".equals(des)) {
+                            isExistUsername();
                         }
+//                        if (!TextUtils.isEmpty(des)) {
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    LoginWithVercodeActivity.editTextCode.clear();
+//                                    LoginWithVercodeActivity.buttonLogin.setBackground(getDrawable(R.color.smssdk_gray_press));
+//                                    DisplayToast(des);
+//                                }
+//                            });
+//                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -138,21 +148,21 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.buttonCode:
                 phoneNum = editTextPhoneNum.getText().toString();
-                if(!phoneNum.isEmpty()){
-                    if(Utils.checkTel(phoneNum)){ //利用正则表达式获取检验手机号
+                if (!phoneNum.isEmpty()) {
+                    if (Utils.checkTel(phoneNum)) { //利用正则表达式获取检验手机号
                         // 获取验证码
                         SMSSDK.getVerificationCode("86", phoneNum);
-                        Intent intent = new Intent(this,LoginWithVercodeActivity.class);
+                        Intent intent = new Intent(this, LoginWithVercodeActivity.class);
                         intent.putExtra("phoneNum", phoneNum);
                         startActivity(intent);
-                    }else{
-                        Toast.makeText(getApplicationContext(),"请输入有效的手机号",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "请输入有效的手机号", Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    Toast.makeText(getApplicationContext(),"请输入手机号",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "请输入手机号", Toast.LENGTH_LONG).show();
                     break;
                 }
                 break;
@@ -189,9 +199,9 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
 
     private void isExistUsername() {
         LoginWithVercodeActivity.uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "User?method=isExistUsername";
+        String url = Constants.BASE_URL + "user/isExistUsername";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
                 .id(1)
                 .addParams("username", phoneNum)
@@ -203,9 +213,9 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "User?method=loginWithPhone";
+                String url = Constants.BASE_URL + "user/loginWithPhone";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
                         .addParams("username", phoneNum)
@@ -218,25 +228,24 @@ public class LoginWithPhoneActivity extends BaseActivity implements View.OnClick
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
             switch (id) {
                 case 1:
-                    if(response.equals("true")){
+                    if (response.equals("true")) {
                         loginWithPhone();
-                    } else{
-                        Intent intent = new Intent(mContext,RegisterActivity.class);
+                    } else {
+                        Intent intent = new Intent(mContext, RegisterActivity.class);
                         intent.putExtra("username", phoneNum);
                         LoginWithVercodeActivity.uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
                         startActivity(intent);
                     }
                     break;
                 case 2:
-                    User user = gson.fromJson(response, User.class);
+                    User user = new Gson().fromJson(response, User.class);
                     // 存储用户
                     Constants.USER = user;
                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                     if (result) {
-                        Log.d("LoginActivity","登录成功");
+                        Log.d("LoginActivity", "登录成功");
                     } else {
                         DisplayToast("用户存储失败");
                     }

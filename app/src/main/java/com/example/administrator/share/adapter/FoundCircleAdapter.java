@@ -3,13 +3,14 @@ package com.example.administrator.share.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
@@ -22,12 +23,13 @@ import java.util.List;
 public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.ViewHolder> {
 
     private Context mContext;
-    private LayoutInflater mInflater;
-    private List<CircleList> mList;
+    private final LayoutInflater mInflater;
+    private final List<CircleList> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bgIv;
         TextView topicTv;
+
         public ViewHolder(View view) {
             super(view);
             bgIv = view.findViewById(R.id.found_list_icon);
@@ -36,8 +38,8 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
     }
 
     public FoundCircleAdapter(Context mContext, List<CircleList> mList) {
-        this.mContext=mContext;
-        mInflater=LayoutInflater.from(mContext);
+        this.mContext = mContext;
+        mInflater = LayoutInflater.from(mContext);
         this.mList = mList;
     }
 
@@ -53,9 +55,9 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Intent intent = new Intent(mContext,CircleDetailActivity.class);
+                Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("newsId", mList.get(position).getNewsId());
-                intent.putExtra("be_focused_personId", mList.get(position).getUserId());
+                intent.putExtra("authorId", mList.get(position).getUserId());
                 mContext.startActivity(intent);
             }
         });
@@ -67,7 +69,7 @@ public class FoundCircleAdapter extends RecyclerView.Adapter<FoundCircleAdapter.
         CircleList circleList = mList.get(position);
         holder.topicTv.setText(circleList.getTopic());
         final String imageName = circleList.getImage();
-        Uri uri = Uri.parse(Constants.BASE_URL+"Download?method=getNewsImage&imageName="+imageName);
+        Uri uri = Uri.parse(Constants.BASE_URL + "download/getImage?imageName=" + imageName);
         Glide.with(mContext).load(uri).into((holder).bgIv);
     }
 

@@ -51,6 +51,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/iv_picture"
                     android:layout_width="match_parent"
@@ -100,15 +101,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp">
+
                 <EditText
                     android:id="@id/add_news_et_share_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:maxLines="1"
+                    android:background="@drawable/rounded_4dp"
                     android:hint="@string/add_news_et_title_hint_text"
                     android:maxLength="12"
-                    android:background="@drawable/rounded_4dp" />
+                    android:maxLines="1"
+                    android:padding="5dp" />
                 <TextView
                     android:id="@+id/add_news_tv_title_length"
                     android:layout_width="wrap_content"

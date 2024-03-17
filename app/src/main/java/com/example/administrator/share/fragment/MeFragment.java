@@ -7,9 +7,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.FansActivity;
 import com.example.administrator.share.activity.FocusActivity;
@@ -25,26 +25,25 @@ import com.example.administrator.share.activity.SettingActivity;
 import com.example.administrator.share.adapter.FragmentAdapter;
 import com.example.administrator.share.entity.FollowsListItem;
 import com.example.administrator.share.util.Constants;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import okhttp3.Call;
 
 
-public class MeFragment extends Fragment implements View.OnClickListener{
+public class MeFragment extends Fragment implements View.OnClickListener {
 
     private TabLayout tabLayout;
     private ViewPager pager;
-    private String [] title={"我的作品","我的点赞","我的收藏"};
+    private final String[] title = {"我的作品", "我的点赞", "我的收藏"};
 
     private ImageView settingIv;
     private TextView nicknameTv;
@@ -63,13 +62,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_me, null);
         findViewById(view);
         initView();
-        setAdapter();
         return view;
     }
 
-    private void findViewById(View view){
-        pager= view.findViewById(R.id.page);
-        tabLayout= view.findViewById(R.id.tab_layout);
+    private void findViewById(View view) {
+        pager = view.findViewById(R.id.page);
+        tabLayout = view.findViewById(R.id.tab_layout);
         settingIv = view.findViewById(R.id.iv1);
         nicknameTv = view.findViewById(R.id.me_homepage_nickname);
         fansTv = view.findViewById(R.id.me_fans);
@@ -81,31 +79,31 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         signatureTv = view.findViewById(R.id.me_signature);
     }
 
-    private void initView(){
+    private void initView() {
         settingIv.setOnClickListener(this);
         fansLl.setOnClickListener(this);
         focusLl.setOnClickListener(this);
         faceIv.setOnClickListener(this);
-        echo();
+        nicknameTv.setText(Constants.USER.getNickname());
     }
 
     @Override
     public void onClick(View view) {
         Intent intent = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv1:
-                intent=new Intent(getActivity(), SettingActivity.class);
+                intent = new Intent(getActivity(), SettingActivity.class);
                 break;
             case R.id.ll_fans:
-                intent=new Intent(getActivity(), FansActivity.class);
+                intent = new Intent(getActivity(), FansActivity.class);
                 intent.putParcelableArrayListExtra("mFansList", (ArrayList<? extends Parcelable>) mFansList);
                 break;
             case R.id.ll_focus:
-                intent=new Intent(getActivity(), FocusActivity.class);
+                intent = new Intent(getActivity(), FocusActivity.class);
                 intent.putParcelableArrayListExtra("mFocusList", (ArrayList<? extends Parcelable>) mFocusList);
                 break;
             case R.id.me_face:
-                final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()), R.style.MyDialogStyle_fullScreen_black);
+                final Dialog dialog = new Dialog(requireContext(), R.style.MyDialogStyle_fullScreen_black);
                 ImageView imageView = new ImageView(getContext());
                 imageView.setImageBitmap(Constants.FACEIMAGE);
                 dialog.setContentView(imageView);
@@ -119,12 +117,12 @@ public class MeFragment extends Fragment implements View.OnClickListener{
                 });
                 break;
         }
-        if(intent != null){
+        if (intent != null) {
             startActivity(intent);
         }
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> mTitles = new ArrayList<>();
         Collections.addAll(mTitles, title);
@@ -136,26 +134,22 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
     }
 
-    private void echo(){
-        nicknameTv.setText(Constants.USER.getNickname());
-        getUserFace();
-    }
-
-    private void getUserFace(){
-        new AsyncTask<Void,Void,Integer>(){
+    private void getUserFace() {
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Download?method=getUserFaceImage";
+                String url = Constants.BASE_URL + "download/getImage";
                 OkHttpUtils
-                        .get()//
-                        .url(url)//
+                        .get()
+                        .url(url)
                         .addParams("face", Constants.USER.getFace())
-                        .build()//
+                        .build()
                         .execute(new BitmapCallback() {
                             @Override
                             public void onError(Call call, Exception e, int i) {
                             }
+
                             @Override
                             public void onResponse(Bitmap bitmap, int i) {
                                 faceIv.setImageBitmap(bitmap);
@@ -174,14 +168,14 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getCurrentFansList";
+                String url = Constants.BASE_URL + "follows/getCurrentFansList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
-                        .execute(new MeFragment.MyStringCallback());
+                        .execute(new MyStringCallback());
             }
         }).start();
     }
@@ -193,14 +187,14 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getFocusList";
+                String url = Constants.BASE_URL + "follows/getFocusList";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(2)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
-                        .execute(new MeFragment.MyStringCallback());
+                        .execute(new MyStringCallback());
             }
         }).start();
     }
@@ -212,14 +206,14 @@ public class MeFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = Constants.BASE_URL + "Follows?method=getPopularity";
+                String url = Constants.BASE_URL + "circle/getPopularity";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(3)
                         .addParams("userId", String.valueOf(Constants.USER.getUserId()))
                         .build()
-                        .execute(new MeFragment.MyStringCallback());
+                        .execute(new MyStringCallback());
             }
         }).start();
     }
@@ -228,16 +222,36 @@ public class MeFragment extends Fragment implements View.OnClickListener{
 
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<FollowsListItem>>() {}.getType();
             switch (id) {
                 case 1:
-                    mFansList = gson.fromJson(response, type);
-                    fansTv.setText(String.valueOf(mFansList.size()));
+                    if (Constants.ERROR.equals(response)) {
+                        mFansList = null;
+                    } else {
+                        try {
+                            mFansList = new Gson().fromJson(response, new TypeToken<ArrayList<FollowsListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (mFansList != null && !mFansList.isEmpty()) {
+                        fansTv.setText(String.valueOf(mFansList.size()));
+                    }
                     break;
                 case 2:
-                    mFocusList = gson.fromJson(response, type);
-                    focusTv.setText(String.valueOf(mFocusList.size()));
+                    if (Constants.ERROR.equals(response)) {
+                        mFocusList = null;
+                    } else {
+                        try {
+                            mFocusList = new Gson().fromJson(response, new TypeToken<ArrayList<FollowsListItem>>() {
+                            }.getType());
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (mFocusList != null && !mFocusList.isEmpty()) {
+                        focusTv.setText(String.valueOf(mFocusList.size()));
+                    }
                     break;
                 case 3:
                     popularityTv.setText(response);
@@ -256,13 +270,18 @@ public class MeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onResume() {
-        super.onResume();
+        setAdapter();
         getFans();
         getFocus();
         getPopularity();
-        faceIv.setImageBitmap(Constants.FACEIMAGE);
-        if(Constants.USER.getSignature() != null){
+        if (Constants.FACEIMAGE == null) {
+            getUserFace();
+        } else {
+            faceIv.setImageBitmap(Constants.FACEIMAGE);
+        }
+        if (Constants.USER.getSignature() != null) {
             signatureTv.setText(Constants.USER.getSignature());
         }
+        super.onResume();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.administrator.share.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -13,10 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -29,11 +26,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
-import com.example.administrator.share.util.Utils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -42,7 +43,7 @@ import java.util.UUID;
 
 import okhttp3.Call;
 
-public class AddnewsActivity extends BaseActivity implements View.OnClickListener{
+public class AddnewsActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mIv1;
     public static final int TAKE_PHOTO = 1;
@@ -57,15 +58,17 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private File imageFile;
     private LinearLayout remindBgLl;
     private TextView remindTv;
+    /**
+     * INDEX用于区分发布圈子和每日打卡，0表示发布圈子，1表述每日打卡
+     */
     private int INDEX;
     private RelativeLayout topicRl;
     private TextView topicTv;
-    private int ISCHECKED = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        INDEX = getIntent().getIntExtra("index",0);
+        INDEX = getIntent().getIntExtra("index", 0);
         setContentView(R.layout.activity_addnews);
         findViewById();
         initView();
@@ -77,7 +80,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         titleEt = findViewById(R.id.add_news_et_share_title);
         contentEt = findViewById(R.id.et_add_news_share_content);
         titlelLenTv = findViewById(R.id.add_news_tv_title_length);
-        mIv1 =  findViewById(R.id.title_back);
+        mIv1 = findViewById(R.id.title_back);
         mTakePhoto = findViewById(R.id.add_news_iv_photo);
         mChoosePhoto = findViewById(R.id.choose_from_album);
         picture = findViewById(R.id.iv_picture);
@@ -94,15 +97,15 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         mTakePhoto.setOnClickListener(this);
         mChoosePhoto.setOnClickListener(this);
         releaseBtn.setOnClickListener(this);
-        if(INDEX == 1){
+        if (INDEX == 1) {
             topicRl.setVisibility(View.VISIBLE);
         }
-        uiFlusHandler = new MyDialogHandler(this, "登录中...");
+        uiFlusHandler = new MyDialogHandler(this, "发布中...");
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.title_back:
                 this.finish();
                 break;
@@ -121,7 +124,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void textListener(){
+    private void textListener() {
         titleEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -129,8 +132,8 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int length =charSequence.length();
-                titlelLenTv.setText(length+"/"+12);
+                int length = charSequence.length();
+                titlelLenTv.setText(length + "/" + 12);
             }
 
             @Override
@@ -157,18 +160,18 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             DisplayToast("请上传你的作品图片");
             return;
         }
-        if(INDEX == 1){
+        if (INDEX == 1) {
             isChecked();
             return;
         }
-        releaseNewCircle(null);
+        releaseNewCircle("");
     }
 
     private void releaseNewCircle(String topic) {
         String titleStr = titleEt.getText().toString();
         String contentStr = contentEt.getText().toString();
-        uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-        String url = Constants.BASE_URL + "Circle?method=releaseNewCircleWithImage";
+        uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+        String url = Constants.BASE_URL + "circle/releaseNewCircleWithImage";
         OkHttpUtils
                 .post()
                 .addFile("image", imageFile.getName(), imageFile)
@@ -178,13 +181,12 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 .addParams("title", titleStr)
                 .addParams("content", contentStr)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
-                .addParams("releaseTime", Utils.getCurrentDatetime())
                 .addParams("topic", topic)
                 .build()
                 .execute(new MyStringCallback());
     }
 
-    private void takePhoto(){
+    private void takePhoto() {
         //创建file对象，用于存储拍照后的图片；
         File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
 
@@ -193,7 +195,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 outputImage.delete();
             }
             outputImage.createNewFile();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -211,7 +212,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         startActivityForResult(intent, TAKE_PHOTO);
     }
 
-    private void choosePhoto(){
+    private void choosePhoto() {
         if (ContextCompat.checkSelfPermission(AddnewsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(AddnewsActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
@@ -220,7 +221,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         remindBgLl.setVisibility(View.INVISIBLE);
         remindTv.setVisibility(View.INVISIBLE);
     }
-
 
     //打开相册
     private void openAlbum() {
@@ -257,25 +257,17 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case CHOOSE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {  //4.4及以上的系统使用这个方法处理图片；
-                        handleImageOnKitKat(data);
-                    } else {
-                        handleImageBeforeKitKat(data);  //4.4及以下的系统使用这个方法处理图片
-                    }
+                    //4.4及以上的系统使用这个方法处理图片；
+                    handleImageOnKitKat(data);
                 }
                 break;
             default:
                 break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleImageBeforeKitKat(Intent data) {
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri, null);
-        displayImage(imagePath);
-    }
-
-
+    @SuppressLint("Range")
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         //通过Uri和selection来获取真实的图片路径
@@ -289,7 +281,6 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
         return path;
     }
 
-
     /**
      * 4.4及以上的系统使用这个方法处理图片
      *
@@ -299,31 +290,32 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     private void handleImageOnKitKat(Intent data) {
         String imagePath = null;
         Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            //如果document类型的Uri,则通过document来处理
-            String docID = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docID.split(":")[1];     //解析出数字格式的id
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/piblic_downloads"), Long.valueOf(docID));
-                imagePath = getImagePath(contentUri, null);
+        if (uri != null) {
+            if (DocumentsContract.isDocumentUri(this, uri)) {
+                //如果document类型的Uri,则通过document来处理
+                String docID = DocumentsContract.getDocumentId(uri);
+                if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                    String id = docID.split(":")[1];     //解析出数字格式的id
+                    String selection = MediaStore.Images.Media._ID + "=" + id;
+                    imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+                } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                    Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/piblic_downloads"), Long.parseLong(docID));
+                    imagePath = getImagePath(contentUri, null);
+                }
+            } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                //如果是content类型的uri，则使用普通方式使用
+                imagePath = getImagePath(uri, null);
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                //如果是file类型的uri，直接获取路径即可
+                imagePath = uri.getPath();
             }
-
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            //如果是content类型的uri，则使用普通方式使用
-            imagePath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            //如果是file类型的uri，直接获取路径即可
-            imagePath = uri.getPath();
         }
         displayImage(imagePath);
-        imageFile = new File(imagePath);
     }
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
+            imageFile = new File(imagePath);
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             picture.setImageBitmap(bitmap);
         } else {
@@ -335,7 +327,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
      * 今日打卡
      */
     private void todayCheck() {
-        String url = Constants.BASE_URL + "DailyCheck?method=check";
+        String url = Constants.BASE_URL + "dailycheck/check";
         OkHttpUtils
                 .post()
                 .url(url)
@@ -346,9 +338,9 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void isChecked() {
-        String url = Constants.BASE_URL + "DailyCheck?method=isChecked";
+        String url = Constants.BASE_URL + "dailycheck/isChecked";
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
                 .id(3)
                 .addParams("userId", String.valueOf(Constants.USER.getUserId()))
@@ -362,28 +354,28 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
             uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
             switch (id) {
                 case 1:
-                    if (response.contains("success")) {
-                        if(INDEX == 0){
+                    if (Constants.OK.equals(response)) {
+                        if (INDEX == 0) {
                             DisplayToast("圈子发布成功");
-                        }else{
+                        } else {
                             todayCheck();
                         }
                         finish();
                     } else {
-                        DisplayToast("请稍后再试");
+                        DisplayToast("发布失败，请稍后再试");
                     }
                     break;
                 case 2:
-                    if (response.contains("success")) {
+                    if (Constants.OK.equals(response)) {
                         DisplayToast("今日打卡成功");
                     } else {
                         DisplayToast(response);
                     }
                     break;
                 case 3:
-                    if(response.equals("true")){
+                    if (Constants.OK.equals(response)) {
                         DisplayToast("您今日已经打卡过了，不能重复打卡");
-                    }else{
+                    } else {
                         releaseNewCircle(topicTv.getText().toString());
                     }
                     break;
@@ -395,6 +387,7 @@ public class AddnewsActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
             DisplayToast("网络链接出错！");
         }
     }

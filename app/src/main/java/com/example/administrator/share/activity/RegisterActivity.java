@@ -11,9 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +23,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+
 import com.example.administrator.share.R;
 import com.example.administrator.share.base.BaseActivity;
 import com.example.administrator.share.entity.User;
@@ -33,7 +34,6 @@ import com.example.administrator.share.util.ActivityManager;
 import com.example.administrator.share.util.Constants;
 import com.example.administrator.share.util.MyDialogHandler;
 import com.example.administrator.share.util.SharedPreferencesUtils;
-import com.example.administrator.share.util.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -123,7 +123,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                 //"点击了照相";
                 //  6.0之后动态申请权限 摄像头调取权限,SD卡写入权限
                 //判断是否拥有权限，true则动态申请
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_ADD_CASE_CALL_PHONE);
                 } else {
                     try {
@@ -153,10 +153,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             case R.id.cancel:
                 dialog.dismiss();//关闭对话框
                 break;
-            default:break;
+            default:
+                break;
         }
     }
-
 
     public void viewInit() {
         builder = new AlertDialog.Builder(this);//创建对话框
@@ -173,7 +173,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         choosePhotoTV.setOnClickListener(this);
         cancelTV.setOnClickListener(this);
     }
-
 
     private void register() {
         String nickname = et_nickname.getText().toString().trim();
@@ -193,13 +192,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             DisplayToast("两次密码输入不一致");
             return;
         }
-        if(imageFile == null){
+        if (imageFile == null) {
             DisplayToast("请上传头像图片");
             return;
         }
         uiFlusHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         // 服务端验证
-        String url = Constants.BASE_URL + "User?method=register";
+        String url = Constants.BASE_URL + "user/register";
         OkHttpUtils
                 .post()
                 .addFile("face", imageFile.getName(), imageFile)
@@ -210,7 +209,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                 .addParams("nickname", nickname)
                 .addParams("password", password)
                 .addParams("sex", sex)
-                .addParams("registerTime", Utils.getCurrentDatetime())
+                .addParams("signature", "这个人很懒，什么也没有留下")
                 .build()
                 .execute(new MyStringCallback());
     }
@@ -219,16 +218,22 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
             switch (id) {
                 case 1:
                     uiFlusHandler.sendEmptyMessage(DISMISS_LOADING_DIALOG);
-                    User user = gson.fromJson(response, User.class);
+                    if ("该昵称已经存在".equals(response)) {
+                        DisplayToast("该昵称已经存在，请重新输入");
+                        return;
+                    } else if (Constants.ERROR.equals(response)) {
+                        DisplayToast("注册失败，请稍后重试！");
+                        return;
+                    }
+                    User user = new Gson().fromJson(response, User.class);
                     // 存储用户
                     Constants.USER = user;
                     boolean result = SharedPreferencesUtils.saveUserInfo(mContext, user);
                     if (result) {
-                        Log.d("LoginActivity","登录成功");
+                        Log.d("LoginActivity", "登录成功");
                     } else {
                         DisplayToast("用户存储失败");
                     }
@@ -290,12 +295,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(picture, 2);
     }
+
     /**
      * 申请权限回调方法
      *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode  请求码
+     * @param permissions  权限
+     * @param grantResults 授予结果
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -307,23 +313,25 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "你拒绝了请求", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == MY_ADD_CASE_CALL_PHONE2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 choosePhoto();
             } else {
-                Toast.makeText(this,"你拒绝了请求",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "你拒绝了请求", Toast.LENGTH_SHORT).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     /**
      * startActivityForResult执行后的回调方法，接收返回的图片
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     *
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        intent数据
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -355,6 +363,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             }
         }
     }
+
     /**
      * 从保存原图的地址读取图片
      */
@@ -362,11 +371,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         String filePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/nbinpic/" + "UserIcon.png";
         return filePath;
     }
+
     private void saveImageToServer(final Bitmap bitmap, String outfile) {
-        // 这里就可以将图片文件 file 上传到服务器,上传成功后可以将bitmap设置给你对应的图片展示
-        imageFile= new File(outfile);
+        //这里就可以将图片文件 file 上传到服务器，上传成功后可以将bitmap设置给你对应的图片展示
+        imageFile = new File(outfile);
         faceIv.setImageBitmap(bitmap);
     }
-
-
 }

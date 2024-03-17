@@ -1,6 +1,5 @@
 package com.example.administrator.share.activity;//这里换成你自己的
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 
 
-public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener{
+public class MainMenuActivity extends BaseActivity implements View.OnClickListener, BottomDialog.OnCenterItemClickListener {
 
     /**
      * 退出时间
@@ -39,7 +38,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     private static final String TAG_PAGE_PERSON = "我的";
 
     private MainNavigateTabBar mNavigateTabBar;
-    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,6 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
         findViewById();
         mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
         initView();
-        mContext = this;
     }
 
     @Override
@@ -82,23 +79,21 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void OnCenterItemClick(BottomDialog dialog, View view) {
         Intent intent;
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.dialog_release:
-                intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
-                intent.putExtra("index",0);
+                intent = new Intent(MainMenuActivity.this, AddnewsActivity.class);
+                intent.putExtra("index", 0);
                 startActivity(intent);
                 break;
             case R.id.dialog_signin:
-                intent = new Intent(MainMenuActivity.this,AddnewsActivity.class);
-                intent.putExtra("index",1);
+                intent = new Intent(MainMenuActivity.this, AddnewsActivity.class);
+                intent.putExtra("index", 1);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
     }
-
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -121,31 +116,29 @@ public class MainMenuActivity extends BaseActivity implements View.OnClickListen
      * 统计消息数量
      */
     private void findMessageStatus() {
-        new AsyncTask<Void,Void,Integer>(){
+        new AsyncTask<Void, Void, Integer>() {
 
             @Override
             protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Message?method=findMessageStatus";
+                String url = Constants.BASE_URL + "message/findMessageStatus";
                 String authorname = Constants.USER.getNickname();
                 String authorId = String.valueOf(Constants.USER.getUserId());
-                if(authorname != null && authorname != null){
+                if (authorname != null && authorId != null) {
                     OkHttpUtils
-                            .post()
+                            .get()
                             .url(url)
-                            .addParams("authorName",authorname)
-                            .addParams("authorId",authorId)
+                            .addParams("authorName", authorname)
+                            .addParams("authorId", authorId)
                             .build()
-                            .execute(new StringCallback(){
+                            .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
+                                    DisplayToast("网络链接出错！");
                                 }
+
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    if(response.equals("error")){
-                                        mNavigateTabBar.disPlayBadgeCount(2, 0);
-                                    }else{
-                                        mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
-                                    }
+                                    mNavigateTabBar.disPlayBadgeCount(2, Integer.valueOf(response));
                                 }
                             });
                 }

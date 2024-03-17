@@ -3,22 +3,23 @@ package com.example.administrator.share.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.share.R;
 import com.example.administrator.share.activity.BeforeDateCheckActivity;
@@ -41,23 +42,23 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 
 
-public class CircleFragment extends Fragment implements View.OnClickListener{
+public class CircleFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView circleList;
     private Context mContext;
     private RefreshLayout refreshLayout;
+    private ImageView circleRemindIv;
     private TextView circleRemindTv;
-    private TextView bianpingTv,oumeiTv,erchaTv,xieshiTv,chouxiangTv;
+    private TextView bianpingTv, oumeiTv, erchaTv, xieshiTv, chouxiangTv;
     private TextView indexTv;
     private FoundCircleAdapter adapter;
-    private List<CircleList> mList;
+    private List<CircleList> mCircleList;
     private final int PAGE_COUNT = 5;
     private Toolbar toolbar;
 
@@ -71,11 +72,14 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    private void findViewById(View view){
+    private void findViewById(View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         circleList = view.findViewById(R.id.list_circle);
         refreshLayout = view.findViewById(R.id.refreshLayout);
+        circleRemindIv = view.findViewById(R.id.iv_circle_remind);
         circleRemindTv = view.findViewById(R.id.tv_circle_remind);
         bianpingTv = view.findViewById(R.id.tv_circle_bianping);
         oumeiTv = view.findViewById(R.id.tv_circle_oumei);
@@ -84,7 +88,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         chouxiangTv = view.findViewById(R.id.tv_circle_chouxiang);
     }
 
-    private void initView(){
+    private void initView() {
         toolbar.setTitle("圈子");
         mContext = getActivity();
         bianpingTv.setOnClickListener(this);
@@ -93,11 +97,13 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
         xieshiTv.setOnClickListener(this);
         chouxiangTv.setOnClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleList>());
         circleList.setLayoutManager(layoutManager);
-        getCircleListofDailyCheck();
+        circleList.setAdapter(adapter);
+        getCircleList();
     }
 
-    private void refreshListener(){
+    private void refreshListener() {
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         refreshLayout.setDisableContentWhenLoading(true);//是否在加载的时候禁止列表的操作
         refreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
@@ -107,10 +113,10 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.resetNoMoreData();
-                if(indexTv != null){
-                    getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
-                }else {
-                    getCircleListofDailyCheck();
+                if (indexTv != null) {
+                    getCircleListWithLabel(indexTv.getText().toString());
+                } else {
+                    getCircleList();
                 }
             }
 
@@ -145,7 +151,7 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.calendar:
-                Intent intent=new Intent(getActivity(), BeforeDateCheckActivity.class);
+                Intent intent = new Intent(getActivity(), BeforeDateCheckActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -153,7 +159,10 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
         inflater.inflate(R.menu.toolbar, menu);
         menu.findItem(R.id.calendar).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
@@ -161,128 +170,130 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_circle_bianping:
-                if(indexTv != null){
+                if (indexTv != null) {
                     indexTv.setBackgroundResource(R.drawable.bg_username);
-                    if(indexTv == bianpingTv){
+                    if (indexTv == bianpingTv) {
                         indexTv = null;
-                        getCircleListofDailyCheck();
+                        getCircleList();
                         break;
                     }
                 }
                 bianpingTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = bianpingTv;
-                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_oumei:
-                if(indexTv != null){
+                if (indexTv != null) {
                     indexTv.setBackgroundResource(R.drawable.bg_username);
-                    if(indexTv == oumeiTv){
+                    if (indexTv == oumeiTv) {
                         indexTv = null;
-                        getCircleListofDailyCheck();
+                        getCircleList();
                         break;
                     }
                 }
                 oumeiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = oumeiTv;
-                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_ercha:
-                if(indexTv != null){
+                if (indexTv != null) {
                     indexTv.setBackgroundResource(R.drawable.bg_username);
-                    if(indexTv == erchaTv){
+                    if (indexTv == erchaTv) {
                         indexTv = null;
-                        getCircleListofDailyCheck();
+                        getCircleList();
                         break;
                     }
                 }
                 erchaTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = erchaTv;
-                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_xieshi:
-                if(indexTv != null){
+                if (indexTv != null) {
                     indexTv.setBackgroundResource(R.drawable.bg_username);
-                    if(indexTv == xieshiTv){
+                    if (indexTv == xieshiTv) {
                         indexTv = null;
-                        getCircleListofDailyCheck();
+                        getCircleList();
                         break;
                     }
                 }
                 xieshiTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = xieshiTv;
-                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
             case R.id.tv_circle_chouxiang:
-                if(indexTv != null){
+                if (indexTv != null) {
                     indexTv.setBackgroundResource(R.drawable.bg_username);
-                    if(indexTv == chouxiangTv){
+                    if (indexTv == chouxiangTv) {
                         indexTv = null;
-                        getCircleListofDailyCheck();
+                        getCircleList();
                         break;
                     }
                 }
                 chouxiangTv.setBackgroundResource(R.drawable.bg_username_selected);
                 indexTv = chouxiangTv;
-                getCircleListofDailyCheckWithLabel(indexTv.getText().toString());
+                getCircleListWithLabel(indexTv.getText().toString());
                 break;
         }
     }
 
-    private void getCircleListofDailyCheck() {
-        new AsyncTask<Void,Void,Integer>(){
+    private void getCircleList() {
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Circle?method=getCircleListofDailyCheck";
+            public void run() {
+                String url = Constants.BASE_URL + "circle/getCircleListWithTopic";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        }).start();
     }
 
-    private void getCircleListofDailyCheckWithLabel(final String label){
-        new AsyncTask<Void,Void,Integer>(){
+    private void getCircleListWithLabel(final String label) {
+        new Thread(new Runnable() {
             @Override
-            protected Integer doInBackground(Void... voids) {
-                String url = Constants.BASE_URL + "Circle?method=getCircleListofDailyCheckWithLabel";
+            public void run() {
+                String url = Constants.BASE_URL + "circle/getCircleListWithTopicByLabel";
                 OkHttpUtils
-                        .post()
+                        .get()
                         .url(url)
                         .id(1)
-                        .addParams("label",label)
+                        .addParams("label", label)
                         .build()
                         .execute(new MyStringCallback());
-                return null;
             }
-        }.execute();
+        }).start();
     }
 
     public class MyStringCallback extends StringCallback {
         @Override
         public void onResponse(String response, int id) {
-            Gson gson = new Gson();
-            try {
-                Type type = new TypeToken<ArrayList<CircleList>>() {}.getType();
-                mList = gson.fromJson(response, type);
-            } catch (Exception e) {
-                Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-                mList = null;
+            if (Constants.ERROR.equals(response)) {
+                mCircleList = null;
+            } else {
+                try {
+                    mCircleList = new Gson().fromJson(response, new TypeToken<ArrayList<CircleList>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
             switch (id) {
                 case 1:
-                    if (mList != null && mList.size() > 0) {
+                    if (mCircleList != null && mCircleList.size() > 0) {
                         adapter = new FoundCircleAdapter(mContext, getDatas(0, PAGE_COUNT));
                         circleList.setAdapter(adapter);
+                        circleRemindIv.setVisibility(View.INVISIBLE);
                         circleRemindTv.setVisibility(View.INVISIBLE);
-                    }else{
+                    } else {
                         adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleList>());
                         circleList.setAdapter(adapter);
+                        circleRemindIv.setVisibility(View.VISIBLE);
                         circleRemindTv.setVisibility(View.VISIBLE);
                     }
                     refreshLayout.finishRefresh();
@@ -295,6 +306,13 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
 
         @Override
         public void onError(Call arg0, Exception arg1, int arg2) {
+            refreshLayout.finishRefresh();
+            adapter = new FoundCircleAdapter(mContext, new ArrayList<CircleList>());
+            circleList.setAdapter(adapter);
+            circleRemindIv.setImageResource(R.drawable.default_remind_nosignal);
+            circleRemindTv.setText(R.string.no_network_remind);
+            circleRemindIv.setVisibility(View.VISIBLE);
+            circleRemindTv.setVisibility(View.VISIBLE);
             Toast.makeText(mContext, "网络链接出错！", Toast.LENGTH_SHORT).show();
         }
     }
@@ -302,8 +320,8 @@ public class CircleFragment extends Fragment implements View.OnClickListener{
     private List<CircleList> getDatas(final int firstIndex, final int lastIndex) {
         List<CircleList> resList = new ArrayList<>();
         for (int i = firstIndex; i < lastIndex; i++) {
-            if (i < mList.size()) {
-                resList.add(mList.get(i));
+            if (i < mCircleList.size()) {
+                resList.add(mCircleList.get(i));
             }
         }
         return resList;

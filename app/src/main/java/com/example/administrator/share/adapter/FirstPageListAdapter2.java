@@ -9,13 +9,15 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.share.R;
@@ -27,15 +29,14 @@ import java.util.Map;
 
 public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private List<Map<String,String>> mapList;
+    private final Context mContext;
+    private final LayoutInflater mInflater;
+    private final List<Map<String, String>> mapList;
     private boolean isDownloading;
-    private int normalType = 0;
-    private int footType = 1;
+    private final int normalType = 0;
     private boolean hasMore;
     private boolean fadeTips = false;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
@@ -47,15 +48,15 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            pic=view.findViewById(R.id.item_pic);
-            text=view.findViewById(R.id.item_text);
-            time=view.findViewById(R.id.item_time);
-            btn=view.findViewById(R.id.download_btn);
+            pic = view.findViewById(R.id.item_pic);
+            text = view.findViewById(R.id.item_text);
+            time = view.findViewById(R.id.item_time);
+            btn = view.findViewById(R.id.download_btn);
         }
     }
 
     static class FootHolder extends RecyclerView.ViewHolder {
-        private TextView tips;
+        private final TextView tips;
 
         public FootHolder(View itemView) {
             super(itemView);
@@ -63,42 +64,45 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public FirstPageListAdapter2(Context mContext, List<Map<String,String>> mapList,boolean hasMore) {
-        this.mContext=mContext;
-        mInflater=LayoutInflater.from(mContext);
-        this.mapList=mapList;
+    public FirstPageListAdapter2(Context mContext, List<Map<String, String>> mapList, boolean hasMore) {
+        this.mContext = mContext;
+        mInflater = LayoutInflater.from(mContext);
+        this.mapList = mapList;
         this.hasMore = hasMore;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final RecyclerView.ViewHolder holder;
         if (viewType == normalType) {
             View view = mInflater.inflate(R.layout.item_firstpage_ganhuo, parent, false);
             holder = new ViewHolder(view);
-            ((ViewHolder)holder).mView.setOnClickListener(new View.OnClickListener() {
+            ((ViewHolder) holder).mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = holder.getAdapterPosition();
                     Intent intent = new Intent(mContext, FruitActivity.class);
-                    intent.putExtra("text",(CharSequence) mapList.get(position).get("text"));
+                    intent.putExtra("text", (CharSequence) mapList.get(position).get("text"));
                     intent.putExtra("uri", Uri.parse(mapList.get(position).get("picUri")));
                     mContext.startActivity(intent);
                 }
             });
-            ((ViewHolder)holder).btn.setOnClickListener(new View.OnClickListener() {
+            ((ViewHolder) holder).btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(isDownloading){
+                    CompleteReceiver completeReceiver = new CompleteReceiver();
+                    mContext.registerReceiver(completeReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                    if (isDownloading) {
                         Toast.makeText(mContext, "当前已在进行下载，请等待下载完成", Toast.LENGTH_LONG).show();
-                    }else{
+                    } else {
                         Toast.makeText(mContext, "开始下载...", Toast.LENGTH_SHORT).show();
-                        isDownloading=true;
-                        Uri uri = ((DownloadButton)view).getUri();
+                        isDownloading = true;
+                        Uri uri = ((DownloadButton) view).getUri();
                         DownloadManager downloadManager;
                         downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
                         DownloadManager.Request request = new DownloadManager.Request(uri);
-                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic"+((DownloadButton)view).getTime()+".jpg");
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "BingPic" + ((DownloadButton) view).getTime() + ".jpg");
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         downloadManager.enqueue(request);
                     }
@@ -112,17 +116,15 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            ((ViewHolder)holder).text.setText(mapList.get(position).get("text"));
-            ((ViewHolder)holder).time.setText(mapList.get(position).get("time"));
+            ((ViewHolder) holder).text.setText(mapList.get(position).get("text"));
+            ((ViewHolder) holder).time.setText(mapList.get(position).get("time"));
             Uri uri = Uri.parse(mapList.get(position).get("picUri"));
-            Glide.with(mContext).load(uri).into(((ViewHolder)holder).pic);
-            isDownloading=false;
-            CompleteReceiver completeReceiver = new CompleteReceiver();
-            mContext.registerReceiver(completeReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-            ((ViewHolder)holder).btn.setUri(uri);
-            ((ViewHolder)holder).btn.setTime(mapList.get(position).get("time"));
+            Glide.with(mContext).load(uri).into(((ViewHolder) holder).pic);
+            isDownloading = false;
+            ((ViewHolder) holder).btn.setUri(uri);
+            ((ViewHolder) holder).btn.setTime(mapList.get(position).get("time"));
         } else {
             ((FootHolder) holder).tips.setVisibility(View.VISIBLE);
             if (hasMore) {
@@ -148,20 +150,21 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return mapList.size()+1;
+        return mapList.size() + 1;
     }
 
     class CompleteReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(isDownloading){
+            if (isDownloading) {
                 Toast.makeText(mContext, "图片下载完成", Toast.LENGTH_SHORT).show();
-                isDownloading=false;
+                isDownloading = false;
             }
+            context.unregisterReceiver(this);
         }
     }
 
-    public void updateList(List<Map<String,String>> newDatas, boolean hasMore) {
+    public void updateList(List<Map<String, String>> newDatas, boolean hasMore) {
         if (newDatas != null) {
             mapList.addAll(newDatas);
         }
@@ -180,7 +183,7 @@ public class FirstPageListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         if (position == getItemCount() - 1) {
-            return footType;
+            return 1;
         } else {
             return normalType;
         }
