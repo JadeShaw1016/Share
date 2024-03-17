@@ -1,0 +1,12 @@
+{
+  "ndkVersionFromDsl": "21.4.7075529",
+  "ndkDirProperty": "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529",
+  "sdkFolder": "/Users/jadentang/Library/Android/sdk",
+  "sideBySideNdkFolderNames": [
+    "21.4.7075529",
+    "23.0.7530507",
+    "16.1.4479499",
+    "19.2.5345600",
+    "23.1.7779620"
+  ]
+}

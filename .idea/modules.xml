@@ -15,6 +15,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/mainnavigatetabbar/Share.mainnavigatetabbar.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.iml" filepath="$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.main.iml" filepath="$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/xcrash/Share.xcrash.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
+    "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/CMakeLists.txt",
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/x86\" clean"
+  ],
+  "buildTargetsCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "xcrash_dumper-Debug-x86": {
+      "artifactName": "xcrash_dumper",
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/x86\" xcrash_dumper",
+      "abi": "x86",
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/x86/libxcrash_dumper.so",
+      "runtimeFiles": []
+    },
+    "xcrash-Debug-x86": {
+      "artifactName": "xcrash",
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/x86\" xcrash",
+      "abi": "x86",
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/build/intermediates/cmake/debug/obj/x86/libxcrash.so",
+      "runtimeFiles": []
+    }
+  }
+}

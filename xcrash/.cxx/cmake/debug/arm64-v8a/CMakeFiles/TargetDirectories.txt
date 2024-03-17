@@ -1,0 +1,4 @@
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a/CMakeFiles/xcrash_dumper.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a/CMakeFiles/xcrash.dir

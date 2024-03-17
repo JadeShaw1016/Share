@@ -1,0 +1,50 @@
+[
+  {
+    "level": "INFO",
+    "message": "android.ndkVersion from module build.gradle is 21.3.6528147"
+  },
+  {
+    "level": "INFO",
+    "message": "ndk.dir in local.properties is /Users/jadentang/Library/Android/sdk/ndk/16.1.4479499"
+  },
+  {
+    "level": "INFO",
+    "message": "ANDROID_NDK_HOME environment variable is not set"
+  },
+  {
+    "level": "INFO",
+    "message": "sdkFolder is /Users/jadentang/Library/Android/sdk"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/16.1.4479499 by ndk.dir"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/21.4.7075529 in SDK ndk folder"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/23.0.7530507 in SDK ndk folder"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/16.1.4479499 in SDK ndk folder"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/19.2.5345600 in SDK ndk folder"
+  },
+  {
+    "level": "INFO",
+    "message": "Considering /Users/jadentang/Library/Android/sdk/ndk/23.1.7779620 in SDK ndk folder"
+  },
+  {
+    "level": "ERROR",
+    "message": "Requested NDK version 21.3.6528147 did not match the version 16.1.4479499 requested by ndk.dir at /Users/jadentang/Library/Android/sdk/ndk/16.1.4479499"
+  }
+]

@@ -1,3 +1,4 @@
 include ':DatePicker'
 include ':mainnavigatetabbar'
 include ':app'
+include ':xcrash'

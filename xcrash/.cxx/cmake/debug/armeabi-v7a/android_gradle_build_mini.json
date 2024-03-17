@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
+    "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/CMakeLists.txt",
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a\" clean"
+  ],
+  "buildTargetsCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "xcrash-Debug-armeabi-v7a": {
+      "artifactName": "xcrash",
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a\" xcrash",
+      "abi": "armeabi-v7a",
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/build/intermediates/cmake/debug/obj/armeabi-v7a/libxcrash.so",
+      "runtimeFiles": []
+    },
+    "xcrash_dumper-Debug-armeabi-v7a": {
+      "artifactName": "xcrash_dumper",
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a\" xcrash_dumper",
+      "abi": "armeabi-v7a",
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a/libxcrash_dumper.so",
+      "runtimeFiles": []
+    }
+  }
+}

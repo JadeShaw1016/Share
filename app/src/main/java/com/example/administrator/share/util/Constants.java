@@ -25,7 +25,7 @@ public class Constants {
     public static List<String> DAILYCHECKEDLIST;
 
     // 服务器地址
-    public static String DEFAULT_URL = "http://192.168.1.4:8080/";
+    public static String DEFAULT_URL = "http://192.168.0.105:8080/";
     public static String BASE_URL = SharedPreferencesUtils.getIPConfig(ShareApplication.getContextObject());
 
     // SDCard路径

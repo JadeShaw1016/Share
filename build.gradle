@@ -9,7 +9,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath "com.mob.sdk:MobSDK:2018.0319.1724"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,4 +28,16 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    minSdkVersion = 21
+    compileSdkVersion = 29
+    buildToolsVersion = '29.0.3'
+    targetSdkVersion = compileSdkVersion
+    javaVersion = JavaVersion.VERSION_1_8
+    ndkVersion = "21.4.7075529"
+    abiFilters = "armeabi-v7a,arm64-v8a,x86,x86_64"
+    useASAN = false
+    cmakeVersion = "3.10.2"
 }

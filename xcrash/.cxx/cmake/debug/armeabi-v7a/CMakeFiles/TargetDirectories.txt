@@ -1,0 +1,4 @@
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/xcrash_dumper.dir
+/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/xcrash.dir

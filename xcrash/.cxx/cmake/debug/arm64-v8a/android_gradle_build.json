@@ -1,0 +1,367 @@
+{
+  "stringTable": {
+    "0": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a",
+    "1": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIE -std=c11 -Weverything -Werror -Oz -flto -ffunction-sections -fdata-sections",
+    "2": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIE -std=c11 -Weverything -Werror -Oz -flto -ffunction-sections -fdata-sections -D_7ZIP_ST -Wno-enum-conversion -Wno-reserved-id-macro -Wno-undef -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-cast-align -Wno-sign-conversion -Wno-assign-enum -Wno-unused-macros -Wno-padded -Wno-cast-qual -Wno-strict-prototypes -Wno-extra-semi-stmt",
+    "3": "--target=aarch64-none-linux-android21 --gcc-toolchain=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dxcrash_EXPORTS -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common -I/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/dl -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC -std=c11 -Weverything -Werror -Oz -flto -ffunction-sections -fdata-sections"
+  },
+  "buildFiles": [
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
+    "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/CMakeLists.txt",
+    "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a\" clean"
+  ],
+  "buildTargetsCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "xcrash-Debug-arm64-v8a": {
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a\" xcrash",
+      "buildType": "debug",
+      "toolchain": "3119887629",
+      "abi": "arm64-v8a",
+      "artifactName": "xcrash",
+      "files": [
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_common.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_crash.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_fallback.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_jni.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_test.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_trace.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash/xc_util.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_b64.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_fmt.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_libc_support.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_meminfo.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_signal.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_clang.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_libcorkscrew.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_libunwind.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_util.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/dl/xc_dl.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/build/intermediates/cmake/debug/obj/arm64-v8a/libxcrash.so",
+      "runtimeFiles": []
+    },
+    "xcrash_dumper-Debug-arm64-v8a": {
+      "buildCommand": "/Users/jadentang/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a\" xcrash_dumper",
+      "buildType": "debug",
+      "toolchain": "3119887629",
+      "abi": "arm64-v8a",
+      "artifactName": "xcrash_dumper",
+      "files": [
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/7zCrc.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/7zCrcOpt.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/CpuArch.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Bra.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Bra86.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/BraIA64.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Delta.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Lzma2Dec.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/LzmaDec.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Sha256.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/Xz.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/XzCrc64.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/XzCrc64Opt.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/lzma/XzDec.c",
+          "flagsOrdinal": 2,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_arm_exidx.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_core.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_dwarf.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_elf.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_elf_interface.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_frames.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_map.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_maps.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_md5.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_memory.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_memory_buf.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_memory_file.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_memory_remote.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_process.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_regs_arm.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_regs_arm64.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_regs_x86.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_regs_x86_64.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_sys.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_thread.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/xcrash_dumper/xcd_util.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_b64.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_fmt.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_libc_support.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_meminfo.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_signal.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_clang.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_libcorkscrew.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_unwind_libunwind.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/src/main/cpp/common/xcc_util.c",
+          "flagsOrdinal": 3,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/jadentang/AndroidStudioProjects/Share/xcrash/.cxx/cmake/debug/arm64-v8a/libxcrash_dumper.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "3119887629": {
+      "cCompilerExecutable": "/Users/jadentang/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}
