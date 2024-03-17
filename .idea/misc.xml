@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -6,6 +5,8 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.17685305591677503" />
         <entry key="../../Library/Android/sdk/ndk/21.4.7075529/caches/transforms-2/files-2.1/d28418f0afaae5558bcd1a3978308c55/MonitorCrashLib-1.2.8/res/layout/activity_crash_details.xml" value="0.11979166666666667" />
         <entry key="../../Library/Android/sdk/ndk/21.4.7075529/caches/transforms-2/files-2.1/d28418f0afaae5558bcd1a3978308c55/MonitorCrashLib-1.2.8/res/layout/activity_crash_list.xml" value="0.11979166666666667" />
+        <entry key="app/src/main/res/drawable/mid_layout_selector.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/rounded_4dp.xml" value="0.277" />
         <entry key="app/src/main/res/layout/activity_addnews.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/activity_badge_view_two.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/activity_before_date_check.xml" value="0.14583333333333334" />
@@ -33,7 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_circle.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_firstpage.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/fragment_me.xml" value="0.14583333333333334" />
-        <entry key="app/src/main/res/layout/fragment_message.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_mywork.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/fragment_normal_list.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/item_circle_detail_comment.xml" value="0.14583333333333334" />
@@ -97,7 +98,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="liberica-1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
